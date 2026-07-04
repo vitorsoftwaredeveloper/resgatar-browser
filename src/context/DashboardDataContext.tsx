@@ -23,6 +23,8 @@ interface DashboardDataContextValue {
   goalLoading: boolean;
   commitments: ICommitment[];
   commitmentsLoading: boolean;
+  refetchBanners: () => Promise<void>;
+  refetchCommitments: () => Promise<void>;
 }
 
 const DashboardDataContext = createContext<DashboardDataContextValue>({
@@ -32,6 +34,8 @@ const DashboardDataContext = createContext<DashboardDataContextValue>({
   goalLoading: true,
   commitments: [],
   commitmentsLoading: true,
+  refetchBanners: async () => {},
+  refetchCommitments: async () => {},
 });
 
 export function DashboardDataProvider({ children }: { children: React.ReactNode }) {
@@ -70,9 +74,34 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       .finally(() => setCommitmentsLoading(false));
   }, [isLoggedIn]);
 
+  async function refetchBanners() {
+    try {
+      setBanners(await BannerService.list());
+    } catch {
+      setBanners([]);
+    }
+  }
+
+  async function refetchCommitments() {
+    try {
+      setCommitments(await CommitmentService.list());
+    } catch {
+      setCommitments([]);
+    }
+  }
+
   return (
     <DashboardDataContext.Provider
-      value={{ banners, bannersLoading, goalProgress, goalLoading, commitments, commitmentsLoading }}
+      value={{
+        banners,
+        bannersLoading,
+        goalProgress,
+        goalLoading,
+        commitments,
+        commitmentsLoading,
+        refetchBanners,
+        refetchCommitments,
+      }}
     >
       {children}
     </DashboardDataContext.Provider>

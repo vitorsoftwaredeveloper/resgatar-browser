@@ -8,6 +8,48 @@
   position: relative;
 }
 
+.manageButton {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background: rgba(0, 0, 0, 0.45);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding-inline: var(--spacing-sm);
+  padding-block: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.manageButtonText {
+  font-size: var(--font-xsmall);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+
+.empty {
+  width: 100%;
+  height: 160px;
+  border-radius: var(--radius-lg);
+  border: 1.5px dashed var(--color-border);
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+}
+
+.emptyText {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+}
+
 .track {
   display: flex;
   flex-direction: row;

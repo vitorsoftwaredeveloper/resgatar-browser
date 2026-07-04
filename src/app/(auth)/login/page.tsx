@@ -18,7 +18,13 @@ import styles from "./login.module.css";
 // da página já resolve isso.
 
 export default function LoginPage() {
-  const { login, loading: authLoading, isLoggedIn, needsOnboarding, onboardingChecked } = useAuth();
+  const {
+    login,
+    loading: authLoading,
+    isLoggedIn,
+    needsOnboarding,
+    onboardingChecked,
+  } = useAuth();
   const { colors } = useAppTheme();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -34,7 +40,8 @@ export default function LoginPage() {
     }
   }, [authLoading, isLoggedIn, needsOnboarding, onboardingChecked, router]);
 
-  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isValidEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const handleLogin = async () => {
     setLoading(true);
@@ -76,7 +83,9 @@ export default function LoginPage() {
 
           <div className={styles.motion}>
             <div className={styles.divider} />
-            <span className={styles.motionText}>Doar a vida por amor a santa cruz!</span>
+            <span className={styles.motionText}>
+              Doar a vida por amor a santa cruz!
+            </span>
             <div className={styles.divider} />
           </div>
 
@@ -104,9 +113,17 @@ export default function LoginPage() {
                   type="button"
                   aria-label="toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
-                  style={{ background: "none", border: "none", display: "flex" }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    display: "flex",
+                  }}
                 >
-                  {showPassword ? <Eye size={24} color={colors.muted} /> : <EyeOff size={24} color={colors.muted} />}
+                  {showPassword ? (
+                    <Eye size={24} color={colors.muted} />
+                  ) : (
+                    <EyeOff size={24} color={colors.muted} />
+                  )}
                 </button>
               }
             />

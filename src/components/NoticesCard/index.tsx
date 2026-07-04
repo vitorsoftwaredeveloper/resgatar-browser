@@ -2,30 +2,42 @@
 
 import { CoachTarget } from "@/components/CoachTarget";
 import { NoticesCardSkeleton } from "@/components/Skeleton/NoticesCardSkeleton";
+import { useAuth } from "@/context/AuthContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
 import { commitmentScheduleLabel, isCommitmentToday } from "@/utils/commitment";
+import { ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { NoticeBoardModal } from "./NoticeBoardModal";
 import styles from "./NoticesCard.module.css";
 
 // Portado de resgatar_app/src/components/NoticesCard. useFocusEffect vira
 // leitura do DashboardDataContext, buscado uma única vez por sessão — evita
 // refazer a requisição toda vez que a Dashboard remonta ao voltar de outra
-// aba. A ação de admin ("Gerenciar Quadro de Avisos") abria o NoticeBoardModal,
-// que vive em src/screens/NoticeBoardScreen no app — essa tela ainda não foi
-// portada para o web, então por ora o card só lista os compromissos (sem
-// gestão de admin).
+// aba. A ação de admin ("Gerenciar Quadro de Avisos") abre o NoticeBoardModal
+// (portado de src/screens/NoticeBoardScreen).
 
 export function NoticesCard() {
+  const { member } = useAuth();
+  const isAdmin = member?.role === "admin";
   const { commitments: items, commitmentsLoading: loading } = useDashboardData();
   const loaded = !loading;
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <CoachTarget id="notices-card">
       <div className={styles.container}>
-        <div className={styles.header}>
+        <button
+          type="button"
+          className={styles.header}
+          onClick={isAdmin ? () => setModalVisible(true) : undefined}
+          disabled={!isAdmin}
+          aria-label={isAdmin ? "Gerenciar Quadro de Avisos" : undefined}
+        >
           <div className={styles.headerLeft}>
             <span className={styles.headerTitle}>Compromissos da comunidade</span>
           </div>
-        </div>
+          {isAdmin && <ChevronRight size={20} color="var(--color-text-muted)" />}
+        </button>
 
         {!loaded ? (
           <NoticesCardSkeleton />
@@ -65,6 +77,8 @@ export function NoticesCard() {
           })
         )}
       </div>
+
+      <NoticeBoardModal visible={modalVisible} onClose={() => setModalVisible(false)} />
     </CoachTarget>
   );
 }

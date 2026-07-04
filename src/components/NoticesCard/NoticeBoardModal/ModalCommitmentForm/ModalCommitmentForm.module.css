@@ -1,0 +1,120 @@
+.container {
+  background: var(--color-white);
+}
+
+.fieldLabel {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: var(--spacing-xs);
+}
+
+.errorText {
+  font-size: var(--font-small);
+  color: var(--color-error);
+  margin-top: 4px;
+  margin-bottom: var(--spacing-xs);
+}
+
+.segment {
+  display: flex;
+  flex-direction: row;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  margin-bottom: var(--spacing-sm2);
+}
+
+.segmentItem {
+  flex: 1;
+  padding-block: var(--spacing-sm2);
+  text-align: center;
+  background: var(--color-card);
+  border: none;
+  cursor: pointer;
+}
+
+.segmentItemActive {
+  background: var(--color-primary);
+}
+
+.segmentText {
+  font-size: var(--font-body);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.segmentTextActive {
+  color: var(--color-white);
+  font-weight: 700;
+}
+
+.chipsRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm2);
+}
+
+.chip {
+  padding-inline: var(--spacing-sm2);
+  padding-block: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-input-bg);
+  min-width: 44px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.chipActive {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.chipText {
+  font-size: var(--font-small);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.chipTextActive {
+  color: var(--color-white);
+  font-weight: 700;
+}
+
+.footer {
+  padding: var(--spacing-md);
+  background: var(--color-background);
+}
+
+.footerRow {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-sm);
+}
+
+.saveFlex {
+  flex: 1.4;
+}
+
+.deleteButton {
+  flex: 1;
+  min-height: 48px;
+  border-radius: 14px;
+  border: 1px solid var(--color-error);
+  background: transparent;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding-inline: var(--spacing-md);
+  cursor: pointer;
+}
+
+.deleteText {
+  font-size: var(--font-subtitle);
+  font-weight: 600;
+  color: var(--color-error);
+}

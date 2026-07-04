@@ -1,19 +1,21 @@
 "use client";
 
 import { CoachTarget } from "@/components/CoachTarget";
+import { useAuth } from "@/context/AuthContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
 import { BannerScreen, IBanner } from "@/types/Banner";
+import { Settings2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ModalBannerManager } from "./ModalBannerManager";
 import styles from "./BannerCarousel.module.css";
 
 // Portado de resgatar_app/src/components/BannerCarousel. ScrollView paginado
 // vira scroll-snap CSS; auto-scroll via scrollTo({behavior:"smooth"}). A
-// gestão de admin (ModalBannerManager) ainda não foi portada — só a exibição
-// para membros comuns (mesmo tratamento dado ao NoticesCard). Os banners vêm
-// do DashboardDataContext (buscados uma única vez por sessão), não de um
-// fetch próprio — evita refazer a requisição toda vez que a Dashboard remonta
-// ao voltar de outra aba.
+// gestão de admin (ModalBannerManager) abre o gerenciador de campanhas. Os
+// banners vêm do DashboardDataContext (buscados uma única vez por sessão),
+// não de um fetch próprio — evita refazer a requisição toda vez que a
+// Dashboard remonta ao voltar de outra aba.
 
 const AUTO_SCROLL_INTERVAL = 4500;
 
@@ -42,8 +44,11 @@ function BannerSlide({ banner }: { banner: IBanner }) {
 }
 
 export function BannerCarousel() {
+  const { member } = useAuth();
+  const isAdmin = member?.role === "admin";
   const { banners, bannersLoading: loading } = useDashboardData();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [managerVisible, setManagerVisible] = useState(false);
 
   const trackRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -84,10 +89,23 @@ export function BannerCarousel() {
     );
   }
 
-  // Estado vazio: sem gestão de admin portada ainda, então não exibimos CTA
-  // de "adicionar banner" mesmo para admin (defer até ModalBannerManager).
   if (banners.length === 0) {
-    return null;
+    if (!isAdmin) return null;
+    return (
+      <div className={styles.wrapper}>
+        <button
+          type="button"
+          className={styles.empty}
+          onClick={() => setManagerVisible(true)}
+          aria-label="Cadastrar primeiro banner"
+        >
+          <Settings2 size={20} color="var(--color-text-muted)" />
+          <span className={styles.emptyText}>Adicionar banner de campanha</span>
+        </button>
+
+        <ModalBannerManager visible={managerVisible} onClose={() => setManagerVisible(false)} />
+      </div>
+    );
   }
 
   return (
@@ -98,6 +116,18 @@ export function BannerCarousel() {
             <BannerSlide key={banner.id} banner={banner} />
           ))}
         </div>
+
+        {isAdmin && (
+          <button
+            type="button"
+            className={styles.manageButton}
+            onClick={() => setManagerVisible(true)}
+            aria-label="Gerenciar banners"
+          >
+            <Settings2 size={12} color="#FFFFFF" />
+            <span className={styles.manageButtonText}>Gerenciar</span>
+          </button>
+        )}
       </div>
 
       {banners.length > 1 && (
@@ -107,6 +137,8 @@ export function BannerCarousel() {
           ))}
         </div>
       )}
+
+      <ModalBannerManager visible={managerVisible} onClose={() => setManagerVisible(false)} />
     </CoachTarget>
   );
 }
