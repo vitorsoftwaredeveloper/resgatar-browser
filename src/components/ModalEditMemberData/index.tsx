@@ -48,8 +48,26 @@ export function ModalEditMemberData({ visible, onClose }: Props) {
     const newRole = value ? "admin" : "user";
     setUpdating(member._id);
     try {
-      await MemberServices.editMember({ ...member, role: newRole });
-      setMembers((prev) => prev.map((m) => (m._id === member._id ? { ...m, role: newRole } : m)));
+      // Envia só os campos aceitos pelo editMemberSchema (additionalProperties:
+      // false) — espalhar o IMember inteiro incluía readingStreak e quebrava
+      // com 500.
+      await MemberServices.editMember({
+        _id: member._id,
+        email: member.email,
+        phoneNumber: member.phoneNumber,
+        firstName: member.firstName,
+        lastName: member.lastName,
+        bio: member.bio,
+        profileImage: member.profileImage,
+        dateOfBirth: Number(member.dateOfBirth),
+        address: member.address,
+        paymentInfo: member.paymentInfo,
+        identification: member.identification,
+        role: newRole,
+      });
+      setMembers((prev) =>
+        prev.map((m) => (m._id === member._id ? { ...m, role: newRole } : m)),
+      );
       if (member._id === loggedMember?._id) {
         await reloadMemberData();
       }
@@ -61,10 +79,16 @@ export function ModalEditMemberData({ visible, onClose }: Props) {
   }
 
   return (
-    <ModalBase onClose={onClose} visible={visible} title="Permissões de membros">
+    <ModalBase
+      onClose={onClose}
+      visible={visible}
+      title="Permissões de membros"
+    >
       <div className={styles.list}>
         {loading
-          ? Array.from({ length: SKELETON_COUNT }).map((_, index) => <RemoveMemberSkeleton key={`skeleton-${index}`} />)
+          ? Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+              <RemoveMemberSkeleton key={`skeleton-${index}`} />
+            ))
           : members.map((item) => (
               <div key={item._id} className={styles.card}>
                 <div className={styles.userInfo}>
@@ -77,13 +101,18 @@ export function ModalEditMemberData({ visible, onClose }: Props) {
 
                 <div className={styles.action}>
                   {updating === item._id ? (
-                    <span className={styles.spinner} style={{ borderTopColor: colors.primary }} />
+                    <span
+                      className={styles.spinner}
+                      style={{ borderTopColor: colors.primary }}
+                    />
                   ) : (
                     <label className={styles.switch}>
                       <input
                         type="checkbox"
                         checked={item.role === "admin"}
-                        onChange={(e) => handleToggleRole(item, e.target.checked)}
+                        onChange={(e) =>
+                          handleToggleRole(item, e.target.checked)
+                        }
                         className={styles.switchInput}
                       />
                       <span className={styles.switchTrack}>
