@@ -1,0 +1,53 @@
+.pulse {
+  animation: pulse 0.8s ease-in-out infinite alternate;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding-block: var(--spacing-sm2);
+}
+
+.rowBorder {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.seq {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  background: var(--color-skeleton-bg);
+  flex-shrink: 0;
+}
+
+.lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lineTitle {
+  width: 55%;
+  height: 13px;
+  border-radius: 6px;
+  background: var(--color-skeleton-bg);
+}
+
+.lineMeta {
+  width: 80%;
+  height: 11px;
+  border-radius: 6px;
+  background: var(--color-skeleton-bg);
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}

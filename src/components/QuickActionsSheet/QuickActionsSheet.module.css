@@ -1,0 +1,69 @@
+.overlayBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+}
+
+.dropdown {
+  position: fixed;
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  min-width: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  overflow: hidden;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm2) var(--spacing-md);
+  background: none;
+  border: none;
+  text-align: left;
+  position: relative;
+}
+
+.itemIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  background: var(--color-soft-brown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.itemLabel {
+  font-size: var(--font-body);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin-inline: var(--spacing-md);
+}
+
+.badge {
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  background: #e53935;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 4px;
+  margin-left: 8px;
+}
+
+.badgeText {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}

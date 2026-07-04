@@ -1,0 +1,10 @@
+.iconButton {
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+  background: var(--color-muted-background);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

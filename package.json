@@ -12,6 +12,7 @@
     "aws-amplify": "^6.18.0",
     "axios": "^1.18.1",
     "axios-retry": "^4.5.0",
+    "lucide-react": "^0.561.0",
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4"

@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm2);
+  margin-bottom: var(--spacing-md);
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.title {
+  font-size: var(--font-small);
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}

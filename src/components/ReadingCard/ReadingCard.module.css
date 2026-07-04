@@ -1,0 +1,106 @@
+.card {
+  width: 100%;
+  text-align: left;
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  border: 0.3px solid var(--color-primary);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xs);
+}
+
+.label {
+  font-size: var(--font-xsmall);
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--color-text-muted);
+}
+
+.ttsBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  border: 1px solid var(--color-primary);
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ttsBtnActive {
+  background: var(--color-soft-brown);
+}
+
+.referencia {
+  font-size: var(--font-large);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.titulo {
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-bottom: var(--spacing-sm);
+}
+
+.toggleRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  margin-top: var(--spacing-xs);
+  margin-bottom: 2px;
+}
+
+.toggleText {
+  font-size: var(--font-body);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.arrow {
+  display: flex;
+  transition: transform 0.25s ease;
+}
+
+.arrowExpanded {
+  transform: rotate(180deg);
+}
+
+.expandable {
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.texto {
+  font-size: var(--font-body);
+  color: var(--color-text);
+  line-height: 26px;
+  padding-top: var(--spacing-sm);
+  padding-bottom: var(--spacing-xs);
+}
+
+.verseNumber {
+  font-size: var(--font-xsmall);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.formulaFinal {
+  font-size: var(--font-body);
+  font-style: italic;
+  margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}

@@ -1,0 +1,16 @@
+.wrapper {
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: var(--spacing-xs);
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-sm);
+}

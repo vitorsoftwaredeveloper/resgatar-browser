@@ -1,0 +1,163 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1100;
+}
+
+.sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--app-max-width);
+  background: var(--color-card);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  padding-inline: var(--spacing-lg);
+  padding-bottom: calc(var(--spacing-xl) + 8px);
+  padding-top: var(--spacing-sm);
+  max-height: 72dvh;
+  overflow-y: auto;
+  z-index: 1101;
+  transition: transform 0.22s ease;
+}
+
+.handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-border);
+  margin: 0 auto var(--spacing-md);
+}
+
+.monthHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+}
+
+.monthArrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.monthTitle {
+  font-size: var(--font-subtitle);
+  font-weight: 700;
+  color: var(--color-text-strong);
+}
+
+.weekHeader {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: var(--spacing-xs);
+}
+
+.weekHeaderText {
+  flex: 1;
+  text-align: center;
+  font-size: var(--font-small);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.gridCell {
+  width: calc(100% / 7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 4px;
+  background: none;
+  border: none;
+}
+
+.dayCircle {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dayCircleSelected {
+  background: var(--color-primary);
+}
+
+.dayCircleToday {
+  border: 1px solid var(--color-primary);
+}
+
+.dayText {
+  font-size: var(--font-body);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.dayTextOtherMonth {
+  color: var(--color-text-muted);
+  opacity: 0.4;
+}
+
+.dayTextSelected {
+  color: #fff;
+  font-weight: 700;
+}
+
+.dayTextToday {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--spacing-md);
+}
+
+.todayBtn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+}
+
+.todayBtnText {
+  font-size: var(--font-body);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.closeBtn {
+  background: var(--color-soft-brown);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+}
+
+.closeBtnText {
+  font-size: var(--font-body);
+  color: var(--color-text-strong);
+  font-weight: 600;
+}

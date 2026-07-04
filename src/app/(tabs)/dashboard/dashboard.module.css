@@ -1,0 +1,29 @@
+.container {
+  background: var(--color-background);
+}
+
+.content {
+  padding-inline: var(--spacing-lg);
+  background: var(--color-soft-brown);
+  padding-top: var(--spacing-lg);
+  padding-bottom: var(--spacing-xxl);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  min-height: 60dvh;
+}
+
+.cardWrapper {
+  cursor: grab;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.cardWrapper:active {
+  cursor: grabbing;
+}
+
+.cardWrapperDragging {
+  opacity: 0.6;
+  transform: scale(1.02);
+}

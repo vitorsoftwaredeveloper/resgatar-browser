@@ -1,0 +1,106 @@
+.card {
+  width: 100%;
+  text-align: left;
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  border: 0.3px solid var(--color-primary);
+}
+
+.labelRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xxs);
+}
+
+.label {
+  font-size: var(--font-xsmall);
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: var(--color-text-muted);
+}
+
+.ttsBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  border: 1px solid var(--color-primary);
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ttsBtnActive {
+  background: var(--color-soft-brown);
+}
+
+.referencia {
+  font-size: var(--font-subtitle);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-sm2);
+}
+
+.refraoBlock {
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm2);
+  margin-bottom: var(--spacing-sm);
+  background: var(--color-soft-brown);
+  border: 0.2px solid var(--color-primary);
+}
+
+.refraoLabel {
+  font-size: var(--font-xsmall);
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.refraoText {
+  font-size: var(--font-body);
+  color: var(--color-primary);
+  font-style: italic;
+  line-height: 22px;
+}
+
+.expandable {
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.texto {
+  font-size: var(--font-body);
+  color: var(--color-text);
+  line-height: 26px;
+  padding-top: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  margin-top: var(--spacing-sm);
+}
+
+.toggleText {
+  font-size: var(--font-body);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.arrow {
+  display: flex;
+  transition: transform 0.25s ease;
+}
+
+.arrowExpanded {
+  transform: rotate(180deg);
+}

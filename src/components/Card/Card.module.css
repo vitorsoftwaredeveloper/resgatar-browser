@@ -1,0 +1,21 @@
+.card {
+  background: var(--color-card);
+  margin: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-xl);
+}
+
+.title {
+  font-size: var(--font-small);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: var(--spacing-xxs);
+}
+
+.description {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: var(--spacing-sm2);
+}

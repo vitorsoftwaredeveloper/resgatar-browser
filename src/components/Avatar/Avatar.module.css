@@ -1,0 +1,33 @@
+.pressable {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.circle {
+  background: var(--color-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.badge {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-card);
+}

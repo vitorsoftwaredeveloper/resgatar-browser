@@ -1,0 +1,53 @@
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  animation: pulse 0.8s ease-in-out infinite alternate;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-xxs);
+  margin-bottom: var(--spacing-sm2);
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: var(--color-skeleton-bg);
+}
+
+.title {
+  width: 55%;
+  height: 16px;
+  border-radius: 6px;
+  background: var(--color-skeleton-bg);
+}
+
+.percent {
+  width: 96px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--color-skeleton-bg);
+  margin-bottom: var(--spacing-sm);
+}
+
+.track {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--color-skeleton-bg);
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}

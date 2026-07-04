@@ -1,0 +1,88 @@
+.wrapper {
+  flex: 1;
+  margin-bottom: var(--spacing-sm2);
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: var(--spacing-xs);
+}
+
+.field {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-input-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+}
+
+.fieldOpen {
+  border-color: var(--color-primary);
+}
+
+.fieldError {
+  border-color: var(--color-error);
+}
+
+.value {
+  font-size: var(--font-body);
+  color: var(--color-text);
+}
+
+.placeholder {
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+}
+
+.errorText {
+  font-size: var(--font-small);
+  color: var(--color-error);
+  margin-top: var(--spacing-xs);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+}
+
+.list {
+  position: fixed;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.option {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm2) var(--spacing-md);
+  background: transparent;
+  border: none;
+  text-align: left;
+}
+
+.optionActive {
+  background: var(--color-input-bg);
+}
+
+.optionText {
+  font-size: var(--font-body);
+  color: var(--color-text);
+}
+
+.optionTextActive {
+  color: var(--color-primary);
+  font-weight: 700;
+}

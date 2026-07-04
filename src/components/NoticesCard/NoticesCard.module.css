@@ -1,0 +1,111 @@
+.container {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding-inline: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  border: 1px solid var(--color-border);
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding-block: var(--spacing-sm2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm);
+  min-width: 0;
+}
+
+.headerTitle {
+  font-size: var(--font-subtitle);
+  font-weight: 700;
+  color: var(--color-text-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emptyText {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  padding-block: var(--spacing-md);
+}
+
+.titleRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.todayTag {
+  padding: 1px var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  background: var(--color-waiting);
+  display: inline-block;
+}
+
+.todayTagText {
+  font-size: var(--font-xsmall);
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #3e2c1c;
+}
+
+.timeTag {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding-block: var(--spacing-sm2);
+}
+
+.rowBorder {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rowToday {
+  background: rgba(224, 185, 106, 0.18);
+  border-radius: var(--radius-sm);
+  padding-inline: var(--spacing-sm);
+  margin-block: var(--spacing-xs);
+}
+
+.texts {
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--font-body);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.titleToday {
+  font-size: var(--font-subtitle);
+  font-weight: 800;
+  color: var(--color-text-strong);
+}
+
+.date {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.dateToday {
+  color: var(--color-text);
+}
