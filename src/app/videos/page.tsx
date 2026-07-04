@@ -73,6 +73,29 @@ export default function VideosPage() {
         setItems((prev) => (pageToLoad === 1 ? data.items : [...prev, ...data.items]));
         setPage(data.page);
         setTotalPages(Math.max(1, data.totalPages));
+
+        // Deriva os chips de filtro por membro do próprio feed já buscado —
+        // evita uma segunda requisição (era listAllVideos(1, 50) à parte).
+        // Só acumula quando a busca está sem filtro, senão o resultado
+        // filtrado faria a lista de chips encolher para um único membro.
+        if (!committedSearch && !selectedMemberId) {
+          setMemberOptions((prev) => {
+            const seen = new Set(prev.map((m) => m.memberId));
+            const next = [...prev];
+            data.items.forEach((v) => {
+              if (!seen.has(v.memberId)) {
+                seen.add(v.memberId);
+                next.push({
+                  memberId: v.memberId,
+                  firstName: v.firstName,
+                  lastName: v.lastName,
+                  profileImage: v.profileImage,
+                });
+              }
+            });
+            return next;
+          });
+        }
       } catch {
         if (pageToLoad === 1) setItems([]);
       } finally {
@@ -87,61 +110,20 @@ export default function VideosPage() {
     setCommittedSearch(search.trim());
   }, [search]);
 
-  const loadMemberOptions = useCallback(async () => {
-    try {
-      const data = await VideoService.listAllVideos(1, 50);
-      const seen = new Set<string>();
-      const options: MemberOption[] = [];
-      data.items.forEach((v) => {
-        if (!seen.has(v.memberId)) {
-          seen.add(v.memberId);
-          options.push({
-            memberId: v.memberId,
-            firstName: v.firstName,
-            lastName: v.lastName,
-            profileImage: v.profileImage,
-          });
-        }
-      });
-      setMemberOptions(options);
-    } catch {
-      setMemberOptions([]);
-    }
+  // Um único efeito cobre o mount (committedSearch/selectedMemberId partem do
+  // valor inicial) e qualquer mudança de filtro depois. O padrão anterior
+  // (3 efeitos + refs "isFirstRender" pra pular a primeira execução) não
+  // sobrevive ao Strict Mode do React 18 (dev): ele invoca cada efeito duas
+  // vezes, e a segunda invocação já via a ref virada pra false — cada efeito
+  // "guardado" acabava disparando um load(1) extra, resultando em 4 chamadas.
+  useEffect(() => {
+    load(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [committedSearch, selectedMemberId]);
+
+  const handleVideoRemoved = useCallback((videoId: string) => {
+    setItems((prev) => prev.filter((v) => v._id !== videoId));
   }, []);
-
-  useEffect(() => {
-    load(1);
-    loadMemberOptions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const isFirstSearchRender = useRef(true);
-  useEffect(() => {
-    if (isFirstSearchRender.current) {
-      isFirstSearchRender.current = false;
-      return;
-    }
-    load(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [committedSearch]);
-
-  const isFirstMemberRender = useRef(true);
-  useEffect(() => {
-    if (isFirstMemberRender.current) {
-      isFirstMemberRender.current = false;
-      return;
-    }
-    load(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedMemberId]);
-
-  const handleVideoRemoved = useCallback(
-    (videoId: string) => {
-      setItems((prev) => prev.filter((v) => v._id !== videoId));
-      loadMemberOptions();
-    },
-    [loadMemberOptions],
-  );
 
   const isFiltering = Boolean(committedSearch || selectedMemberId);
 
@@ -301,7 +283,6 @@ export default function VideosPage() {
           onSuccess={() => {
             setAddVideoVisible(false);
             load(1);
-            loadMemberOptions();
           }}
         />
       )}
