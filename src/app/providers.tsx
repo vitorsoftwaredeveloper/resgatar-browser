@@ -7,6 +7,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { BirthdayProvider } from "@/context/BirthdayContext";
 import { ChargeProvider } from "@/context/ChargeContext";
 import { CoachProvider } from "@/context/CoachContext";
+import { DashboardDataProvider } from "@/context/DashboardDataContext";
 import { CoachOverlay } from "@/components/CoachOverlay";
 import { ToastHost } from "@/components/Toast/ToastHost";
 
@@ -25,11 +26,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <AuthProvider>
         <ChargeProvider>
           <BirthdayProvider>
-            <CoachProvider>
-              {children}
-              <CoachOverlay />
-              <ToastHost />
-            </CoachProvider>
+            <DashboardDataProvider>
+              <CoachProvider>
+                {children}
+                <CoachOverlay />
+                <ToastHost />
+              </CoachProvider>
+            </DashboardDataProvider>
           </BirthdayProvider>
         </ChargeProvider>
       </AuthProvider>

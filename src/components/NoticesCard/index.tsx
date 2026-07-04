@@ -2,28 +2,21 @@
 
 import { CoachTarget } from "@/components/CoachTarget";
 import { NoticesCardSkeleton } from "@/components/Skeleton/NoticesCardSkeleton";
-import { CommitmentService } from "@/services/CommitmentService";
-import { ICommitment } from "@/types/Commitment";
+import { useDashboardData } from "@/context/DashboardDataContext";
 import { commitmentScheduleLabel, isCommitmentToday } from "@/utils/commitment";
-import { useEffect, useState } from "react";
 import styles from "./NoticesCard.module.css";
 
 // Portado de resgatar_app/src/components/NoticesCard. useFocusEffect vira
-// useEffect no mount (sem rotas ainda). A ação de admin ("Gerenciar Quadro de
-// Avisos") abria o NoticeBoardModal, que vive em src/screens/NoticeBoardScreen
-// no app — essa tela ainda não foi portada para o web, então por ora o card
-// só lista os compromissos (sem gestão de admin).
+// leitura do DashboardDataContext, buscado uma única vez por sessão — evita
+// refazer a requisição toda vez que a Dashboard remonta ao voltar de outra
+// aba. A ação de admin ("Gerenciar Quadro de Avisos") abria o NoticeBoardModal,
+// que vive em src/screens/NoticeBoardScreen no app — essa tela ainda não foi
+// portada para o web, então por ora o card só lista os compromissos (sem
+// gestão de admin).
 
 export function NoticesCard() {
-  const [items, setItems] = useState<ICommitment[]>([]);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    CommitmentService.list()
-      .then(setItems)
-      .catch(() => setItems([]))
-      .finally(() => setLoaded(true));
-  }, []);
+  const { commitments: items, commitmentsLoading: loading } = useDashboardData();
+  const loaded = !loading;
 
   return (
     <CoachTarget id="notices-card">

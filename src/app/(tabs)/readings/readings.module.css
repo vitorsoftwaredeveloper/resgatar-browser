@@ -53,6 +53,7 @@
 
 .ttsIndicator {
   display: flex;
+  width: 100%;
   flex-direction: row;
   align-items: center;
   gap: var(--spacing-xxs);
@@ -69,4 +70,6 @@
   font-size: var(--font-small);
   color: var(--color-primary);
   font-weight: 500;
+  width: 100%;
+  text-align: center;
 }

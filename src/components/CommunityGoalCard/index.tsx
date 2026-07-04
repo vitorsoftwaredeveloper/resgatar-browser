@@ -3,15 +3,14 @@
 import { CoachTarget } from "@/components/CoachTarget";
 import { CommunityGoalCardSkeleton } from "@/components/Skeleton/CommunityGoalCardSkeleton";
 import { useAppTheme } from "@/context/ThemeContext";
-import { ChargeServices } from "@/services/ChargeService";
-import { IGoalProgress } from "@/types/Charge";
+import { useDashboardData } from "@/context/DashboardDataContext";
 import { CircleCheck, UsersRound } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
 import styles from "./CommunityGoalCard.module.css";
 
 // Portado de resgatar_app/src/components/CommunityGoalCard. useFocusEffect
-// (react-navigation) vira useEffect no mount — este projeto ainda não tem
-// rotas/tabs, então não há "voltar ao focar a tela" para recarregar ainda.
+// (react-navigation) vira leitura do DashboardDataContext, buscado uma única
+// vez por sessão — evita refazer a requisição toda vez que a Dashboard
+// remonta ao voltar de outra aba.
 
 const MONTH_LABELS = [
   "Janeiro",
@@ -30,23 +29,7 @@ const MONTH_LABELS = [
 
 export function CommunityGoalCard() {
   const { colors } = useAppTheme();
-  const [progress, setProgress] = useState<IGoalProgress | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const load = useCallback(async () => {
-    try {
-      const data = await ChargeServices.getGoalProgress();
-      setProgress(data);
-    } catch {
-      setProgress(null);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    load();
-  }, [load]);
+  const { goalProgress: progress, goalLoading: loading } = useDashboardData();
 
   if (loading && !progress) return <CommunityGoalCardSkeleton />;
 

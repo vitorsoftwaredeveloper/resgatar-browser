@@ -26,7 +26,7 @@ export default function MemberActionsPage() {
   const [openChangePassword, setOpenChangePassword] = useState(false);
 
   return (
-    <div className={styles.container}>
+    <div className={`app-shell ${styles.container}`}>
       <Header
         name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
         photo={member?.profileImage}

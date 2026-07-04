@@ -129,7 +129,7 @@ export default function ExpensesPage() {
   const sortedExpenses = summary ? [...summary.expenses].sort((a, b) => b.date - a.date) : [];
 
   return (
-    <div className={styles.container}>
+    <div className={`app-shell ${styles.container}`}>
       <Header
         name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
         photo={member?.profileImage}

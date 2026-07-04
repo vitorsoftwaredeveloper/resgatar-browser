@@ -1,7 +1,7 @@
 "use client";
 
 import { CoachTarget } from "@/components/CoachTarget";
-import { BannerService } from "@/services/BannerService";
+import { useDashboardData } from "@/context/DashboardDataContext";
 import { BannerScreen, IBanner } from "@/types/Banner";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -10,7 +10,10 @@ import styles from "./BannerCarousel.module.css";
 // Portado de resgatar_app/src/components/BannerCarousel. ScrollView paginado
 // vira scroll-snap CSS; auto-scroll via scrollTo({behavior:"smooth"}). A
 // gestão de admin (ModalBannerManager) ainda não foi portada — só a exibição
-// para membros comuns (mesmo tratamento dado ao NoticesCard).
+// para membros comuns (mesmo tratamento dado ao NoticesCard). Os banners vêm
+// do DashboardDataContext (buscados uma única vez por sessão), não de um
+// fetch próprio — evita refazer a requisição toda vez que a Dashboard remonta
+// ao voltar de outra aba.
 
 const AUTO_SCROLL_INTERVAL = 4500;
 
@@ -39,28 +42,12 @@ function BannerSlide({ banner }: { banner: IBanner }) {
 }
 
 export function BannerCarousel() {
-  const [banners, setBanners] = useState<IBanner[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { banners, bannersLoading: loading } = useDashboardData();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const trackRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const currentIndex = useRef(0);
-
-  const load = useCallback(async () => {
-    try {
-      const data = await BannerService.list();
-      setBanners(data);
-    } catch {
-      setBanners([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    load();
-  }, [load]);
 
   useEffect(() => {
     if (banners.length <= 1) return;

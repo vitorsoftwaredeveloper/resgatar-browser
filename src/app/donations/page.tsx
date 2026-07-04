@@ -101,7 +101,7 @@ export default function DonationsPage() {
   const cashTotal = useMemo(() => sumAmounts(approved.filter((d) => d.paymentMethodId === "cash")), [approved]);
 
   return (
-    <div className={styles.container}>
+    <div className={`app-shell ${styles.container}`}>
       <Header
         name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
         photo={member?.profileImage}

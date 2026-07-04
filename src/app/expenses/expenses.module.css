@@ -218,8 +218,8 @@
 }
 
 .fab {
-  position: absolute;
-  right: var(--spacing-lg);
+  position: fixed;
+  right: max(var(--spacing-lg), calc((100vw - var(--app-max-width)) / 2 + var(--spacing-lg)));
   bottom: var(--spacing-xl);
   width: 56px;
   height: 56px;

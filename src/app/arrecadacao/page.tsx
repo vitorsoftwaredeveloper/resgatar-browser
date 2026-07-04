@@ -111,7 +111,7 @@ export default function ArrecadacaoPage() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={`app-shell ${styles.container}`}>
       <Header
         name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
         photo={member?.profileImage}

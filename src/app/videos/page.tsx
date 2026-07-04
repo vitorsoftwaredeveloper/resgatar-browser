@@ -146,7 +146,7 @@ export default function VideosPage() {
   const isFiltering = Boolean(committedSearch || selectedMemberId);
 
   return (
-    <div className={styles.container}>
+    <div className={`app-shell ${styles.container}`}>
       <Header
         name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
         photo={member?.profileImage}
@@ -288,11 +288,11 @@ export default function VideosPage() {
             </div>
           )}
         </div>
-      </div>
 
-      <button type="button" className={styles.fab} onClick={() => setAddVideoVisible(true)} aria-label="Cadastrar vídeo">
-        <Plus size={28} color={colors.white} strokeWidth={2.5} />
-      </button>
+        <button type="button" className={styles.fab} onClick={() => setAddVideoVisible(true)} aria-label="Cadastrar vídeo">
+          <Plus size={28} color={colors.white} strokeWidth={2.5} />
+        </button>
+      </div>
 
       {addVideoVisible && (
         <ModalAddVideo
