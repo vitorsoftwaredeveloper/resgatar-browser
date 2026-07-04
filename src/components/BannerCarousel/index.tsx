@@ -3,7 +3,7 @@
 import { CoachTarget } from "@/components/CoachTarget";
 import { useAuth } from "@/context/AuthContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
-import { BannerScreen, IBanner } from "@/types/Banner";
+import { BANNER_SCREEN_PATHS, BannerScreen, IBanner } from "@/types/Banner";
 import { Settings2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -26,7 +26,8 @@ function useBannerTap(banner: IBanner) {
     if (banner.action.type === "external" && banner.action.value) {
       window.open(banner.action.value, "_blank", "noopener,noreferrer");
     } else if (banner.action.type === "internal" && banner.action.value) {
-      router.push(banner.action.value as BannerScreen);
+      const path = BANNER_SCREEN_PATHS[banner.action.value as BannerScreen];
+      if (path) router.push(path);
     }
   }, [banner, router]);
 }
