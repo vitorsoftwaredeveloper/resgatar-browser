@@ -1,0 +1,137 @@
+/* =========================================================================
+   Design tokens (CSS variables) — espelham src/theme/index.ts.
+   Mobile-first: base pensada para telas pequenas; breakpoints maiores serão
+   adicionados no futuro.
+   ========================================================================= */
+
+:root {
+  /* Cores — tema light (padrão) */
+  --color-background: #f6f1eb;
+  --color-card: #ffffff;
+  --color-primary: #6b4f3a;
+  --color-text: #3e2f23;
+  --color-text-strong: #3e2c1c;
+  --color-text-muted: #8c7a6b;
+  --color-muted: #9e8e80;
+  --color-muted-background: #ffffff40;
+  --color-border: #ded6cc;
+  --color-input-bg: #fbf8f4;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-error: #e53935;
+  --color-waiting: #e0b96a;
+  --color-soft-brown: #ede6de;
+  --color-skeleton-bg: #c0bcb6;
+  --color-success: #1e7f43;
+  --color-info: #3b6df6;
+  --color-success-background: #e6f4ea;
+  --color-tab-bar-bg: rgba(255, 255, 255, 0.9);
+  --color-header-glass: rgba(255, 255, 255, 0.8);
+
+  /* Espaçamentos */
+  --spacing-xs: 6px;
+  --spacing-xxs: 8px;
+  --spacing-sm: 10px;
+  --spacing-sm2: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+
+  /* Raios */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+
+  /* Tipografia */
+  --font-hero: 28px;
+  --font-title: 20px;
+  --font-large: 18px;
+  --font-subtitle: 16px;
+  --font-body: 14px;
+  --font-small: 12px;
+  --font-xsmall: 11px;
+
+  /* Sombra do card (equivalente ao THEME.SHADOW.card) */
+  --shadow-card: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  /* Largura máxima do conteúdo mobile-first (centraliza em telas grandes) */
+  --app-max-width: 480px;
+}
+
+[data-theme="dark"] {
+  --color-background: #1a1812;
+  --color-card: #252118;
+  --color-primary: #c9a055;
+  --color-text: #ede0b8;
+  --color-text-strong: #f5edd5;
+  --color-text-muted: #8a7d5a;
+  --color-muted: #4a3f28;
+  --color-muted-background: rgba(30, 28, 18, 0.5);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-input-bg: #2c2820;
+  --color-error: #e57373;
+  --color-waiting: #c9902a;
+  --color-soft-brown: #2e2a1c;
+  --color-skeleton-bg: #4b452d;
+  --color-success: #4caf6b;
+  --color-success-background: #182e20;
+  --color-tab-bar-bg: rgba(26, 24, 18, 0.95);
+  --color-header-glass: rgba(26, 24, 18, 0.88);
+}
+
+/* Reset enxuto */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-size: var(--font-body);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Container mobile-first: ocupa a tela no mobile, centraliza em telas maiores */
+.app-shell {
+  width: 100%;
+  max-width: var(--app-max-width);
+  margin-inline: auto;
+  min-height: 100dvh;
+  background: var(--color-background);
+}
