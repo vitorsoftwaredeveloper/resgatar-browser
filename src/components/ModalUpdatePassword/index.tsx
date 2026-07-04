@@ -74,7 +74,12 @@ export const ModalUpdatePassword = ({
   };
 
   const eyeToggle = (
-    <button type="button" onClick={() => setShowPassword((prev) => !prev)} aria-label="Mostrar/ocultar senha">
+    <button
+      type="button"
+      onClick={() => setShowPassword((prev) => !prev)}
+      aria-label="Mostrar/ocultar senha"
+      style={{ background: "none", border: "none", display: "flex" }}
+    >
       {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
     </button>
   );

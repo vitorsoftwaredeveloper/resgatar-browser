@@ -76,7 +76,12 @@ export function ModalDeleteAccount({ visible, onClose }: Props) {
             autoCapitalize="none"
             leftIcon={<Lock size={20} />}
             rightIcon={
-              <button type="button" onClick={() => setShowPassword((v) => !v)} aria-label="Mostrar/ocultar senha">
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label="Mostrar/ocultar senha"
+                style={{ background: "none", border: "none", display: "flex" }}
+              >
                 {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
               </button>
             }
