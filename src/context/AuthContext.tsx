@@ -5,6 +5,7 @@ import {
   clearOnboardingSeen,
   getOnboardingSeen,
   getStoredMember,
+  removeMember as removeStoredMember,
   saveMember,
   setOnboardingSeen,
 } from "@/storage/localStorage";
@@ -161,6 +162,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       await signOut();
     } finally {
+      await removeStoredMember();
       setMember(null);
       setLoading(false);
     }
@@ -224,6 +226,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     await MemberServices.removeMember(memberIdToRemove);
     await signOut();
+    await removeStoredMember();
     setMember(null);
   }
 
