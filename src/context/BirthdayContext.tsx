@@ -26,28 +26,33 @@ function countTodayBirthdays(members: IMember[]): number {
 }
 
 interface BirthdayContextData {
+  members: IMember[];
   todayBirthdays: number;
 }
 
-const BirthdayContext = createContext<BirthdayContextData>({ todayBirthdays: 0 });
+const BirthdayContext = createContext<BirthdayContextData>({ members: [], todayBirthdays: 0 });
 
 export function BirthdayProvider({ children }: { children: React.ReactNode }) {
   const { isLoggedIn } = useContext(AuthContext);
-  const [todayBirthdays, setTodayBirthdays] = useState(0);
+  const [members, setMembers] = useState<IMember[]>([]);
 
   useEffect(() => {
     if (!isLoggedIn) {
-      setTodayBirthdays(0);
+      setMembers([]);
       return;
     }
 
+    // Busca única no login: a lista alimenta tanto o badge (aniversariantes de
+    // hoje) quanto o BirthdayModal (aniversariantes do mês), sem refetch ao abrir.
     MemberServices.listBirthdayMembers()
-      .then((data: IMember[]) => setTodayBirthdays(countTodayBirthdays(data)))
+      .then((data: IMember[]) => setMembers(data))
       .catch(() => {});
   }, [isLoggedIn]);
 
+  const todayBirthdays = countTodayBirthdays(members);
+
   return (
-    <BirthdayContext.Provider value={{ todayBirthdays }}>
+    <BirthdayContext.Provider value={{ members, todayBirthdays }}>
       {children}
     </BirthdayContext.Provider>
   );

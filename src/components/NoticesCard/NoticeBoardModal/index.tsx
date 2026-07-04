@@ -80,132 +80,125 @@ export function NoticeBoardModal({ visible, onClose }: Props) {
 
   return (
     <ModalBase visible={visible} title="Quadro de avisos" onClose={onClose}>
-      <div className={styles.modalContainer}>
-        <div className={styles.content}>
-          {!loading && (items.length > 0 || isAdmin) && (
-            <div className={styles.intro}>
-              <div className={styles.introText}>
-                <p className={styles.eyebrow}>Quadro de avisos</p>
-                <p className={styles.title}>Compromissos da comunidade</p>
-                <p className={styles.subtitle}>{subtitle}</p>
-              </div>
+      <div className={styles.container}>
+        {!loading && (items.length > 0 || isAdmin) && (
+          <div className={styles.intro}>
+            <div className={styles.introText}>
+              <p className={styles.eyebrow}>Quadro de avisos</p>
+              <p className={styles.subtitle}>{subtitle}</p>
+            </div>
 
-              {isAdmin && items.length > 0 && (
-                <button
-                  type="button"
-                  className={[styles.editToggle, editing && styles.editToggleActive].filter(Boolean).join(" ")}
-                  onClick={() => setEditing((e) => !e)}
-                  aria-label={editing ? "Concluir edição" : "Editar compromissos"}
+            {isAdmin && items.length > 0 && (
+              <button
+                type="button"
+                className={[styles.editToggle, editing && styles.editToggleActive].filter(Boolean).join(" ")}
+                onClick={() => setEditing((e) => !e)}
+                aria-label={editing ? "Concluir edição" : "Editar compromissos"}
+              >
+                <Pencil size={15} color={editing ? "var(--color-white)" : "var(--color-text)"} />
+                <span
+                  className={[styles.editToggleText, editing && styles.editToggleTextActive].filter(Boolean).join(" ")}
                 >
-                  <Pencil size={15} color={editing ? "var(--color-white)" : "var(--color-text)"} />
-                  <span
-                    className={[styles.editToggleText, editing && styles.editToggleTextActive].filter(Boolean).join(" ")}
-                  >
-                    {editing ? "Concluir" : "Editar"}
-                  </span>
-                </button>
-              )}
-            </div>
-          )}
+                  {editing ? "Concluir" : "Editar"}
+                </span>
+              </button>
+            )}
+          </div>
+        )}
 
-          {editing && (
-            <div className={styles.hint}>
-              <MoveVertical size={14} color="var(--color-text-muted)" />
-              <p className={styles.hintText}>Toque em um compromisso para editar · arraste pela alça para reordenar.</p>
-            </div>
-          )}
+        {editing && (
+          <div className={styles.hint}>
+            <MoveVertical size={14} color="var(--color-text-muted)" />
+            <p className={styles.hintText}>Toque em um compromisso para editar · arraste pela alça para reordenar.</p>
+          </div>
+        )}
 
-          {saving && (
-            <div className={styles.savingBanner}>
-              <span className={styles.spinner} />
-              <p className={styles.savingText}>Salvando ordem…</p>
-            </div>
-          )}
+        {saving && (
+          <div className={styles.savingBanner}>
+            <span className={styles.spinner} />
+            <p className={styles.savingText}>Salvando ordem…</p>
+          </div>
+        )}
 
-          {loading ? (
-            <div className={styles.centered}>
-              <span className={styles.spinner} />
-            </div>
-          ) : items.length === 0 ? (
-            <div className={styles.centered}>
-              <p className={styles.emptyTitle}>Mural vazio</p>
-              <p className={styles.emptyText}>
-                {isAdmin
-                  ? "Toque em + para publicar o primeiro compromisso da comunidade."
-                  : "Nenhum compromisso publicado ainda."}
-              </p>
-            </div>
-          ) : (
-            <div className={styles.list}>
-              {items.map((item, index) => {
-                const today = isCommitmentToday(item);
-                return (
-                  <div
-                    key={item.id}
-                    ref={setRowRef(index)}
-                    className={[styles.row, editing && styles.rowEditable].filter(Boolean).join(" ")}
-                    onClick={editing ? () => openEdit(item) : undefined}
-                  >
-                    <div className={styles.rail}>
-                      <div className={editing ? styles.threadDashed : styles.threadSolid} />
-                      {editing ? (
-                        <div className={[styles.nodeEdit, today && styles.nodeEditToday].filter(Boolean).join(" ")}>
-                          <span className={styles.nodeNumber}>{index + 1}</span>
-                        </div>
-                      ) : (
-                        <div className={today ? styles.nodeToday : styles.node} />
-                      )}
-                    </div>
-
-                    <div
-                      className={[
-                        styles.card,
-                        editing && styles.cardEditing,
-                        today && styles.cardToday,
-                        draggingIndex === index && styles.cardDragging,
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                    >
-                      <div className={styles.cardTopRow}>
-                        <span className={styles.cardTitle}>{item.title}</span>
-                        {today && (
-                          <span className={styles.todayTag}>
-                            <span className={styles.todayTagText}>HOJE</span>
-                          </span>
-                        )}
-                        <span className={styles.timePill}>
-                          <span className={styles.timeText}>{item.time}</span>
-                        </span>
-                      </div>
-                      <div className={styles.cardMetaRow}>
-                        <span className={styles.cardMeta}>
-                          {commitmentScheduleLabel(item)} · {item.location}
-                        </span>
-                      </div>
-
-                      {editing && (
-                        <div
-                          className={styles.grip}
-                          aria-label={`Arrastar ${item.title} para reordenar`}
-                          {...dragHandleProps(index)}
-                        >
-                          <GripVertical size={20} color="var(--color-text-muted)" />
-                        </div>
-                      )}
+        {loading ? (
+          <div className={styles.centered}>
+            <span className={styles.spinner} />
+          </div>
+        ) : items.length === 0 ? (
+          <div className={styles.centered}>
+            <p className={styles.emptyTitle}>Mural vazio</p>
+            <p className={styles.emptyText}>
+              {isAdmin
+                ? "Toque em + para publicar o primeiro compromisso da comunidade."
+                : "Nenhum compromisso publicado ainda."}
+            </p>
+          </div>
+        ) : (
+          <div className={styles.list}>
+            {items.map((item, index) => {
+              const today = isCommitmentToday(item);
+              return (
+                <div
+                  key={item.id}
+                  ref={setRowRef(index)}
+                  className={[styles.row, editing && styles.rowEditable].filter(Boolean).join(" ")}
+                  onClick={editing ? () => openEdit(item) : undefined}
+                >
+                  <div className={styles.rail}>
+                    <div className={styles.threadDashed} />
+                    <div className={[styles.nodeEdit, today && styles.nodeEditToday].filter(Boolean).join(" ")}>
+                      {editing && <span className={styles.nodeNumber}>{index + 1}</span>}
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          )}
 
-          {isAdmin && !editing && (
-            <button type="button" className={styles.fab} onClick={openCreate} aria-label="Publicar compromisso">
-              <Plus size={28} color="var(--color-white)" strokeWidth={2.5} />
-            </button>
-          )}
-        </div>
+                  <div
+                    className={[
+                      styles.card,
+                      editing && styles.cardEditing,
+                      today && styles.cardToday,
+                      draggingIndex === index && styles.cardDragging,
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                  >
+                    <div className={styles.cardTopRow}>
+                      <span className={styles.cardTitle}>{item.title}</span>
+                      {today && (
+                        <span className={styles.todayTag}>
+                          <span className={styles.todayTagText}>HOJE</span>
+                        </span>
+                      )}
+                      <span className={styles.timePill}>
+                        <span className={styles.timeText}>{item.time}</span>
+                      </span>
+                    </div>
+                    <div className={styles.cardMetaRow}>
+                      <span className={styles.cardMeta}>
+                        {commitmentScheduleLabel(item)} · {item.location}
+                      </span>
+                    </div>
+
+                    {editing && (
+                      <div
+                        className={styles.grip}
+                        aria-label={`Arrastar ${item.title} para reordenar`}
+                        {...dragHandleProps(index)}
+                      >
+                        <GripVertical size={20} color="var(--color-text-muted)" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {isAdmin && !editing && (
+          <button type="button" className={styles.fab} onClick={openCreate} aria-label="Publicar compromisso">
+            <Plus size={28} color="var(--color-white)" strokeWidth={2.5} />
+          </button>
+        )}
       </div>
 
       {formVisible && (

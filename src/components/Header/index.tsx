@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar } from "@/components/Avatar";
+import { BirthdayModal } from "@/components/BirthdayModal";
 import { CoachTarget } from "@/components/CoachTarget";
 import { QuickActionsSheet } from "@/components/QuickActionsSheet";
 import { LogoResgatar } from "@/components/Svg/Logo";
@@ -26,6 +27,7 @@ export function Header({ name, photo, onBack }: Props) {
   const { colors } = useAppTheme();
   const { todayBirthdays } = useBirthday();
   const [sheetVisible, setSheetVisible] = useState(false);
+  const [birthdayVisible, setBirthdayVisible] = useState(false);
   const [anchorPosition, setAnchorPosition] = useState<{ top: number; right: number } | undefined>();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -76,9 +78,12 @@ export function Header({ name, photo, onBack }: Props) {
       <QuickActionsSheet
         visible={sheetVisible}
         onClose={() => setSheetVisible(false)}
+        onOpenBirthdays={() => setBirthdayVisible(true)}
         anchorPosition={anchorPosition}
         todayBirthdays={todayBirthdays}
       />
+
+      <BirthdayModal visible={birthdayVisible} onClose={() => setBirthdayVisible(false)} />
     </div>
   );
 }

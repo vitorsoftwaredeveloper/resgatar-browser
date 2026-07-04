@@ -1,11 +1,12 @@
 "use client";
 
 import { Avatar } from "@/components/Avatar";
+import { useBirthday } from "@/context/BirthdayContext";
 import { useAppTheme } from "@/context/ThemeContext";
-import { MemberServices } from "@/services/MemberService";
 import { IMember } from "@/types/Member";
 import { Cake } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useMemo } from "react";
+import { createPortal } from "react-dom";
 import styles from "./BirthdayModal.module.css";
 
 // Portado de resgatar_app/src/components/BirthdayModal. Bottom sheet no mesmo
@@ -79,20 +80,16 @@ interface Props {
 
 export function BirthdayModal({ visible, onClose }: Props) {
   const { colors } = useAppTheme();
-  const [members, setMembers] = useState<BirthdayMember[]>([]);
-  const fetchedRef = useRef(false);
-
-  useEffect(() => {
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
-    MemberServices.listBirthdayMembers()
-      .then((data: IMember[]) => setMembers(getBirthdaysThisMonth(data)))
-      .catch(() => {});
-  }, []);
+  const { members: rawMembers } = useBirthday();
+  // Dados já carregados no login pelo BirthdayProvider — abre sem nova request.
+  const members = useMemo(() => getBirthdaysThisMonth(rawMembers), [rawMembers]);
 
   if (!visible) return null;
 
-  return (
+  // Portal para document.body: o Header (onde este modal é renderizado) cria um
+  // stacking context próprio (position: relative + z-index), o que prendia o
+  // overlay fixed por baixo do TabBar mesmo com z-index maior.
+  return createPortal(
     <div
       className={styles.overlay}
       onClick={(e) => {
@@ -135,6 +132,7 @@ export function BirthdayModal({ visible, onClose }: Props) {
           ))}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

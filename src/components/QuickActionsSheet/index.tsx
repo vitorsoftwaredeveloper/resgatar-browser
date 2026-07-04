@@ -1,11 +1,10 @@
 "use client";
 
-import { BirthdayModal } from "@/components/BirthdayModal";
 import { CoachTarget } from "@/components/CoachTarget";
 import { useCoach } from "@/context/CoachContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { Cake, Moon, Sun } from "lucide-react";
-import { CSSProperties, useState } from "react";
+import { CSSProperties } from "react";
 import styles from "./QuickActionsSheet.module.css";
 
 // Portado de resgatar_app/src/components/QuickActionsSheet. O Modal
@@ -15,14 +14,14 @@ import styles from "./QuickActionsSheet.module.css";
 interface Props {
   visible: boolean;
   onClose: () => void;
+  onOpenBirthdays: () => void;
   anchorPosition?: { top: number; right: number };
   todayBirthdays?: number;
 }
 
-export function QuickActionsSheet({ visible, onClose, anchorPosition, todayBirthdays = 0 }: Props) {
+export function QuickActionsSheet({ visible, onClose, onOpenBirthdays, anchorPosition, todayBirthdays = 0 }: Props) {
   const { mode, toggleTheme, colors } = useAppTheme();
   const { active: tutorialActive } = useCoach();
-  const [birthdayVisible, setBirthdayVisible] = useState(false);
 
   function handleTheme() {
     toggleTheme();
@@ -31,7 +30,7 @@ export function QuickActionsSheet({ visible, onClose, anchorPosition, todayBirth
 
   function handleBirthdays() {
     onClose();
-    setBirthdayVisible(true);
+    onOpenBirthdays();
   }
 
   if (!visible) return null;
@@ -73,8 +72,6 @@ export function QuickActionsSheet({ visible, onClose, anchorPosition, todayBirth
           </button>
         </CoachTarget>
       </div>
-
-      <BirthdayModal visible={birthdayVisible} onClose={() => setBirthdayVisible(false)} />
     </>
   );
 }

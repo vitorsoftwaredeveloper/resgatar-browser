@@ -1,12 +1,5 @@
-.modalContainer {
+.container {
   background: var(--color-card);
-}
-
-.content {
-  background: var(--color-soft-brown);
-  border-top-left-radius: var(--radius-xl);
-  border-top-right-radius: var(--radius-xl);
-  overflow: hidden;
   position: relative;
   min-height: 40dvh;
 }
@@ -17,7 +10,7 @@
   align-items: flex-end;
   justify-content: space-between;
   padding-inline: var(--spacing-lg);
-  padding-top: var(--spacing-lg);
+  padding-top: var(--spacing-md);
   padding-bottom: var(--spacing-sm);
   gap: var(--spacing-sm);
 }
@@ -33,13 +26,6 @@
   font-weight: 700;
   color: var(--color-text-muted);
   text-transform: uppercase;
-}
-
-.title {
-  font-size: var(--font-title);
-  font-weight: 800;
-  color: var(--color-text-strong);
-  margin-top: 2px;
 }
 
 .subtitle {
@@ -156,43 +142,12 @@
   flex-shrink: 0;
 }
 
-.threadSolid {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 17px;
-  width: 2px;
-  background: var(--color-border);
-  border-radius: 1px;
-}
-
 .threadDashed {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 17px;
   border-left: 2px dashed var(--color-primary);
-}
-
-.node {
-  position: absolute;
-  top: 20px;
-  left: 12px;
-  width: 12px;
-  height: 12px;
-  border-radius: 6px;
-  background: var(--color-primary);
-  border: 3px solid var(--color-soft-brown);
-}
-
-.nodeToday {
-  top: 18px;
-  left: 10px;
-  width: 16px;
-  height: 16px;
-  border-radius: 8px;
-  background: var(--color-waiting);
-  border: 3px solid var(--color-soft-brown);
 }
 
 .nodeEdit {
@@ -203,7 +158,7 @@
   height: 26px;
   border-radius: 13px;
   background: var(--color-primary);
-  border: 3px solid var(--color-soft-brown);
+  border: 3px solid var(--color-card);
   display: flex;
   align-items: center;
   justify-content: center;
