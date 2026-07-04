@@ -6,13 +6,15 @@ import { CommitmentService } from "@/services/CommitmentService";
 import { IBanner } from "@/types/Banner";
 import { IGoalProgress } from "@/types/Charge";
 import { ICommitment } from "@/types/Commitment";
+import { AuthContext } from "@/context/AuthContext";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 // Dados dos cards da Dashboard (banners, meta da comunidade, compromissos) não
 // mudam a cada troca de aba — buscá-los de novo toda vez que a página remonta
-// (ao voltar para "Início") é desperdício. Igual ao BirthdayContext, este
-// provider é montado uma vez em providers.tsx (acima do router), busca tudo
-// uma única vez por sessão e mantém em memória enquanto o app está aberto.
+// (ao voltar para "Início") é desperdício. Este provider é montado uma vez em
+// providers.tsx (acima do router, ao lado da tela de login), então a busca só
+// pode disparar quando `isLoggedIn` fica true — buscar no mount incondicional
+// significa buscar antes do login existir, sem token, e nunca mais (deps []).
 
 interface DashboardDataContextValue {
   banners: IBanner[];
@@ -33,6 +35,7 @@ const DashboardDataContext = createContext<DashboardDataContextValue>({
 });
 
 export function DashboardDataProvider({ children }: { children: React.ReactNode }) {
+  const { isLoggedIn } = useContext(AuthContext);
   const [banners, setBanners] = useState<IBanner[]>([]);
   const [bannersLoading, setBannersLoading] = useState(true);
   const [goalProgress, setGoalProgress] = useState<IGoalProgress | null>(null);
@@ -41,6 +44,16 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
   const [commitmentsLoading, setCommitmentsLoading] = useState(true);
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      setBanners([]);
+      setBannersLoading(true);
+      setGoalProgress(null);
+      setGoalLoading(true);
+      setCommitments([]);
+      setCommitmentsLoading(true);
+      return;
+    }
+
     BannerService.list()
       .then(setBanners)
       .catch(() => setBanners([]))
@@ -55,7 +68,7 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       .then(setCommitments)
       .catch(() => setCommitments([]))
       .finally(() => setCommitmentsLoading(false));
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <DashboardDataContext.Provider

@@ -2,10 +2,13 @@
 
 import { MemberServices } from "@/services/MemberService";
 import { IMember } from "@/types/Member";
+import { AuthContext } from "@/context/AuthContext";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-// Portado de resgatar_app/src/context/BirthdayContext.tsx (idêntico — sem
-// dependências de React Native).
+// Portado de resgatar_app/src/context/BirthdayContext.tsx. No app este
+// provider só monta dentro da stack autenticada; no web ele mora em
+// providers.tsx acima do router (ao lado do login), então a busca precisa
+// esperar `isLoggedIn`, senão dispara sem token antes do primeiro login.
 
 function countTodayBirthdays(members: IMember[]): number {
   const now = new Date();
@@ -29,13 +32,19 @@ interface BirthdayContextData {
 const BirthdayContext = createContext<BirthdayContextData>({ todayBirthdays: 0 });
 
 export function BirthdayProvider({ children }: { children: React.ReactNode }) {
+  const { isLoggedIn } = useContext(AuthContext);
   const [todayBirthdays, setTodayBirthdays] = useState(0);
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      setTodayBirthdays(0);
+      return;
+    }
+
     MemberServices.listBirthdayMembers()
       .then((data: IMember[]) => setTodayBirthdays(countTodayBirthdays(data)))
       .catch(() => {});
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <BirthdayContext.Provider value={{ todayBirthdays }}>
