@@ -135,3 +135,14 @@ svg {
   min-height: 100dvh;
   background: var(--color-background);
 }
+
+/* Utilitário para ícones de loading (equivalente ao ActivityIndicator do app) */
+.spin {
+  animation: app-spin 0.8s linear infinite;
+}
+
+@keyframes app-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

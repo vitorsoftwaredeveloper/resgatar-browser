@@ -1,0 +1,58 @@
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  animation: pulse 0.8s ease-in-out infinite alternate;
+}
+
+.thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--color-skeleton-bg);
+}
+
+.infoRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  background: var(--color-skeleton-bg);
+  flex-shrink: 0;
+}
+
+.lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lineTitle {
+  height: 13px;
+  border-radius: 6px;
+  background: var(--color-skeleton-bg);
+}
+
+.lineAuthor {
+  width: 45%;
+  height: 11px;
+  border-radius: 6px;
+  background: var(--color-skeleton-bg);
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}

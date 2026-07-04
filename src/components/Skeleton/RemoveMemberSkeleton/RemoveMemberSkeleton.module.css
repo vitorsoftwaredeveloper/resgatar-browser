@@ -1,0 +1,61 @@
+.card {
+  margin-inline: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: pulse 0.8s ease-in-out infinite alternate;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm2);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: var(--color-skeleton-bg);
+  flex-shrink: 0;
+}
+
+.texts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs);
+}
+
+.lineLarge {
+  width: 120px;
+  height: 14px;
+  border-radius: 8px;
+  background: var(--color-skeleton-bg);
+}
+
+.lineSmall {
+  width: 160px;
+  height: 12px;
+  border-radius: 8px;
+  background: var(--color-skeleton-bg);
+}
+
+.action {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--color-skeleton-bg);
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}

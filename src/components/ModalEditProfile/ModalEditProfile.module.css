@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  max-height: 80dvh;
+}
+
+.scroll {
+  overflow-y: auto;
+}
+
+.half {
+  flex: 1;
+  min-width: 0;
+}
+
+.subLabel {
+  font-size: var(--font-body);
+  color: var(--color-muted);
+  margin-bottom: var(--spacing-sm);
+}
+
+.daysGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm2);
+  margin-bottom: var(--spacing-lg);
+}
+
+.dayCircle {
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.dayCircleActive {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.spinner {
+  color: var(--color-muted);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.footer {
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background);
+}

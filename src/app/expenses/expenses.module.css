@@ -1,0 +1,234 @@
+.container {
+  background: var(--color-background);
+}
+
+.content {
+  background: var(--color-soft-brown);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  overflow: hidden;
+  min-height: 80dvh;
+  position: relative;
+}
+
+.screenTitle {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding-inline: var(--spacing-md);
+  padding-top: var(--spacing-md);
+}
+
+.list {
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm2);
+}
+
+.centered {
+  padding-block: var(--spacing-xxl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.emptyText {
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.monthSelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding-inline: var(--spacing-md);
+  padding-block: var(--spacing-sm2);
+}
+
+.monthLabel {
+  font-size: var(--font-subtitle);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.navButton {
+  padding: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+}
+
+.navButtonDisabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.metaLabel {
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+}
+
+.totalValue {
+  font-size: var(--font-hero);
+  color: var(--color-text-strong);
+  font-weight: 700;
+}
+
+.breakdown {
+  margin-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.breakdownRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.breakdownLabel {
+  font-size: var(--font-body);
+  color: var(--color-text);
+}
+
+.breakdownValue {
+  font-size: var(--font-body);
+  color: var(--color-text-strong);
+  font-weight: 600;
+}
+
+.expenseCard {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding-inline: var(--spacing-md);
+  padding-block: var(--spacing-sm2);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.expenseRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm2);
+}
+
+.expenseDetails {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.detailLabel {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.detailValue {
+  font-size: var(--font-small);
+  color: var(--color-text);
+  font-weight: 600;
+  text-align: right;
+}
+
+.expenseInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.expenseName {
+  font-size: var(--font-body);
+  color: var(--color-text);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.expenseNameExpanded {
+  white-space: normal;
+}
+
+.expenseMeta {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.expenseValue {
+  font-size: var(--font-body);
+  color: var(--color-text-strong);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.expenseActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+.rowAction {
+  padding: var(--spacing-xs);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+}
+
+.fab {
+  position: absolute;
+  right: var(--spacing-lg);
+  bottom: var(--spacing-xl);
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  background: var(--color-primary);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}

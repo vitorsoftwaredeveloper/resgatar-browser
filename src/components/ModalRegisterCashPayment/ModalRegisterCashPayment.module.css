@@ -1,0 +1,99 @@
+.container {
+  background: var(--color-background);
+}
+
+.loadingWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: var(--spacing-xxl);
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--color-border);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.list {
+  margin-top: var(--spacing-xxs);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm2);
+  padding-bottom: var(--spacing-lg);
+}
+
+.memberHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm2);
+  padding-inline: var(--spacing-md);
+  padding-block: var(--spacing-md);
+}
+
+.memberName {
+  font-weight: 600;
+  font-size: var(--font-subtitle);
+  color: var(--color-text-strong);
+}
+
+.memberEmail {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+}
+
+.monthCard {
+  margin-inline: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+}
+
+.monthInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.monthName {
+  font-weight: 600;
+  font-size: var(--font-body);
+  color: var(--color-text-strong);
+}
+
+.monthDescription {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badge {
+  padding-inline: var(--spacing-sm);
+  padding-block: 4px;
+  border-radius: var(--spacing-sm2);
+  flex-shrink: 0;
+}
+
+.paid {
+  background: var(--color-success-background);
+}
+
+.paidText {
+  font-size: var(--font-small);
+  font-weight: 500;
+  color: var(--color-success);
+}

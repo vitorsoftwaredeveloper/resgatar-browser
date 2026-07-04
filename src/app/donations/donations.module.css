@@ -1,0 +1,192 @@
+.container {
+  background: var(--color-background);
+}
+
+.content {
+  background: var(--color-soft-brown);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  overflow: hidden;
+  min-height: 80dvh;
+}
+
+.screenTitle {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding-inline: var(--spacing-md);
+  padding-top: var(--spacing-md);
+}
+
+.list {
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm2);
+}
+
+.centered {
+  padding-block: var(--spacing-xxl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.emptyText {
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.yearSelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding-inline: var(--spacing-md);
+  padding-block: var(--spacing-sm2);
+}
+
+.yearLabel {
+  font-size: var(--font-subtitle);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.navButton {
+  padding: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+}
+
+.navButtonDisabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.metaLabel {
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+}
+
+.totalValue {
+  font-size: var(--font-hero);
+  color: var(--color-text-strong);
+  font-weight: 700;
+}
+
+.breakdown {
+  margin-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.breakdownRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.breakdownLabelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.breakdownLabel {
+  font-size: var(--font-body);
+  color: var(--color-text);
+}
+
+.breakdownValue {
+  font-size: var(--font-body);
+  color: var(--color-text-strong);
+  font-weight: 600;
+}
+
+.donationCard {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding-inline: var(--spacing-md);
+  padding-block: var(--spacing-sm2);
+}
+
+.donationRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm2);
+}
+
+.methodIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--color-soft-brown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.donationInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.donationName {
+  font-size: var(--font-body);
+  color: var(--color-text);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.donationMeta {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+}
+
+.donationValues {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.donationValue {
+  font-size: var(--font-body);
+  color: var(--color-text-strong);
+  font-weight: 700;
+}
+
+.donationStatus {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+}

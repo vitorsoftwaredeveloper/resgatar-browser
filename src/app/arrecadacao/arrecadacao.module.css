@@ -1,0 +1,257 @@
+.container {
+  background: var(--color-background);
+}
+
+.content {
+  background: var(--color-soft-brown);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  overflow: hidden;
+  min-height: 80dvh;
+}
+
+.screenTitle {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding-inline: var(--spacing-md);
+  padding-top: var(--spacing-md);
+}
+
+.list {
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm2);
+}
+
+.centered {
+  padding-block: var(--spacing-xxl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emptyText {
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.monthSelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding-inline: var(--spacing-md);
+  padding-block: var(--spacing-sm2);
+}
+
+.monthLabel {
+  font-size: var(--font-subtitle);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.navButton {
+  padding: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+}
+
+.navButtonDisabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.cardHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--spacing-sm);
+}
+
+.metaLabel {
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+}
+
+.metaPercent {
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.metaValueRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm2);
+}
+
+.metaCollected {
+  font-size: var(--font-hero);
+  color: var(--color-text-strong);
+  font-weight: 700;
+}
+
+.metaGoal {
+  font-size: var(--font-subtitle);
+  color: var(--color-text-muted);
+}
+
+.progressTrack {
+  height: 10px;
+  border-radius: 6px;
+  background: var(--color-soft-brown);
+  overflow: hidden;
+  margin-bottom: var(--spacing-sm2);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 6px;
+  background: var(--color-success);
+}
+
+.remainingRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.remainingText {
+  font-size: var(--font-body);
+  color: var(--color-text);
+}
+
+.remainingStrong {
+  font-weight: 700;
+}
+
+.goalReachedText {
+  font-size: var(--font-body);
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.metricGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.metricCard {
+  flex-grow: 1;
+  flex-basis: 47%;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm2);
+}
+
+.metricHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+}
+
+.metricLabel {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+}
+
+.metricValue {
+  font-size: var(--font-large);
+  color: var(--color-text-strong);
+  font-weight: 700;
+}
+
+.metricValueSuffix {
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.tabBar {
+  display: flex;
+  background: var(--color-soft-brown);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  gap: var(--spacing-xxs);
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding-block: var(--spacing-sm);
+  border-radius: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+}
+
+.tabActive {
+  background: var(--color-card);
+  color: var(--color-text-strong);
+  font-weight: 600;
+}
+
+.memberCard {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm2);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding-inline: var(--spacing-md);
+  padding-block: var(--spacing-sm2);
+}
+
+.memberInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.memberName {
+  font-size: var(--font-body);
+  color: var(--color-text);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.memberMeta {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.memberValue {
+  font-size: var(--font-body);
+  color: var(--color-text-strong);
+  font-weight: 700;
+  flex-shrink: 0;
+}
