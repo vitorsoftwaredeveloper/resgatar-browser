@@ -7,7 +7,7 @@
   background: var(--color-soft-brown);
   border-top-left-radius: var(--radius-xl);
   border-top-right-radius: var(--radius-xl);
-  min-height: 80dvh;
+  min-height: 100dvh;
 }
 
 .sectionGroup {
