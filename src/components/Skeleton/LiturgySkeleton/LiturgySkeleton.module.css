@@ -1,0 +1,40 @@
+.pulse {
+  animation: pulse 0.8s ease-in-out infinite alternate;
+}
+
+.banner {
+  height: 64px;
+  border-radius: var(--radius-md);
+  background: var(--color-skeleton-bg);
+  margin-bottom: var(--spacing-md);
+}
+
+.card {
+  height: 96px;
+  border-radius: var(--radius-md);
+  background: var(--color-skeleton-bg);
+  margin-bottom: var(--spacing-md);
+}
+
+.cardSmall {
+  height: 112px;
+  border-radius: var(--radius-md);
+  background: var(--color-skeleton-bg);
+  margin-bottom: var(--spacing-md);
+}
+
+.cardTall {
+  height: 128px;
+  border-radius: var(--radius-md);
+  background: var(--color-skeleton-bg);
+  margin-bottom: var(--spacing-md);
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}

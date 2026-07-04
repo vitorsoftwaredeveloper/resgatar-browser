@@ -3,7 +3,7 @@
   text-align: left;
   background: var(--color-card);
   border-radius: var(--radius-md);
-  border: 0.3px solid var(--color-primary);
+  border: 0;
   padding: var(--spacing-md);
   margin-bottom: var(--spacing-md);
 }
