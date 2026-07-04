@@ -1,0 +1,110 @@
+.container {
+  padding: var(--spacing-md);
+  padding-bottom: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: var(--spacing-lg);
+}
+
+.orgName {
+  font-size: var(--font-large);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-top: var(--spacing-sm);
+}
+
+.subtitle {
+  font-size: var(--font-xsmall);
+  color: var(--color-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-success-background);
+  border-radius: 20px;
+  padding: 6px 14px;
+  margin-top: var(--spacing-sm2);
+}
+
+.badgeText {
+  color: var(--color-success);
+  font-size: var(--font-small);
+  font-weight: 700;
+}
+
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-sm2);
+  border: 1px solid var(--color-border);
+}
+
+.cardTitle {
+  font-size: 10px;
+  color: var(--color-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-sm2);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-sm2);
+  padding-block: var(--spacing-xxs);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rowLast {
+  border-bottom: none;
+}
+
+.rowLabel {
+  font-size: var(--font-small);
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+
+.rowValue {
+  font-size: var(--font-small);
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.totalCard {
+  background: var(--color-success-background);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.totalLabel {
+  font-size: var(--font-body);
+  color: var(--color-success);
+}
+
+.totalValue {
+  font-size: var(--font-title);
+  font-weight: 700;
+  color: var(--color-success);
+}

@@ -1,0 +1,39 @@
+.container {
+  background: var(--color-background);
+}
+
+.content {
+  padding: var(--spacing-lg);
+  padding-bottom: var(--spacing-xxl);
+  background: var(--color-soft-brown);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  min-height: 80dvh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.menuCard {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  padding-inline: var(--spacing-md);
+  box-shadow: var(--shadow-card);
+}
+
+.logout {
+  margin-top: var(--spacing-xxl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm2);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logoutText {
+  color: var(--color-error);
+  font-size: var(--font-subtitle);
+  font-weight: 600;
+}

@@ -5,6 +5,7 @@ import { configureAmplify } from "@/config/amplify";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { BirthdayProvider } from "@/context/BirthdayContext";
+import { ChargeProvider } from "@/context/ChargeContext";
 import { CoachProvider } from "@/context/CoachContext";
 import { CoachOverlay } from "@/components/CoachOverlay";
 import { ToastHost } from "@/components/Toast/ToastHost";
@@ -22,13 +23,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <BirthdayProvider>
-          <CoachProvider>
-            {children}
-            <CoachOverlay />
-            <ToastHost />
-          </CoachProvider>
-        </BirthdayProvider>
+        <ChargeProvider>
+          <BirthdayProvider>
+            <CoachProvider>
+              {children}
+              <CoachOverlay />
+              <ToastHost />
+            </CoachProvider>
+          </BirthdayProvider>
+        </ChargeProvider>
       </AuthProvider>
     </ThemeProvider>
   );

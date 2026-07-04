@@ -1,0 +1,44 @@
+.container {
+  background: var(--color-background);
+}
+
+.content {
+  padding: var(--spacing-lg);
+  padding-bottom: var(--spacing-xxl);
+  background: var(--color-soft-brown);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  min-height: 60dvh;
+}
+
+.donateBanner {
+  width: 100%;
+  background: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-card);
+  text-align: left;
+}
+
+.donateText {
+  flex: 1;
+  min-width: 0;
+}
+
+.donateTitle {
+  color: var(--color-white);
+  font-size: var(--font-subtitle);
+  font-weight: 700;
+}
+
+.donateSubtitle {
+  color: var(--color-white);
+  font-size: var(--font-small);
+  opacity: 0.85;
+  margin-top: 2px;
+}
