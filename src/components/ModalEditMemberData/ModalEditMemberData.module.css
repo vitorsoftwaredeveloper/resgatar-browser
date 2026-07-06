@@ -1,5 +1,6 @@
 .list {
-  margin-top: var(--spacing-xxs);
+  background: var(--color-background);
+  padding-top: var(--spacing-xxs);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm2);
@@ -7,7 +8,7 @@
 }
 
 .card {
-  margin-inline: var(--spacing-md);
+  margin-inline: var(--spacing-lg);
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
   background: var(--color-card);

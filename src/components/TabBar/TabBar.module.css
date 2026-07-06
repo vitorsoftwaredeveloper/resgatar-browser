@@ -46,3 +46,9 @@
   margin-top: 4px;
   font-size: 12px;
 }
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 640px;
+  }
+}

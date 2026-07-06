@@ -86,6 +86,7 @@ export default function DashboardPage() {
           return (
             <div
               key={id}
+              data-card={id}
               draggable
               onDragStart={handleDragStart(index)}
               onDragOver={handleDragOver(index)}

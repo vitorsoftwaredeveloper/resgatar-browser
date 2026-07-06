@@ -32,10 +32,8 @@ const MONTH_LABELS = [
 
 type Tab = "paid" | "pending";
 
-export default function ArrecadacaoPage() {
-  const { member } = useAuth();
+export function ArrecadacaoScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors } = useAppTheme();
-  const router = useRouter();
 
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
@@ -111,17 +109,10 @@ export default function ArrecadacaoPage() {
   }
 
   return (
-    <div className={`app-shell ${styles.container}`}>
-      <Header
-        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
-        photo={member?.profileImage}
-        onBack={() => router.back()}
-      />
+    <div className={styles.content}>
+      {!embedded && <p className={styles.screenTitle}>Entrada mensal</p>}
 
-      <div className={styles.content}>
-        <p className={styles.screenTitle}>Entrada mensal</p>
-
-        {loading ? (
+      {loading ? (
           <div className={styles.centered}>
             <Loader2 size={28} color={colors.primary} className="spin" />
           </div>
@@ -244,7 +235,22 @@ export default function ArrecadacaoPage() {
             )}
           </div>
         )}
-      </div>
+    </div>
+  );
+}
+
+export default function ArrecadacaoPage() {
+  const { member } = useAuth();
+  const router = useRouter();
+
+  return (
+    <div className={`app-shell app-shell--wide ${styles.container}`}>
+      <Header
+        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
+        photo={member?.profileImage}
+        onBack={() => router.back()}
+      />
+      <ArrecadacaoScreen />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 .list {
-  margin-top: var(--spacing-xxs);
+  background: var(--color-background);
+  padding-top: var(--spacing-xxs);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm2);

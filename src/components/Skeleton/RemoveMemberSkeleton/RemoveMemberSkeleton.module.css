@@ -1,5 +1,5 @@
 .card {
-  margin-inline: var(--spacing-md);
+  margin-inline: var(--spacing-lg);
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
   background: var(--color-card);

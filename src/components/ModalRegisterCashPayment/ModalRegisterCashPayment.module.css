@@ -24,7 +24,7 @@
 }
 
 .list {
-  margin-top: var(--spacing-xxs);
+  padding-top: var(--spacing-xxs);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm2);
@@ -35,7 +35,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm2);
-  padding-inline: var(--spacing-md);
+  padding-inline: var(--spacing-lg);
   padding-block: var(--spacing-md);
 }
 
@@ -51,7 +51,7 @@
 }
 
 .monthCard {
-  margin-inline: var(--spacing-md);
+  margin-inline: var(--spacing-lg);
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
   background: var(--color-card);

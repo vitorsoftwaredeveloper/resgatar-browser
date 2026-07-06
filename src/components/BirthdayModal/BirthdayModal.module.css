@@ -151,3 +151,36 @@
     transform: translateY(0);
   }
 }
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Desktop: diálogo centralizado no mesmo padrão do ModalBase. */
+@media (min-width: 1024px) {
+  .overlay {
+    align-items: center;
+    padding: var(--modal-inset);
+    background: var(--modal-backdrop);
+  }
+
+  .sheet {
+    max-width: var(--modal-width);
+    max-height: var(--modal-max-height);
+    border-radius: var(--modal-radius);
+    box-shadow: var(--modal-shadow);
+    padding-top: var(--spacing-lg);
+    animation: modalPop 0.2s ease;
+  }
+
+  .handle {
+    display: none;
+  }
+}

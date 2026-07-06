@@ -6,6 +6,15 @@
   box-shadow: var(--shadow-card);
 }
 
+/* No desktop a lista de contribuições vira grid — o espaçamento fica por conta
+   do gap e cada card preenche a altura da célula (mesmo tamanho por linha). */
+@media (min-width: 1024px) {
+  .card {
+    margin-bottom: 0;
+    height: 100%;
+  }
+}
+
 .row {
   display: flex;
   flex-direction: row;

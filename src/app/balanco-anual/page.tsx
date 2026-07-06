@@ -49,10 +49,8 @@ const MONTH_LABELS = [
 
 type Tab = "months" | "members";
 
-export default function BalancoAnualPage() {
-  const { member } = useAuth();
+export function BalancoAnualScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors, mode } = useAppTheme();
-  const router = useRouter();
   const [exporting, setExporting] = useState(false);
   const [exportingExcel, setExportingExcel] = useState(false);
 
@@ -212,17 +210,10 @@ export default function BalancoAnualPage() {
     : [];
 
   return (
-    <div className={`app-shell ${styles.container}`}>
-      <Header
-        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
-        photo={member?.profileImage}
-        onBack={() => router.back()}
-      />
+    <div className={styles.content}>
+      {!embedded && <p className={styles.screenTitle}>Balanço anual</p>}
 
-      <div className={styles.content}>
-        <p className={styles.screenTitle}>Balanço anual</p>
-
-        {loading ? (
+      {loading ? (
           <div className={styles.centered}>
             <Loader2 size={28} color={colors.primary} className="spin" />
           </div>
@@ -419,7 +410,22 @@ export default function BalancoAnualPage() {
             )}
           </div>
         )}
-      </div>
+    </div>
+  );
+}
+
+export default function BalancoAnualPage() {
+  const { member } = useAuth();
+  const router = useRouter();
+
+  return (
+    <div className={`app-shell app-shell--wide ${styles.container}`}>
+      <Header
+        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
+        photo={member?.profileImage}
+        onBack={() => router.back()}
+      />
+      <BalancoAnualScreen />
     </div>
   );
 }

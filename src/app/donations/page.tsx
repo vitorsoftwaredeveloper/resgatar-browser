@@ -39,10 +39,8 @@ function sumAmounts(donations: IDonation[]): number {
   return cents / 100;
 }
 
-export default function DonationsPage() {
-  const { member } = useAuth();
+export function DonationsScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors } = useAppTheme();
-  const router = useRouter();
 
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
@@ -101,17 +99,10 @@ export default function DonationsPage() {
   const cashTotal = useMemo(() => sumAmounts(approved.filter((d) => d.paymentMethodId === "cash")), [approved]);
 
   return (
-    <div className={`app-shell ${styles.container}`}>
-      <Header
-        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
-        photo={member?.profileImage}
-        onBack={() => router.back()}
-      />
+    <div className={styles.content}>
+      {!embedded && <p className={styles.screenTitle}>Listagem de doações</p>}
 
-      <div className={styles.content}>
-        <p className={styles.screenTitle}>Listagem de doações</p>
-
-        {loading ? (
+      {loading ? (
           <div className={styles.centered}>
             <Loader2 size={28} color={colors.primary} className="spin" />
           </div>
@@ -194,7 +185,22 @@ export default function DonationsPage() {
             )}
           </div>
         )}
-      </div>
+    </div>
+  );
+}
+
+export default function DonationsPage() {
+  const { member } = useAuth();
+  const router = useRouter();
+
+  return (
+    <div className={`app-shell app-shell--wide ${styles.container}`}>
+      <Header
+        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
+        photo={member?.profileImage}
+        onBack={() => router.back()}
+      />
+      <DonationsScreen />
     </div>
   );
 }

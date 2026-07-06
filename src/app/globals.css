@@ -1,7 +1,13 @@
 /* =========================================================================
    Design tokens (CSS variables) — espelham src/theme/index.ts.
-   Mobile-first: base pensada para telas pequenas; breakpoints maiores serão
-   adicionados no futuro.
+   Mobile-first: base pensada para telas pequenas.
+
+   Breakpoints (uso literal em @media; não há custom-media disponível no
+   PostCSS deste projeto — os mesmos valores vivem em src/styles/breakpoints.ts
+   para uso em JS/hooks):
+     768px  = tablet
+     1024px = desktop (ativa a sidebar das abas principais)
+     1440px = wide (largura máxima de conteúdo em monitores grandes)
    ========================================================================= */
 
 :root {
@@ -27,6 +33,7 @@
   --color-success-background: #e6f4ea;
   --color-tab-bar-bg: rgba(255, 255, 255, 0.9);
   --color-header-glass: rgba(255, 255, 255, 0.8);
+  --color-sidebar-hover: rgba(62, 47, 35, 0.07);
 
   /* Espaçamentos */
   --spacing-xs: 6px;
@@ -56,8 +63,29 @@
   /* Sombra do card (equivalente ao THEME.SHADOW.card) */
   --shadow-card: 0 4px 10px rgba(0, 0, 0, 0.05);
 
+  /* Modais — no mobile viram bottom sheet (herdam --app-max-width). No desktop
+     (>=1024px) deixam de imitar um smartphone e viram um diálogo centralizado
+     com tamanho padrão compartilhado entre todos. Estes tokens são o contrato
+     desse padrão; os .module.css de cada modal só os consomem dentro do
+     @media (min-width: 1024px). */
+  --modal-width: 460px;
+  --modal-max-height: min(86dvh, 720px);
+  --modal-radius: var(--radius-lg);
+  --modal-inset: var(--spacing-xl);
+  --modal-backdrop: rgba(30, 22, 15, 0.55);
+  --modal-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.4),
+    0 8px 24px -12px rgba(0, 0, 0, 0.28);
+
+  /* Largura mínima das células nos grids de cards do desktop (Administrativo,
+     Contribuições, Vídeos) — garante o mesmo tamanho de container entre as
+     telas. Usado como minmax(var(--card-grid-min), 1fr). */
+  --card-grid-min: 280px;
+
   /* Largura máxima do conteúdo mobile-first (centraliza em telas grandes) */
   --app-max-width: 480px;
+
+  /* Largura da sidebar desktop (abas principais) */
+  --sidebar-width: 240px;
 }
 
 [data-theme="dark"] {
@@ -79,6 +107,7 @@
   --color-success-background: #182e20;
   --color-tab-bar-bg: rgba(26, 24, 18, 0.95);
   --color-header-glass: rgba(26, 24, 18, 0.88);
+  --color-sidebar-hover: rgba(255, 255, 255, 0.07);
 }
 
 /* Reset enxuto */
@@ -149,6 +178,31 @@ svg {
   margin-inline: auto;
   min-height: 100dvh;
   background: var(--color-background);
+}
+
+/* Variante mais larga do app-shell para telas "empurradas" fora das abas
+   principais (doações, despesas, configurações etc.) — mantém o mesmo
+   comportamento de tela cheia do mobile, só que sem o teto de 480px. */
+.app-shell--wide {
+  max-width: var(--app-max-width);
+}
+
+@media (min-width: 768px) {
+  .app-shell--wide {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-shell--wide {
+    max-width: 840px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .app-shell--wide {
+    max-width: 1040px;
+  }
 }
 
 /* Utilitário para ícones de loading (equivalente ao ActivityIndicator do app) */

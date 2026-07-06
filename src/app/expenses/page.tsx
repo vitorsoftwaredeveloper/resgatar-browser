@@ -31,10 +31,8 @@ const MONTH_LABELS = [
   "Dezembro",
 ];
 
-export default function ExpensesPage() {
-  const { member } = useAuth();
+export function ExpensesScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors } = useAppTheme();
-  const router = useRouter();
 
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
@@ -129,15 +127,9 @@ export default function ExpensesPage() {
   const sortedExpenses = summary ? [...summary.expenses].sort((a, b) => b.date - a.date) : [];
 
   return (
-    <div className={`app-shell ${styles.container}`}>
-      <Header
-        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
-        photo={member?.profileImage}
-        onBack={() => router.back()}
-      />
-
+    <>
       <div className={styles.content}>
-        <p className={styles.screenTitle}>Despesa mensal</p>
+        {!embedded && <p className={styles.screenTitle}>Despesa mensal</p>}
 
         {loading ? (
           <div className={styles.centered}>
@@ -323,6 +315,22 @@ export default function ExpensesPage() {
           { label: "remover", onPress: handleDelete, variant: "primary" },
         ]}
       />
+    </>
+  );
+}
+
+export default function ExpensesPage() {
+  const { member } = useAuth();
+  const router = useRouter();
+
+  return (
+    <div className={`app-shell app-shell--wide ${styles.container}`}>
+      <Header
+        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
+        photo={member?.profileImage}
+        onBack={() => router.back()}
+      />
+      <ExpensesScreen />
     </div>
   );
 }

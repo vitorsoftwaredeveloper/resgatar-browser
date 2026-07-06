@@ -218,7 +218,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="app-shell" style={{ minHeight: "100dvh" }}>
+    <div className="app-shell app-shell--wide" style={{ minHeight: "100dvh" }}>
       <div className={styles.background}>
         <div className={styles.card}>
           <div className={styles.logoContainer}>

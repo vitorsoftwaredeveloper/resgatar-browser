@@ -1,0 +1,193 @@
+.container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  background: var(--color-tab-bar-bg);
+  border-right: 1px solid var(--color-border);
+  backdrop-filter: blur(8px);
+  z-index: 500;
+  transition: width 0.2s ease;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-lg) var(--spacing-md);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xxs);
+  flex: 1;
+  min-width: 0;
+}
+
+.brandName {
+  font-size: var(--font-body);
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+.collapseButton {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.collapseButton:hover {
+  background: var(--color-soft-brown);
+}
+
+.collapsed .top {
+  justify-content: center;
+}
+
+.nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-xs) var(--spacing-xxs);
+}
+
+.tab {
+  display: block;
+  border-radius: var(--radius-md);
+}
+
+.tabInner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm2);
+  padding: var(--spacing-sm2) var(--spacing-sm2);
+  border-radius: var(--radius-md);
+}
+
+.collapsed .tabInner {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.tab:not(.tabActive):hover .tabInner {
+  background: var(--color-sidebar-hover);
+}
+
+.tabActive .tabInner {
+  background: var(--color-soft-brown);
+}
+
+.label {
+  font-size: var(--font-body);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-xxs);
+  border-top: 1px solid var(--color-border);
+}
+
+.action {
+  display: block;
+  width: 100%;
+  border: none;
+  background: none;
+  border-radius: var(--radius-md);
+  font: inherit;
+  cursor: pointer;
+}
+
+.actionInner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm2);
+  padding: var(--spacing-sm2) var(--spacing-sm2);
+  border-radius: var(--radius-md);
+}
+
+.action:hover .actionInner {
+  background: var(--color-sidebar-hover);
+}
+
+.collapsed .actionInner {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.actionLabel {
+  font-size: var(--font-body);
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.actionIconWrap {
+  position: relative;
+  display: flex;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background: var(--color-error);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 3px;
+}
+
+.badgeText {
+  color: var(--color-white);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 12px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm2);
+  padding: var(--spacing-sm2) var(--spacing-sm2);
+  border-radius: var(--radius-md);
+}
+
+.profile:hover {
+  background: var(--color-sidebar-hover);
+}
+
+.collapsed .profile {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.profileName {
+  font-size: var(--font-body);
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

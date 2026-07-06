@@ -124,6 +124,19 @@
   gap: var(--spacing-md);
 }
 
+@media (min-width: 1024px) {
+  .content {
+    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+  }
+
+  .list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-grid-min), 1fr));
+  }
+}
+
 .videoCard {
   background: var(--color-card);
   border-radius: var(--radius-md);
@@ -295,4 +308,26 @@
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+@media (min-width: 768px) {
+  .fab {
+    right: max(20px, calc((100vw - 640px) / 2 + 20px));
+  }
+}
+
+/* No desktop o conteúdo não é uma coluna centralizada: fica encostado à direita
+   da sidebar (app-shell--wide, alinhado à esquerda). Ancoramos o FAB 20px para
+   dentro da borda direita real do card — o menor entre o limite de largura
+   (840/1040) e o gutter do frame (--spacing-xl). */
+@media (min-width: 1024px) {
+  .fab {
+    right: calc(20px + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 840px));
+  }
+}
+
+@media (min-width: 1440px) {
+  .fab {
+    right: calc(20px + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 1040px));
+  }
 }

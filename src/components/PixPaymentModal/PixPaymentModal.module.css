@@ -1,4 +1,5 @@
 .container {
+  background: var(--color-background);
   padding: var(--spacing-lg);
 }
 

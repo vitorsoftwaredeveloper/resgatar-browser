@@ -232,3 +232,29 @@
   cursor: pointer;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
+
+@media (min-width: 768px) {
+  .fab {
+    right: max(var(--spacing-lg), calc((100vw - 640px) / 2 + var(--spacing-lg)));
+  }
+}
+
+@media (min-width: 1024px) {
+  .content {
+    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+  }
+
+  /* Ancora o FAB 20px para dentro da borda direita real do card (app-shell--wide
+     alinhado à direita da sidebar), não de uma coluna centralizada. */
+  .fab {
+    right: calc(var(--spacing-lg) + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 840px));
+  }
+}
+
+@media (min-width: 1440px) {
+  .fab {
+    right: calc(var(--spacing-lg) + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 1040px));
+  }
+}

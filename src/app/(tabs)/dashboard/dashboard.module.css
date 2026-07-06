@@ -27,3 +27,19 @@
   opacity: 0.6;
   transform: scale(1.02);
 }
+
+@media (min-width: 1024px) {
+  .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+  }
+
+  .content [data-card="banners"],
+  .content [data-card="notices"] {
+    grid-column: 1 / -1;
+  }
+}

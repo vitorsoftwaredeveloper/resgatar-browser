@@ -1,4 +1,5 @@
 .container {
+  background: var(--color-background);
   padding: var(--spacing-md);
   padding-bottom: var(--spacing-xl);
   display: flex;

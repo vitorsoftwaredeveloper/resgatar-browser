@@ -10,6 +10,14 @@
   min-height: 100dvh;
 }
 
+@media (min-width: 1024px) {
+  .content {
+    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+  }
+}
+
 .screenTitle {
   font-size: var(--font-small);
   color: var(--color-text-muted);

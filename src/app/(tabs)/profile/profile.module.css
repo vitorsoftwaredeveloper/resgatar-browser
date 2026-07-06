@@ -37,3 +37,13 @@
   font-size: var(--font-subtitle);
   font-weight: 600;
 }
+
+@media (min-width: 1024px) {
+  .content {
+    max-width: 640px;
+    margin-inline: 0;
+    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+  }
+}

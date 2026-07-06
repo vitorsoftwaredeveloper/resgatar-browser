@@ -40,3 +40,39 @@
   padding-inline: var(--spacing-md);
   box-shadow: var(--shadow-card);
 }
+
+/* Área de detalhe (desktop): breadcrumb + tela-alvo renderizada no lugar dos
+   itens. A própria tela embutida traz seu painel (fundo/cantos), então aqui só
+   posicionamos o breadcrumb acima dela. */
+.detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.crumb {
+  padding: var(--spacing-md) var(--spacing-lg) var(--spacing-sm);
+}
+
+@media (min-width: 1024px) {
+  .scroll {
+    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+  }
+
+  .content {
+    margin-inline: 0;
+  }
+
+  /* Cada seção vira um grid de cards (o fundo/agrupamento do menuCard some;
+     cada opção passa a ser um card via ItemActionList variant="card"). */
+  .menuCard {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-grid-min), 1fr));
+    gap: var(--spacing-md);
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    border-radius: 0;
+  }
+}

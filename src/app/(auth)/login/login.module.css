@@ -93,3 +93,13 @@
   background: none;
   border: none;
 }
+
+@media (min-width: 768px) {
+  .background {
+    justify-content: center;
+  }
+
+  .card {
+    max-width: 560px;
+  }
+}

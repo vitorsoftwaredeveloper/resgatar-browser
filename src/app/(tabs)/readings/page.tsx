@@ -2,6 +2,7 @@
 
 import { CalendarModal } from "@/components/CalendarModal";
 import { DateNavigator } from "@/components/DateNavigator";
+import { DesktopLiturgyReader, type LiturgySection } from "@/components/DesktopLiturgyReader";
 import { Header } from "@/components/Header";
 import { LiturgySeasonBanner } from "@/components/LiturgySeasonBanner";
 import { MarkReadingButton } from "@/components/MarkReadingButton";
@@ -12,6 +13,7 @@ import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useLiturgyTTS } from "@/hooks/useLiturgyTTS";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { LiturgyService } from "@/services/LiturgyService";
 import { ReadingStreakService } from "@/services/ReadingStreakService";
 import { getReadingMarkedDate, setReadingMarkedDate } from "@/storage/localStorage";
@@ -48,11 +50,87 @@ function buildSectionText(
   return [titulo, referencia, texto, formulaFinal].filter(Boolean).join(". ");
 }
 
+// Achata a liturgia nas seções exibidas como abas no desktop. A ordem espelha
+// os cards do mobile; Segunda Leitura e Oração do Dia entram só quando existem.
+function buildSections(liturgy: ILiturgia): LiturgySection[] {
+  const { leituras, oracoes } = liturgy;
+  const sections: LiturgySection[] = [
+    {
+      id: "primeira-leitura",
+      label: "Primeira Leitura",
+      referencia: leituras.primeiraLeitura.referencia,
+      titulo: leituras.primeiraLeitura.titulo,
+      texto: leituras.primeiraLeitura.texto,
+      formulaFinal: "Palavra do Senhor.",
+      ttsText: buildSectionText(
+        "Primeira leitura",
+        leituras.primeiraLeitura.referencia,
+        leituras.primeiraLeitura.texto,
+        "Palavra do Senhor.",
+      ),
+    },
+    {
+      id: "salmo",
+      label: "Salmo",
+      referencia: leituras.salmo.referencia,
+      refrao: leituras.salmo.refrao,
+      texto: leituras.salmo.texto,
+      ttsText: buildSectionText("Salmo responsorial", leituras.salmo.referencia, leituras.salmo.texto),
+    },
+  ];
+
+  if (leituras.segundaLeitura) {
+    sections.push({
+      id: "segunda-leitura",
+      label: "Segunda Leitura",
+      referencia: leituras.segundaLeitura.referencia,
+      titulo: leituras.segundaLeitura.titulo,
+      texto: leituras.segundaLeitura.texto,
+      formulaFinal: "Palavra do Senhor.",
+      ttsText: buildSectionText(
+        "Segunda leitura",
+        leituras.segundaLeitura.referencia,
+        leituras.segundaLeitura.texto,
+        "Palavra do Senhor.",
+      ),
+    });
+  }
+
+  sections.push({
+    id: "evangelho",
+    label: "Evangelho",
+    referencia: leituras.evangelho.referencia,
+    titulo: leituras.evangelho.titulo,
+    texto: leituras.evangelho.texto,
+    formulaFinal: "Palavra da Salvação.",
+    ttsText: buildSectionText(
+      "Evangelho",
+      leituras.evangelho.referencia,
+      leituras.evangelho.texto,
+      "Palavra da Salvação.",
+    ),
+  });
+
+  if (oracoes?.coleta) {
+    sections.push({
+      id: "oracao",
+      label: "Oração do Dia",
+      referencia: "",
+      texto: oracoes.coleta,
+      ttsText: oracoes.coleta,
+    });
+  }
+
+  return sections;
+}
+
 export default function ReadingsPage() {
   const { member, updateMemberStreak } = useAuth();
   const { colors } = useAppTheme();
+  const { isDesktop } = useBreakpoint();
 
   const [selectedDate, setSelectedDate] = useState<Date>(today());
+  const [activeSectionId, setActiveSectionId] = useState("primeira-leitura");
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [liturgy, setLiturgy] = useState<ILiturgia | null>(null);
@@ -256,6 +334,15 @@ export default function ReadingsPage() {
               cor={liturgy.cor}
             />
 
+            {isDesktop ? (
+              <DesktopLiturgyReader
+                sections={buildSections(liturgy)}
+                activeId={activeSectionId}
+                onSelectSection={setActiveSectionId}
+                getTTS={sectionTTSProps}
+              />
+            ) : (
+            <>
             <ReadingCard
               testID="card-primeira-leitura"
               coachId="reading-tts-btn"
@@ -336,6 +423,8 @@ export default function ReadingsPage() {
                 texto={liturgy.oracoes.coleta}
                 {...sectionTTSProps("oracao", liturgy.oracoes.coleta)}
               />
+            )}
+            </>
             )}
           </>
         ) : null}

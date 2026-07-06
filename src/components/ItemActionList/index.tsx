@@ -9,11 +9,18 @@ interface Props {
   onPress: () => void;
   isLast?: boolean;
   icon?: ReactNode;
+  // "card" reorganiza o item como card (só no desktop) — ícone no topo, título,
+  // descrição e hover. No mobile continua sendo uma linha de lista.
+  variant?: "list" | "card";
 }
 
-export function ItemActionList({ title, description, onPress, isLast, icon }: Props) {
+export function ItemActionList({ title, description, onPress, isLast, icon, variant = "list" }: Props) {
   return (
-    <button type="button" onClick={onPress} className={styles.container}>
+    <button
+      type="button"
+      onClick={onPress}
+      className={[styles.container, variant === "card" && styles.cardVariant].filter(Boolean).join(" ")}
+    >
       <div className={styles.row}>
         <div className={styles.icon}>{icon}</div>
 

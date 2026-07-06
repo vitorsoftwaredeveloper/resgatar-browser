@@ -23,6 +23,12 @@
   min-width: 0;
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .backButton {
   width: 36px;
   height: 36px;

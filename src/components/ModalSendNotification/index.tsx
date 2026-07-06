@@ -12,6 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
+import styles from "./ModalSendNotification.module.css";
 
 // Portado de resgatar_app/src/screens/SettingsScreen/ModalSendNotification.
 // Formik vira React Hook Form + @hookform/resolvers/yup, mesmo schema.
@@ -60,7 +61,7 @@ export function ModalSendNotification({ visible, onClose }: Props) {
 
   return (
     <ModalBase onClose={onClose} visible={visible} title="Enviar notificação">
-      <div>
+      <div className={styles.container}>
         <Card title="Notificação">
           <Input
             label="Título"

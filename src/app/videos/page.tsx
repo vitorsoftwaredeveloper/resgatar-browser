@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
 import { ModalAddVideo } from "@/components/ModalAddVideo";
 import { ModalVideoFeed } from "@/components/ModalVideoFeed";
+import { SidebarFrame } from "@/components/SidebarFrame";
 import { VideoCardSkeleton } from "@/components/Skeleton/VideoCardSkeleton";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
@@ -128,12 +129,13 @@ export default function VideosPage() {
   const isFiltering = Boolean(committedSearch || selectedMemberId);
 
   return (
-    <div className={`app-shell ${styles.container}`}>
-      <Header
-        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
-        photo={member?.profileImage}
-        onBack={() => router.back()}
-      />
+    <SidebarFrame>
+      <div className={`app-shell app-shell--wide ${styles.container}`}>
+        <Header
+          name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
+          photo={member?.profileImage}
+          onBack={() => router.back()}
+        />
 
       <div className={styles.content}>
         <div className={styles.searchBar}>
@@ -297,6 +299,7 @@ export default function VideosPage() {
           onVideoRemoved={handleVideoRemoved}
         />
       )}
-    </div>
+      </div>
+    </SidebarFrame>
   );
 }

@@ -6,11 +6,13 @@ import { Input } from "@/components/Input";
 import { ModalBase } from "@/components/ModalBase";
 import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
+import { useAppTheme } from "@/context/ThemeContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
+import styles from "./ModalUpdatePassword.module.css";
 
 // Portado de resgatar_app/src/screens/ProfileScreen/ModalUpdatePassword. Formik
 // vira React Hook Form + @hookform/resolvers/yup, mesmo schema de validação.
@@ -30,10 +32,19 @@ const passwordValidationSchema = Yup.object().shape({
   password: Yup.string()
     .required("Senha é obrigatória")
     .min(8, "A senha deve ter no mínimo 8 caracteres")
-    .matches(/^(?=.*[a-z])/, "A senha deve conter pelo menos uma letra minúscula")
-    .matches(/^(?=.*[A-Z])/, "A senha deve conter pelo menos uma letra maiúscula")
+    .matches(
+      /^(?=.*[a-z])/,
+      "A senha deve conter pelo menos uma letra minúscula",
+    )
+    .matches(
+      /^(?=.*[A-Z])/,
+      "A senha deve conter pelo menos uma letra maiúscula",
+    )
     .matches(/^(?=.*\d)/, "A senha deve conter pelo menos um número")
-    .matches(/^(?=.*[@$!%*?&#])/, "A senha deve conter pelo menos um caractere especial: @$!%*?&#"),
+    .matches(
+      /^(?=.*[@$!%*?&#])/,
+      "A senha deve conter pelo menos um caractere especial: @$!%*?&#",
+    ),
 
   confirmPassword: Yup.string()
     .required("Confirmação de senha é obrigatória")
@@ -47,6 +58,7 @@ export const ModalUpdatePassword = ({
 }: IModalUpdatePassword) => {
   const { changePassword, member } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const { colors } = useAppTheme();
 
   const {
     watch,
@@ -60,7 +72,12 @@ export const ModalUpdatePassword = ({
 
   const onValid = async ({ password }: FormValues) => {
     try {
-      await changePassword(memberIdPasswordWillBeChanged ? memberIdPasswordWillBeChanged : (member?._id as string), password);
+      await changePassword(
+        memberIdPasswordWillBeChanged
+          ? memberIdPasswordWillBeChanged
+          : (member?._id as string),
+        password,
+      );
       ToastMessage.success("Senha alterada com sucesso");
       setTimeout(onClose, 2000);
     } catch {
@@ -69,7 +86,9 @@ export const ModalUpdatePassword = ({
   };
 
   const onInvalid = (formErrors: typeof errors) => {
-    const firstError = Object.values(formErrors)[0]?.message as string | undefined;
+    const firstError = Object.values(formErrors)[0]?.message as
+      | string
+      | undefined;
     if (firstError) ToastMessage.error("Campos inválidos", firstError);
   };
 
@@ -80,19 +99,32 @@ export const ModalUpdatePassword = ({
       aria-label="Mostrar/ocultar senha"
       style={{ background: "none", border: "none", display: "flex" }}
     >
-      {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+      {showPassword ? (
+        <Eye size={20} color={colors.muted} />
+      ) : (
+        <EyeOff size={20} color={colors.muted} />
+      )}
     </button>
   );
 
   return (
-    <ModalBase visible={passwordModalVisible} onClose={onClose} title="Atualizar senha">
-      <div>
+    <ModalBase
+      visible={passwordModalVisible}
+      onClose={onClose}
+      title="Atualizar senha"
+    >
+      <div className={styles.container}>
         <Card title="Senha">
           <Input
             label="Nova senha"
             type={showPassword ? "text" : "password"}
             value={watch("password")}
-            onChangeText={(v) => setValue("password", v, { shouldValidate: true, shouldDirty: true })}
+            onChangeText={(v) =>
+              setValue("password", v, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
             rightIcon={eyeToggle}
             error={errors.password?.message}
           />
@@ -101,14 +133,24 @@ export const ModalUpdatePassword = ({
             label="Confirmar senha"
             type={showPassword ? "text" : "password"}
             value={watch("confirmPassword")}
-            onChangeText={(v) => setValue("confirmPassword", v, { shouldValidate: true, shouldDirty: true })}
+            onChangeText={(v) =>
+              setValue("confirmPassword", v, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
             rightIcon={eyeToggle}
             error={errors.confirmPassword?.message}
           />
         </Card>
 
         <div style={{ padding: "var(--spacing-lg)" }}>
-          <Button title="Salvar" onPress={handleSubmit(onValid, onInvalid)} loading={isSubmitting} disabled={isSubmitting} />
+          <Button
+            title="Salvar"
+            onPress={handleSubmit(onValid, onInvalid)}
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          />
         </div>
       </div>
     </ModalBase>

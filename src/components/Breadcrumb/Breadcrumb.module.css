@@ -1,0 +1,37 @@
+.breadcrumb {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  font-size: var(--font-small);
+}
+
+.link {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: color 0.15s ease;
+}
+
+button.link {
+  cursor: pointer;
+}
+
+button.link:hover {
+  color: var(--color-primary);
+}
+
+.current {
+  font-size: inherit;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.separator {
+  color: var(--color-muted);
+  flex-shrink: 0;
+}

@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 import { AlertTriangle, Eye, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
 import styles from "./ModalDeleteAccount.module.css";
+import { useAppTheme } from "@/context/ThemeContext";
 
 // Portado de resgatar_app/src/screens/ProfileScreen/ModalDeleteAccount.
 
@@ -29,20 +30,34 @@ export function ModalDeleteAccount({ visible, onClose }: Props) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { colors } = useAppTheme();
 
   async function handleDelete() {
     if (!password.trim()) {
-      ToastMessage.error("Campo obrigatório", "Informe sua senha para continuar.");
+      ToastMessage.error(
+        "Campo obrigatório",
+        "Informe sua senha para continuar.",
+      );
       return;
     }
     setLoading(true);
     try {
       await deleteAccount(password);
-      ToastMessage.success("Conta encerrada", "Sua conta foi encerrada com sucesso.");
+      ToastMessage.success(
+        "Conta encerrada",
+        "Sua conta foi encerrada com sucesso.",
+      );
     } catch (error: unknown) {
       const err = error as { name?: string; message?: string };
-      const isWrongPassword = err?.name === "NotAuthorizedException" || err?.message === "Senha incorreta.";
-      ToastMessage.error("Erro", isWrongPassword ? "Senha incorreta. Verifique e tente novamente." : "Não foi possível encerrar a conta. Tente novamente.");
+      const isWrongPassword =
+        err?.name === "NotAuthorizedException" ||
+        err?.message === "Senha incorreta.";
+      ToastMessage.error(
+        "Erro",
+        isWrongPassword
+          ? "Senha incorreta. Verifique e tente novamente."
+          : "Não foi possível encerrar a conta. Tente novamente.",
+      );
     } finally {
       setLoading(false);
     }
@@ -54,7 +69,9 @@ export function ModalDeleteAccount({ visible, onClose }: Props) {
         <Card title="Atenção">
           <div className={styles.warningHeader}>
             <AlertTriangle size={20} className={styles.warningIcon} />
-            <p className={styles.warningTitle}>Ao encerrar sua conta, os seguintes dados serão removidos:</p>
+            <p className={styles.warningTitle}>
+              Ao encerrar sua conta, os seguintes dados serão removidos:
+            </p>
           </div>
 
           {WARNINGS.map((text) => (
@@ -66,7 +83,9 @@ export function ModalDeleteAccount({ visible, onClose }: Props) {
         </Card>
 
         <Card title="Confirmar identidade">
-          <p className={styles.confirmLabel}>Para confirmar o encerramento, informe sua senha de acesso:</p>
+          <p className={styles.confirmLabel}>
+            Para confirmar o encerramento, informe sua senha de acesso:
+          </p>
 
           <Input
             label="Senha"
@@ -82,7 +101,11 @@ export function ModalDeleteAccount({ visible, onClose }: Props) {
                 aria-label="Mostrar/ocultar senha"
                 style={{ background: "none", border: "none", display: "flex" }}
               >
-                {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                {showPassword ? (
+                  <Eye size={20} color={colors.muted} />
+                ) : (
+                  <EyeOff size={20} color={colors.muted} />
+                )}
               </button>
             }
           />

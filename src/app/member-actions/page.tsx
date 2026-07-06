@@ -15,10 +15,8 @@ import styles from "./member-actions.module.css";
 
 // Portado de resgatar_app/src/screens/MemberActionsScreen.
 
-export default function MemberActionsPage() {
-  const { member } = useAuth();
+export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors } = useAppTheme();
-  const router = useRouter();
 
   const [openRemoveMember, setOpenRemoveMember] = useState(false);
   const [openEditMemberData, setOpenEditMemberData] = useState(false);
@@ -26,18 +24,13 @@ export default function MemberActionsPage() {
   const [openChangePassword, setOpenChangePassword] = useState(false);
 
   return (
-    <div className={`app-shell ${styles.container}`}>
-      <Header
-        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
-        photo={member?.profileImage}
-        onBack={() => router.back()}
-      />
-
+    <>
       <div className={styles.content}>
         <div className={styles.sectionGroup}>
-          <p className={styles.sectionLabel}>Gestão de membros</p>
+          {!embedded && <p className={styles.sectionLabel}>Gestão de membros</p>}
           <div className={styles.menuCard}>
             <ItemActionList
+              variant="card"
               title="Remover membro"
               description="Remova um membro impedindo o acesso ao aplicativo."
               onPress={() => setOpenRemoveMember(true)}
@@ -45,6 +38,7 @@ export default function MemberActionsPage() {
             />
 
             <ItemActionList
+              variant="card"
               title="Permissões de membros"
               description="Gerencie quais membros têm acesso de administrador."
               onPress={() => setOpenEditMemberData(true)}
@@ -52,6 +46,7 @@ export default function MemberActionsPage() {
             />
 
             <ItemActionList
+              variant="card"
               title="Registrar pagamento em dinheiro"
               description="Confirme o recebimento de uma contribuição paga em dinheiro."
               onPress={() => setOpenCashPayment(true)}
@@ -59,6 +54,7 @@ export default function MemberActionsPage() {
             />
 
             <ItemActionList
+              variant="card"
               title="Atualizar senha de membro"
               description="Atualize a senha de acesso de um membro ao aplicativo."
               onPress={() => setOpenChangePassword(true)}
@@ -82,6 +78,22 @@ export default function MemberActionsPage() {
       {openChangePassword && (
         <ModalChangePasswordMember visible={openChangePassword} onClose={() => setOpenChangePassword(false)} />
       )}
+    </>
+  );
+}
+
+export default function MemberActionsPage() {
+  const { member } = useAuth();
+  const router = useRouter();
+
+  return (
+    <div className={`app-shell app-shell--wide ${styles.container}`}>
+      <Header
+        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
+        photo={member?.profileImage}
+        onBack={() => router.back()}
+      />
+      <MemberActionsScreen />
     </div>
   );
 }

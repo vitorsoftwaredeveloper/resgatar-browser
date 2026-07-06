@@ -42,7 +42,7 @@ export function Header({ name, photo, onBack }: Props) {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-header>
       <div className={styles.left}>
         {onBack && (
           <button type="button" onClick={onBack} className={styles.backButton} aria-label="Voltar">
@@ -50,29 +50,31 @@ export function Header({ name, photo, onBack }: Props) {
           </button>
         )}
 
-        <div className={styles.logo}>
+        <div className={styles.logo} data-greeting>
           {avatarUri ? <Avatar photo={photo} size={50} /> : <LogoResgatar size={100} color={colors.primary} />}
         </div>
-        <div className={styles.textContainer}>
+        <div className={styles.textContainer} data-greeting>
           <p className={styles.hello}>Olá,</p>
           <p className={styles.name}>{name}</p>
         </div>
-        <CoachTarget id="header-quickactions">
-          <button
-            ref={buttonRef}
-            type="button"
-            aria-label="Ações rápidas"
-            onClick={handleOpenSheet}
-            className={styles.themeToggle}
-          >
-            <EllipsisVertical size={18} color={colors.primary} />
-            {todayBirthdays > 0 && (
-              <span className={styles.badge}>
-                <span className={styles.badgeText}>{todayBirthdays}</span>
-              </span>
-            )}
-          </button>
-        </CoachTarget>
+        <div className={styles.actions} data-header-actions>
+          <CoachTarget id="header-quickactions">
+            <button
+              ref={buttonRef}
+              type="button"
+              aria-label="Ações rápidas"
+              onClick={handleOpenSheet}
+              className={styles.themeToggle}
+            >
+              <EllipsisVertical size={18} color={colors.primary} />
+              {todayBirthdays > 0 && (
+                <span className={styles.badge}>
+                  <span className={styles.badgeText}>{todayBirthdays}</span>
+                </span>
+              )}
+            </button>
+          </CoachTarget>
+        </div>
       </div>
 
       <QuickActionsSheet

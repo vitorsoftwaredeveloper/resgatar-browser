@@ -31,3 +31,24 @@
   padding-inline: var(--spacing-md);
   box-shadow: var(--shadow-card);
 }
+
+@media (min-width: 1024px) {
+  .content {
+    margin-inline: 0;
+    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+  }
+
+  /* Cada opção vira um card no grid (ItemActionList variant="card"); o
+     agrupamento/fundo do menuCard some. */
+  .menuCard {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--spacing-md);
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    border-radius: 0;
+  }
+}

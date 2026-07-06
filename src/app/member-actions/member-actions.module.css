@@ -31,3 +31,23 @@
   padding-inline: var(--spacing-md);
   box-shadow: var(--shadow-card);
 }
+
+/* Desktop: mesmas opções viram um grid de cards (igual à tela Administrativo);
+   o agrupamento branco some e cada ItemActionList variant="card" é seu card. */
+@media (min-width: 1024px) {
+  .content {
+    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+  }
+
+  .menuCard {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-grid-min), 1fr));
+    gap: var(--spacing-md);
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    border-radius: 0;
+  }
+}

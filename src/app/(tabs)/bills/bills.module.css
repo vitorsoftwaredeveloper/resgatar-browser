@@ -42,3 +42,23 @@
   opacity: 0.85;
   margin-top: 2px;
 }
+
+@media (min-width: 1024px) {
+  .content {
+    margin-inline: 0;
+    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-grid-min), 1fr));
+    gap: var(--spacing-md);
+    align-content: start;
+  }
+
+  /* O card de doação vira uma célula do grid como os demais (mesmo tamanho),
+     preservando o estilo (fundo primário). */
+  .donateBanner {
+    height: 100%;
+    margin-bottom: 0;
+  }
+}

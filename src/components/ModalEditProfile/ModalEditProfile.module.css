@@ -2,11 +2,13 @@
   display: flex;
   flex-direction: column;
   background: var(--color-background);
-  max-height: 80dvh;
 }
 
+/* O scroll é do .body do ModalBase — aqui é só o fluxo do formulário, sem
+   criar uma segunda barra de rolagem. */
 .scroll {
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .half {
@@ -62,6 +64,8 @@
 }
 
 .footer {
+  position: sticky;
+  bottom: 0;
   padding: var(--spacing-lg);
   border-top: 1px solid var(--color-border);
   background: var(--color-background);
