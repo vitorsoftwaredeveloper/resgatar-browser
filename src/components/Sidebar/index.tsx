@@ -3,28 +3,28 @@
 import { Avatar } from "@/components/Avatar";
 import { BirthdayModal } from "@/components/BirthdayModal";
 import { CoachTarget } from "@/components/CoachTarget";
+import { QuickActionsSheet } from "@/components/QuickActionsSheet";
 import { LogoResgatar } from "@/components/Svg/Logo";
 import { useAuth } from "@/context/AuthContext";
 import { useBirthday } from "@/context/BirthdayContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import {
   BookOpen,
-  Cake,
+  EllipsisVertical,
   FileText,
   Home,
-  Moon,
   PanelLeftClose,
   PanelLeftOpen,
   Settings,
   ShieldUser,
-  Sun,
   Video,
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import styles from "./Sidebar.module.css";
+import { Dialog } from "../Dialog";
 
 // Trilho vertical fixo do desktop (>=1024px). Substitui o TabBar do mobile e
 // funciona como navegação principal: as 4 abas + os destinos que no mobile
@@ -60,12 +60,18 @@ const EXTRA_NAV: NavItem[] = [
 const STORAGE_KEY = "sidebar:collapsed";
 
 export function Sidebar() {
-  const { colors, mode, toggleTheme } = useAppTheme();
-  const { member } = useAuth();
+  const { colors } = useAppTheme();
+  const { member, logout } = useAuth();
   const { todayBirthdays } = useBirthday();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [birthdayVisible, setBirthdayVisible] = useState(false);
+  const [dialogLogoutVisible, setDialogLogoutVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [anchorPosition, setAnchorPosition] = useState<
+    { bottom: number; left: number } | undefined
+  >();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     // Sincroniza o estado persistido só no cliente (após a montagem) para não
@@ -90,6 +96,21 @@ export function Sidebar() {
       localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
       return next;
     });
+  }
+
+  const handleLogout = async () => {
+    await logout();
+    setDialogLogoutVisible(false);
+  };
+
+  function handleOpenMenu(e: MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    const node = menuButtonRef.current;
+    if (!node) return;
+    const rect = node.getBoundingClientRect();
+    setAnchorPosition({ bottom: window.innerHeight - rect.top + 8, left: rect.left });
+    setMenuVisible(true);
   }
 
   const nav: NavItem[] = [
@@ -159,66 +180,72 @@ export function Sidebar() {
       </nav>
 
       <div className={styles.footer}>
-        <button
-          type="button"
-          className={styles.action}
-          onClick={toggleTheme}
-          title={
-            collapsed
-              ? mode === "dark"
-                ? "Modo claro"
-                : "Modo escuro"
-              : undefined
-          }
-        >
-          <span className={styles.actionInner}>
-            {mode === "dark" ? (
-              <Sun size={20} color={colors.textMuted} />
-            ) : (
-              <Moon size={20} color={colors.textMuted} />
-            )}
-            {!collapsed && (
-              <span className={styles.actionLabel}>
-                {mode === "dark" ? "Modo claro" : "Modo escuro"}
-              </span>
-            )}
-          </span>
-        </button>
-
-        <button
-          type="button"
-          className={styles.action}
-          onClick={() => setBirthdayVisible(true)}
-          title={collapsed ? "Aniversariantes" : undefined}
-        >
-          <span className={styles.actionInner}>
-            <span className={styles.actionIconWrap}>
-              <Cake size={20} color={colors.textMuted} />
-              {todayBirthdays > 0 && (
-                <span className={styles.badge}>
-                  <span className={styles.badgeText}>{todayBirthdays}</span>
-                </span>
+        <div className={styles.profileRow}>
+          <div className={styles.profile} title={collapsed ? fullName : undefined}>
+            <div className={styles.avatarWrap}>
+              <Avatar photo={member?.profileImage} size={40} />
+              {collapsed && (
+                <button
+                  type="button"
+                  ref={menuButtonRef}
+                  className={styles.menuTriggerOverlay}
+                  onClick={handleOpenMenu}
+                  aria-label="Mais opções"
+                >
+                  <EllipsisVertical size={12} color={colors.white} />
+                  {todayBirthdays > 0 && <span className={styles.menuBadge} />}
+                </button>
               )}
-            </span>
-            {!collapsed && (
-              <span className={styles.actionLabel}>Aniversariantes</span>
-            )}
-          </span>
-        </button>
+            </div>
+            {!collapsed && <span className={styles.profileName}>{fullName}</span>}
+          </div>
 
-        <Link
-          href="/profile"
-          className={styles.profile}
-          title={collapsed ? fullName : undefined}
-        >
-          <Avatar photo={member?.profileImage} size={40} />
-          {!collapsed && <span className={styles.profileName}>{fullName}</span>}
-        </Link>
+          {!collapsed && (
+            <button
+              type="button"
+              ref={menuButtonRef}
+              className={styles.menuTrigger}
+              onClick={handleOpenMenu}
+              aria-label="Mais opções"
+            >
+              <EllipsisVertical size={16} color={colors.textMuted} />
+              {todayBirthdays > 0 && <span className={styles.menuBadge} />}
+            </button>
+          )}
+        </div>
       </div>
+
+      <QuickActionsSheet
+        visible={menuVisible}
+        onClose={() => setMenuVisible(false)}
+        onOpenBirthdays={() => setBirthdayVisible(true)}
+        onLogout={() => setDialogLogoutVisible(true)}
+        anchorPosition={anchorPosition}
+        todayBirthdays={todayBirthdays}
+      />
 
       <BirthdayModal
         visible={birthdayVisible}
         onClose={() => setBirthdayVisible(false)}
+      />
+
+      <Dialog
+        visible={dialogLogoutVisible}
+        title="Tem certeza que deseja sair?"
+        description="Você pode realizar o login novamente e ter acesso a todas as funcionalidades do nosso aplicativo."
+        onClose={() => setDialogLogoutVisible(false)}
+        actions={[
+          {
+            label: "cancelar",
+            onPress: () => setDialogLogoutVisible(false),
+            variant: "secondary",
+          },
+          {
+            label: "sair",
+            onPress: handleLogout,
+            variant: "primary",
+          },
+        ]}
       />
     </aside>
   );

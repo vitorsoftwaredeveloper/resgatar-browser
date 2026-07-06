@@ -147,7 +147,7 @@ export function NoticeBoardModal({ visible, onClose }: Props) {
                   <div className={styles.rail}>
                     <div className={styles.threadDashed} />
                     <div className={[styles.nodeEdit, today && styles.nodeEditToday].filter(Boolean).join(" ")}>
-                      {editing && <span className={styles.nodeNumber}>{index + 1}</span>}
+                      <span className={styles.nodeNumber}>{index + 1}</span>
                     </div>
                   </div>
 

@@ -1,5 +1,6 @@
 .container {
   background: var(--color-background);
+  width: 100%;
 }
 
 .content {
@@ -313,6 +314,7 @@
 @media (min-width: 768px) {
   .fab {
     right: max(20px, calc((100vw - 640px) / 2 + 20px));
+    bottom: 40px;
   }
 }
 
@@ -323,6 +325,7 @@
 @media (min-width: 1024px) {
   .fab {
     right: calc(20px + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 840px));
+    bottom: 50px;
   }
 }
 

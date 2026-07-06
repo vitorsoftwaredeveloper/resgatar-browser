@@ -106,64 +106,67 @@
   border-top: 1px solid var(--color-border);
 }
 
-.action {
-  display: block;
-  width: 100%;
+.profileRow {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.collapsed .profileRow {
+  justify-content: center;
+}
+
+.avatarWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.menuTrigger {
+  position: relative;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
   border: none;
   background: none;
-  border-radius: var(--radius-md);
-  font: inherit;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
-.actionInner {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--spacing-sm2);
-  padding: var(--spacing-sm2) var(--spacing-sm2);
-  border-radius: var(--radius-md);
-}
-
-.action:hover .actionInner {
+.menuTrigger:hover {
   background: var(--color-sidebar-hover);
 }
 
-.collapsed .actionInner {
-  justify-content: center;
-  padding-inline: 0;
-}
-
-.actionLabel {
-  font-size: var(--font-body);
-  font-weight: 500;
-  color: var(--color-text-muted);
-}
-
-.actionIconWrap {
-  position: relative;
-  display: flex;
-}
-
-.badge {
+.menuTriggerOverlay {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  min-width: 16px;
-  height: 16px;
-  border-radius: 8px;
-  background: var(--color-error);
+  top: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: 2px solid var(--color-tab-bar-bg);
+  background: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-inline: 3px;
+  cursor: pointer;
 }
 
-.badgeText {
-  color: var(--color-white);
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 12px;
+.menuTriggerOverlay:hover {
+  filter: brightness(1.1);
+}
+
+.menuBadge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--color-error);
+  border: 1px solid var(--color-tab-bar-bg);
 }
 
 .profile {
@@ -172,13 +175,12 @@
   gap: var(--spacing-sm2);
   padding: var(--spacing-sm2) var(--spacing-sm2);
   border-radius: var(--radius-md);
-}
-
-.profile:hover {
-  background: var(--color-sidebar-hover);
+  flex: 1;
+  min-width: 0;
 }
 
 .collapsed .profile {
+  flex: none;
   justify-content: center;
   padding-inline: 0;
 }

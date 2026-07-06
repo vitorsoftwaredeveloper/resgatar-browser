@@ -3,23 +3,34 @@
 import { CoachTarget } from "@/components/CoachTarget";
 import { useCoach } from "@/context/CoachContext";
 import { useAppTheme } from "@/context/ThemeContext";
-import { Cake, Moon, Sun } from "lucide-react";
+import { Cake, LogOutIcon, Moon, Sun } from "lucide-react";
 import { CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import styles from "./QuickActionsSheet.module.css";
 
 // Portado de resgatar_app/src/components/QuickActionsSheet. O Modal
 // transparente ancorado vira um dropdown fixed posicionado por anchorPosition
-// (já medida pelo Header via getBoundingClientRect).
+// (já medida pelo chamador via getBoundingClientRect). Portado para
+// document.body porque alguns pais (ex. Sidebar) usam backdrop-filter, que
+// cria um containing block para position: fixed e prenderia o dropdown.
 
 interface Props {
   visible: boolean;
   onClose: () => void;
   onOpenBirthdays: () => void;
-  anchorPosition?: { top: number; right: number };
+  onLogout?: () => void;
+  anchorPosition?: { top?: number; bottom?: number; left?: number; right?: number };
   todayBirthdays?: number;
 }
 
-export function QuickActionsSheet({ visible, onClose, onOpenBirthdays, anchorPosition, todayBirthdays = 0 }: Props) {
+export function QuickActionsSheet({
+  visible,
+  onClose,
+  onOpenBirthdays,
+  onLogout,
+  anchorPosition,
+  todayBirthdays = 0,
+}: Props) {
   const { mode, toggleTheme, colors } = useAppTheme();
   const { active: tutorialActive } = useCoach();
 
@@ -33,13 +44,16 @@ export function QuickActionsSheet({ visible, onClose, onOpenBirthdays, anchorPos
     onOpenBirthdays();
   }
 
+  function handleLogout() {
+    onClose();
+    onLogout?.();
+  }
+
   if (!visible) return null;
 
-  const dropdownStyle: CSSProperties = anchorPosition
-    ? { top: anchorPosition.top, right: anchorPosition.right }
-    : {};
+  const dropdownStyle: CSSProperties = anchorPosition ?? {};
 
-  return (
+  return createPortal(
     <>
       <div
         className={styles.overlayBackdrop}
@@ -71,7 +85,22 @@ export function QuickActionsSheet({ visible, onClose, onOpenBirthdays, anchorPos
             )}
           </button>
         </CoachTarget>
+
+        {onLogout && (
+          <>
+            <div className={styles.divider} />
+            <button type="button" className={styles.item} onClick={handleLogout}>
+              <span className={styles.itemIcon}>
+                <LogOutIcon size={16} color={colors.error} style={{ transform: "rotate(180deg)" }} />
+              </span>
+              <span className={styles.itemLabel} style={{ color: colors.error }}>
+                Sair da conta
+              </span>
+            </button>
+          </>
+        )}
       </div>
-    </>
+    </>,
+    document.body
   );
 }

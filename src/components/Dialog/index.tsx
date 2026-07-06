@@ -1,6 +1,7 @@
 "use client";
 
 import { CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "../Button";
 import styles from "./Dialog.module.css";
 
@@ -23,7 +24,10 @@ type DialogProps = {
 export function Dialog({ visible, title, description, onClose, actions = [] }: DialogProps) {
   if (!visible) return null;
 
-  return (
+  // Portal para document.body: alguns pais (ex. Sidebar) usam backdrop-filter,
+  // que cria um containing block para position: fixed e prende o overlay
+  // dentro do próprio pai em vez de cobrir a viewport inteira.
+  return createPortal(
     <div
       className={styles.overlay}
       onClick={(e) => {
@@ -55,6 +59,7 @@ export function Dialog({ visible, title, description, onClose, actions = [] }: D
           })}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

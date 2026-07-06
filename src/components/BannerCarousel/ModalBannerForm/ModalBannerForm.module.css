@@ -1,5 +1,7 @@
 .container {
-  background: var(--color-card);
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
   padding-bottom: var(--spacing-lg);
 }
 
