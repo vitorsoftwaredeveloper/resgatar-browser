@@ -112,3 +112,88 @@
   color: var(--color-primary);
   font-weight: 500;
 }
+
+/* ---------------------------------------------------------------------------
+   Trilho de Leituras no desktop (>=1024px): o navegador de datas vira um
+   card editorial autônomo (usado dentro do rail lateral da tela de
+   Leituras). Regras puramente aditivas — o mobile (<1024px) não é afetado.
+   --------------------------------------------------------------------------- */
+@media (min-width: 1024px) {
+  .wrapper {
+    padding: 20px;
+    gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+  }
+
+  .arrowBtn {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-md);
+    border: none;
+    background: var(--surface-2);
+    color: var(--ink-2);
+    transition: 0.15s;
+  }
+
+  .arrowBtn:hover {
+    background: var(--accent);
+  }
+
+  .arrowBtn:hover svg {
+    stroke: var(--accent-ink);
+  }
+
+  .centerBtn {
+    border: none;
+    background: none;
+    padding: 0;
+  }
+
+  .centerText {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: 17px;
+    letter-spacing: -0.005em;
+  }
+
+  .weekRow {
+    gap: 6px;
+  }
+
+  .dayCell {
+    border-radius: var(--radius-md);
+    padding-block: 10px;
+    gap: 4px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .dayCellSelected {
+    background: var(--accent);
+    border-color: transparent;
+    box-shadow: var(--shadow-card);
+  }
+
+  .dayAbbr {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  .dayNum {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: 19px;
+  }
+
+  .dayNumToday {
+    color: var(--gold);
+  }
+
+  .backToToday {
+    padding-top: 2px;
+  }
+}

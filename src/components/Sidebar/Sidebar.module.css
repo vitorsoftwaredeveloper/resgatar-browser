@@ -1,3 +1,9 @@
+/* =====================================================================
+   Sidebar desktop — redesenho editorial "Missal".
+   Trilho com marca em gradiente, navegação agrupada em seções rotuladas
+   (versalete) e cartão de usuário no rodapé. Recolhível (só ícones).
+   ===================================================================== */
+
 .container {
   position: fixed;
   left: 0;
@@ -6,139 +12,246 @@
   width: var(--sidebar-width);
   display: flex;
   flex-direction: column;
-  background: var(--color-tab-bar-bg);
-  border-right: 1px solid var(--color-border);
-  backdrop-filter: blur(8px);
+  gap: 6px;
+  padding: 20px 16px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--line);
   z-index: 500;
-  transition: width 0.2s ease;
+  transition: width 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.top {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-lg) var(--spacing-md);
-}
-
+/* ---------------- Marca ---------------- */
 .brand {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xxs);
-  flex: 1;
+  gap: 12px;
+  padding: 8px 8px 6px;
+}
+
+.mark {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  color: var(--accent-ink);
+  background: linear-gradient(150deg, var(--accent-2), var(--accent));
+  box-shadow: var(--shadow-card);
+}
+
+.brandText {
   min-width: 0;
+  flex: 1;
 }
 
 .brandName {
-  font-size: var(--font-body);
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1;
+  display: block;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.brandSub {
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
   font-weight: 700;
-  color: var(--color-primary);
-  line-height: 1.2;
 }
 
 .collapseButton {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-sm);
+  margin-left: auto;
   border: none;
   background: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  color: var(--ink-3);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  flex: none;
 }
 
 .collapseButton:hover {
-  background: var(--color-soft-brown);
+  color: var(--ink);
+  background: var(--surface-2);
 }
 
-.collapsed .top {
+.collapsed .brand {
   justify-content: center;
 }
 
-.nav {
+.collapsed .brandText,
+.collapsed .collapseButton,
+.collapsed .secLabel,
+.collapsed .navLabel,
+.collapsed .navBadge,
+.collapsed .userText,
+.collapsed .userMore {
+  display: none;
+}
+
+/* ---------------- Navegação ---------------- */
+.scroll {
   flex: 1;
+  overflow-y: auto;
+  margin: 8px -4px;
+  padding: 0 4px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: var(--spacing-xs) var(--spacing-xxs);
+  gap: 3px;
 }
 
-.tab {
-  display: block;
-  border-radius: var(--radius-md);
+.scroll::-webkit-scrollbar {
+  width: 0;
 }
 
-.tabInner {
+.secLabel {
+  padding: 16px 12px 6px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ink-3);
+}
+
+.navItem {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: var(--spacing-sm2);
-  padding: var(--spacing-sm2) var(--spacing-sm2);
-  border-radius: var(--radius-md);
+  gap: 13px;
+  width: 100%;
+  border-radius: 13px;
+  padding: 11px 12px;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--ink-2);
+  position: relative;
+  transition: 0.15s;
+  text-align: left;
 }
 
-.collapsed .tabInner {
-  justify-content: center;
-  padding-inline: 0;
+.navIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--ink-3);
+  transition: 0.15s;
 }
 
-.tab:not(.tabActive):hover .tabInner {
-  background: var(--color-sidebar-hover);
+.navItem:hover {
+  background: var(--surface-2);
+  color: var(--ink);
 }
 
-.tabActive .tabInner {
-  background: var(--color-soft-brown);
+.navItem:hover .navIcon {
+  color: var(--accent);
 }
 
-.label {
-  font-size: var(--font-body);
-  font-weight: 500;
+.navLabel {
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.footer {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: var(--spacing-xxs);
-  border-top: 1px solid var(--color-border);
+.navItemActive,
+.navItemActive:hover {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: var(--shadow-card);
 }
 
-.profileRow {
+.navItemActive .navIcon,
+.navItemActive:hover .navIcon {
+  color: var(--accent-ink);
+}
+
+.navBadge {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--gold-soft);
+  color: var(--gold);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.navItemActive .navBadge {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--accent-ink);
+}
+
+.collapsed .navItem {
+  justify-content: center;
+  padding: 11px;
+}
+
+/* ---------------- Cartão de usuário ---------------- */
+.userCard {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 11px;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  margin-top: 6px;
 }
 
-.collapsed .profileRow {
-  justify-content: center;
-}
-
-.avatarWrap {
+.userAvatar {
+  flex: none;
   position: relative;
-  flex-shrink: 0;
 }
 
-.menuTrigger {
-  position: relative;
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+.userText {
+  min-width: 0;
+  flex: 1;
+}
+
+.userName {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  display: block;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userRole {
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.userMore {
   border: none;
   background: none;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: var(--ink-3);
   cursor: pointer;
+  padding: 6px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  position: relative;
 }
 
-.menuTrigger:hover {
-  background: var(--color-sidebar-hover);
+.userMore:hover {
+  color: var(--ink);
+  background: var(--surface-2);
 }
 
+.collapsed .userCard {
+  justify-content: center;
+  padding: 8px;
+}
+
+/* Gatilho do menu sobreposto ao avatar quando recolhido */
 .menuTriggerOverlay {
   position: absolute;
   top: -2px;
@@ -146,16 +259,15 @@
   width: 20px;
   height: 20px;
   border-radius: 10px;
-  border: 2px solid var(--color-tab-bar-bg);
-  background: var(--color-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 2px solid var(--surface);
+  background: var(--accent);
+  display: grid;
+  place-items: center;
   cursor: pointer;
 }
 
 .menuTriggerOverlay:hover {
-  filter: brightness(1.1);
+  filter: brightness(1.08);
 }
 
 .menuBadge {
@@ -165,31 +277,6 @@
   width: 8px;
   height: 8px;
   border-radius: 4px;
-  background: var(--color-error);
-  border: 1px solid var(--color-tab-bar-bg);
-}
-
-.profile {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm2);
-  padding: var(--spacing-sm2) var(--spacing-sm2);
-  border-radius: var(--radius-md);
-  flex: 1;
-  min-width: 0;
-}
-
-.collapsed .profile {
-  flex: none;
-  justify-content: center;
-  padding-inline: 0;
-}
-
-.profileName {
-  font-size: var(--font-body);
-  font-weight: 600;
-  color: var(--color-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  background: var(--gold);
+  border: 1.5px solid var(--surface);
 }

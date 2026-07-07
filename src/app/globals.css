@@ -11,28 +11,83 @@
    ========================================================================= */
 
 :root {
-  /* Cores — tema light (padrão) */
-  --color-background: #f6f1eb;
-  --color-card: #ffffff;
-  --color-primary: #6b4f3a;
-  --color-text: #3e2f23;
-  --color-text-strong: #3e2c1c;
-  --color-text-muted: #8c7a6b;
-  --color-muted: #9e8e80;
+  /* =====================================================================
+     Paleta editorial "Missal" — tema light (padrão)
+     Fundo pergaminho, superfícies em camadas, tinta marrom-escura, acento
+     sépia e dourado litúrgico. Os tokens semânticos (--bg / --surface /
+     --ink / --accent / --gold) são a base do redesenho desktop; os nomes
+     --color-* logo abaixo são apelidos que apontam para eles, para que todo
+     o app existente herde a nova identidade sem alteração.
+     ===================================================================== */
+
+  /* Superfícies e fundo */
+  --bg: #f1eadb;
+  --bg-2: #ebe2d1;
+  --surface: #fcf9f1;
+  --surface-2: #f6f0e3;
+  --surface-3: #f0e8d8;
+
+  /* Tinta (texto) */
+  --ink: #2c2015;
+  --ink-2: #6b5a49;
+  --ink-3: #9c8c78;
+
+  /* Linhas / divisórias */
+  --line: #e4d9c6;
+  --line-2: #eee6d6;
+
+  /* Acento sépia + tinta sobre acento */
+  --accent: #6c4a33;
+  --accent-2: #835a3e;
+  --accent-ink: #fbf6ec;
+  --accent-soft: #ebe0cf;
+
+  /* Dourado litúrgico */
+  --gold: #a8761f;
+  --gold-2: #c9973a;
+  --gold-soft: #f0e5cf;
+
+  /* Tons semânticos */
+  --ok: #3d7a57;
+  --ok-soft: #e2eee3;
+  --warn: #9c7a35;
+  --warn-soft: #f1e7cf;
+  --danger: #a5462f;
+  --danger-soft: #f3e1da;
+
+  /* Sombras (mais suaves e editoriais) */
+  --shadow-card: 0 1px 0 rgba(60, 42, 26, 0.03),
+    0 12px 30px -24px rgba(60, 42, 26, 0.35);
+  --shadow-pop: 0 40px 90px -40px rgba(52, 36, 20, 0.5),
+    0 8px 22px -14px rgba(52, 36, 20, 0.3);
+
+  /* Gradientes de marca */
+  --sidebar-bg: linear-gradient(180deg, #fbf7ee, #f4ecdc);
+  --hero-ink: #fbf5ea;
+
+  /* ---- Apelidos compatíveis com o app existente (apontam para os tokens
+     acima; seguem automaticamente o tema escuro via var() tardio) ---- */
+  --color-background: var(--bg);
+  --color-card: var(--surface);
+  --color-primary: var(--accent);
+  --color-text: var(--ink);
+  --color-text-strong: var(--ink);
+  --color-text-muted: var(--ink-2);
+  --color-muted: var(--ink-3);
   --color-muted-background: #ffffff40;
-  --color-border: #ded6cc;
-  --color-input-bg: #fbf8f4;
+  --color-border: var(--line);
+  --color-input-bg: var(--surface-2);
   --color-black: #000000;
   --color-white: #ffffff;
-  --color-error: #e53935;
-  --color-waiting: #e0b96a;
-  --color-soft-brown: #ede6de;
-  --color-skeleton-bg: #c0bcb6;
-  --color-success: #1e7f43;
+  --color-error: var(--danger);
+  --color-waiting: var(--warn);
+  --color-soft-brown: var(--surface-3);
+  --color-skeleton-bg: #ded2bd;
+  --color-success: var(--ok);
   --color-info: #3b6df6;
-  --color-success-background: #e6f4ea;
-  --color-tab-bar-bg: rgba(255, 255, 255, 0.9);
-  --color-header-glass: rgba(255, 255, 255, 0.8);
+  --color-success-background: var(--ok-soft);
+  --color-tab-bar-bg: rgba(252, 249, 241, 0.9);
+  --color-header-glass: rgba(252, 249, 241, 0.8);
   --color-sidebar-hover: rgba(62, 47, 35, 0.07);
 
   /* Espaçamentos */
@@ -89,24 +144,48 @@
 }
 
 [data-theme="dark"] {
-  --color-background: #1a1812;
-  --color-card: #252118;
-  --color-primary: #c9a055;
-  --color-text: #ede0b8;
-  --color-text-strong: #f5edd5;
-  --color-text-muted: #8a7d5a;
-  --color-muted: #4a3f28;
+  /* Só os tokens crus mudam; os apelidos --color-* declarados em :root
+     resolvem var(--accent) etc. no ponto de uso e já seguem estes valores. */
+  --bg: #140e08;
+  --bg-2: #1a130b;
+  --surface: #1f1810;
+  --surface-2: #271e13;
+  --surface-3: #2e2416;
+
+  --ink: #f1e7d5;
+  --ink-2: #c1af98;
+  --ink-3: #897862;
+
+  --line: #352a1c;
+  --line-2: #2b2013;
+
+  --accent: #cb9d60;
+  --accent-2: #ddb471;
+  --accent-ink: #1a1208;
+  --accent-soft: #2a2014;
+
+  --gold: #d7a957;
+  --gold-2: #ebc375;
+  --gold-soft: #2c2113;
+
+  --ok: #6fb089;
+  --ok-soft: #1e2a20;
+  --warn: #c7a052;
+  --warn-soft: #2a2113;
+  --danger: #df8468;
+  --danger-soft: #2c1913;
+
+  --shadow-card: 0 1px 0 rgba(0, 0, 0, 0.3), 0 18px 40px -30px rgba(0, 0, 0, 0.8);
+  --shadow-pop: 0 50px 100px -40px rgba(0, 0, 0, 0.85),
+    0 10px 30px -16px rgba(0, 0, 0, 0.6);
+  --sidebar-bg: linear-gradient(180deg, #1d160d, #16100a);
+  --hero-ink: #f6ecd8;
+
+  /* apelidos que não derivam de um token cru */
   --color-muted-background: rgba(30, 28, 18, 0.5);
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-input-bg: #2c2820;
-  --color-error: #e57373;
-  --color-waiting: #c9902a;
-  --color-soft-brown: #2e2a1c;
   --color-skeleton-bg: #4b452d;
-  --color-success: #4caf6b;
-  --color-success-background: #182e20;
-  --color-tab-bar-bg: rgba(26, 24, 18, 0.95);
-  --color-header-glass: rgba(26, 24, 18, 0.88);
+  --color-tab-bar-bg: rgba(31, 24, 16, 0.92);
+  --color-header-glass: rgba(31, 24, 16, 0.85);
   --color-sidebar-hover: rgba(255, 255, 255, 0.07);
 }
 
@@ -133,11 +212,169 @@ html {
 body {
   background: var(--color-background);
   color: var(--color-text);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   font-size: var(--font-body);
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   min-height: 100dvh;
+}
+
+/* ---------------------------------------------------------------------------
+   Utilitários editoriais compartilhados pelo redesenho "Missal".
+   .serif  → face de exibição (Cormorant) para títulos, valores e leituras.
+   .eyebrow/.cap → rótulos em versalete com tracking largo.
+   .money  → numerais tabulares na face de exibição.
+   --------------------------------------------------------------------------- */
+.serif {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.eyebrow {
+  font-size: 11.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.cap {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ink-3);
+}
+
+.money {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------------
+   Primitivas de card/pill/tile/barra compartilhadas pelas telas desktop do
+   redesenho "Missal" (Leituras, Contribuições e futuras telas de
+   Administrativo). Usar direto (sem .module.css) evita reimplementar o mesmo
+   card/pill em cada página.
+   --------------------------------------------------------------------------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.card-pad {
+  padding: 24px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border-radius: 999px;
+  padding: 5px 11px;
+}
+
+.pill .pd {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+
+.pill-ok {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+
+.pill-wait {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.pill-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.pill-gold {
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+
+.pill-accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tile {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-card);
+}
+
+.tile .t-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--ink-2);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.tile .t-ic {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  color: var(--accent);
+  flex: none;
+}
+
+.tile .t-val {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  font-size: 30px;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.tile .t-sub {
+  color: var(--ink-3);
+  font-size: 12.5px;
+  margin-top: 6px;
+}
+
+.bar {
+  height: 9px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.bar > i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--ok), color-mix(in srgb, var(--ok) 70%, var(--gold)));
+}
+
+.bar.gold > i {
+  background: linear-gradient(90deg, var(--gold), var(--gold-2));
 }
 
 a {
@@ -213,5 +450,20 @@ svg {
 @keyframes app-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* Utilitário de skeleton (blocos placeholder pulsantes) — mesma cadência do
+   LiturgySkeleton mobile, reaproveitado pelos skeletons desktop. */
+.skeleton-pulse {
+  animation: app-skeleton-pulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes app-skeleton-pulse {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
   }
 }

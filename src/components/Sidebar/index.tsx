@@ -32,12 +32,20 @@ import { Dialog } from "../Dialog";
 // recolhido (só ícones) — a largura é publicada em --sidebar-width para que o
 // conteúdo se ajuste automaticamente.
 
-type NavItem = { name: string; path: string; label: string; Icon: LucideIcon };
+type NavItem = {
+  name: string;
+  path: string;
+  label: string;
+  Icon: LucideIcon;
+  badge?: string;
+};
+type NavSection = { label: string; items: NavItem[] };
 
-const BASE_NAV: NavItem[] = [
+const COMMUNITY_NAV: NavItem[] = [
   { name: "Dashboard", path: "/dashboard", label: "Início", Icon: Home },
   { name: "Readings", path: "/readings", label: "Leituras", Icon: BookOpen },
   { name: "Bills", path: "/bills", label: "Contribuições", Icon: FileText },
+  { name: "Videos", path: "/videos", label: "Vídeos", Icon: Video },
 ];
 
 const ADMIN_ITEM: NavItem = {
@@ -47,17 +55,20 @@ const ADMIN_ITEM: NavItem = {
   Icon: ShieldUser,
 };
 
-const EXTRA_NAV: NavItem[] = [
-  { name: "Videos", path: "/videos", label: "Vídeos", Icon: Video },
-  {
-    name: "PersonalSettings",
-    path: "/personal-settings",
-    label: "Configurações pessoais",
-    Icon: Settings,
-  },
-];
+const ACCOUNT_ITEM: NavItem = {
+  name: "PersonalSettings",
+  path: "/personal-settings",
+  label: "Configurações pessoais",
+  Icon: Settings,
+};
 
 const STORAGE_KEY = "sidebar:collapsed";
+const SIDEBAR_WIDTH = "268px";
+const SIDEBAR_WIDTH_COLLAPSED = "82px";
+
+function roleLabel(role?: string): string {
+  return role === "admin" ? "Coordenador" : "Membro";
+}
 
 export function Sidebar() {
   const { colors } = useAppTheme();
@@ -83,7 +94,7 @@ export function Sidebar() {
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--sidebar-width",
-      collapsed ? "72px" : "240px",
+      collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH,
     );
     return () => {
       document.documentElement.style.removeProperty("--sidebar-width");
@@ -113,14 +124,19 @@ export function Sidebar() {
     setMenuVisible(true);
   }
 
-  const nav: NavItem[] = [
-    ...BASE_NAV,
-    ...(member?.role === "admin" ? [ADMIN_ITEM] : []),
-    ...EXTRA_NAV,
+  const sections: NavSection[] = [
+    { label: "Comunidade", items: COMMUNITY_NAV },
+    {
+      label: "Gestão",
+      items: [
+        ...(member?.role === "admin" ? [ADMIN_ITEM] : []),
+        ACCOUNT_ITEM,
+      ],
+    },
   ];
 
   const fullName =
-    `${member?.firstName ?? ""} ${member?.lastName ?? ""}`.trim();
+    `${member?.firstName ?? ""} ${member?.lastName ?? ""}`.trim() || "Membro";
 
   return (
     <aside
@@ -128,12 +144,15 @@ export function Sidebar() {
         .filter(Boolean)
         .join(" ")}
     >
-      <div className={styles.top}>
+      <div className={styles.brand}>
+        <span className={styles.mark}>
+          <LogoResgatar size={30} color="currentColor" />
+        </span>
         {!collapsed && (
-          <div className={styles.brand}>
-            <LogoResgatar size={80} color={colors.primary} />
-            <span className={styles.brandName}>Comunidade Resgatar</span>
-          </div>
+          <span className={styles.brandText}>
+            <span className={styles.brandName}>Resgatar</span>
+            <span className={styles.brandSub}>Comunidade</span>
+          </span>
         )}
         <button
           type="button"
@@ -142,77 +161,83 @@ export function Sidebar() {
           aria-label={collapsed ? "Expandir menu" : "Recolher menu"}
         >
           {collapsed ? (
-            <PanelLeftOpen size={18} color={colors.textMuted} />
+            <PanelLeftOpen size={19} color={colors.muted} />
           ) : (
-            <PanelLeftClose size={18} color={colors.textMuted} />
+            <PanelLeftClose size={19} color={colors.muted} />
           )}
         </button>
       </div>
 
-      <nav className={styles.nav}>
-        {nav.map((item) => {
-          const focused = pathname?.startsWith(item.path) ?? false;
-          const iconColor = focused ? colors.primary : colors.textMuted;
-
-          return (
-            <Link
-              key={item.name}
-              href={item.path}
-              title={collapsed ? item.label : undefined}
-              className={[styles.tab, focused && styles.tabActive]
-                .filter(Boolean)
-                .join(" ")}
-            >
-              <CoachTarget
-                id={`tab-${item.name.toLowerCase()}`}
-                className={styles.tabInner}
-              >
-                <item.Icon size={22} color={iconColor} />
-                {!collapsed && (
-                  <span className={styles.label} style={{ color: iconColor }}>
-                    {item.label}
-                  </span>
-                )}
-              </CoachTarget>
-            </Link>
-          );
-        })}
+      <nav className={styles.scroll}>
+        {sections.map((section) => (
+          <div key={section.label}>
+            {!collapsed && <div className={styles.secLabel}>{section.label}</div>}
+            {section.items.map((item) => {
+              const focused = pathname?.startsWith(item.path) ?? false;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.path}
+                  title={collapsed ? item.label : undefined}
+                  className={[styles.navItem, focused && styles.navItemActive]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  <CoachTarget
+                    id={`tab-${item.name.toLowerCase()}`}
+                    className={styles.navIcon}
+                  >
+                    <item.Icon size={21} strokeWidth={1.7} />
+                  </CoachTarget>
+                  {!collapsed && (
+                    <>
+                      <span className={styles.navLabel}>{item.label}</span>
+                      {item.badge && (
+                        <span className={styles.navBadge}>{item.badge}</span>
+                      )}
+                    </>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        ))}
       </nav>
 
-      <div className={styles.footer}>
-        <div className={styles.profileRow}>
-          <div className={styles.profile} title={collapsed ? fullName : undefined}>
-            <div className={styles.avatarWrap}>
-              <Avatar photo={member?.profileImage} size={40} />
-              {collapsed && (
-                <button
-                  type="button"
-                  ref={menuButtonRef}
-                  className={styles.menuTriggerOverlay}
-                  onClick={handleOpenMenu}
-                  aria-label="Mais opções"
-                >
-                  <EllipsisVertical size={12} color={colors.white} />
-                  {todayBirthdays > 0 && <span className={styles.menuBadge} />}
-                </button>
-              )}
-            </div>
-            {!collapsed && <span className={styles.profileName}>{fullName}</span>}
-          </div>
-
-          {!collapsed && (
+      <div className={styles.userCard} title={collapsed ? fullName : undefined}>
+        <div className={styles.userAvatar}>
+          <Avatar photo={member?.profileImage} size={38} />
+          {collapsed && (
             <button
               type="button"
               ref={menuButtonRef}
-              className={styles.menuTrigger}
+              className={styles.menuTriggerOverlay}
               onClick={handleOpenMenu}
               aria-label="Mais opções"
             >
-              <EllipsisVertical size={16} color={colors.textMuted} />
+              <EllipsisVertical size={12} color={colors.white} />
               {todayBirthdays > 0 && <span className={styles.menuBadge} />}
             </button>
           )}
         </div>
+        {!collapsed && (
+          <span className={styles.userText}>
+            <span className={styles.userName}>{fullName}</span>
+            <span className={styles.userRole}>{roleLabel(member?.role)}</span>
+          </span>
+        )}
+        {!collapsed && (
+          <button
+            type="button"
+            ref={menuButtonRef}
+            className={styles.userMore}
+            onClick={handleOpenMenu}
+            aria-label="Mais opções"
+          >
+            <EllipsisVertical size={18} color={colors.muted} />
+            {todayBirthdays > 0 && <span className={styles.menuBadge} />}
+          </button>
+        )}
       </div>
 
       <QuickActionsSheet

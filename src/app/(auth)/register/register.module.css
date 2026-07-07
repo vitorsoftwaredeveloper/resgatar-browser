@@ -1,98 +1,193 @@
-.background {
+/* =====================================================================
+   Cadastro — redesenho editorial "Missal" (mesmo split da tela de login).
+   Hero litúrgico à esquerda (desktop); formulário de cadastro à direita.
+   Os controles (Input/DocTypeToggle/Avatar/Button) são os mesmos, só a
+   moldura mudou.
+   ===================================================================== */
+
+.wrap {
   min-height: 100dvh;
-  background: var(--color-background);
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  background: var(--bg);
+}
+
+/* ---------------- HERO (aside) ---------------- */
+.aside {
+  position: relative;
+  overflow: hidden;
+  color: var(--hero-ink);
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(201, 151, 58, 0.28), transparent 55%),
+    linear-gradient(160deg, #5c3f2b 0%, #3a281b 62%, #2a1c12 100%);
+  padding: 64px 68px;
+  display: flex;
+  flex-direction: column;
+}
+
+:global([data-theme="dark"]) .aside {
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(215, 169, 87, 0.22), transparent 55%),
+    linear-gradient(160deg, #241a10 0%, #16100a 70%);
+}
+
+.aside::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 240, 215, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Cruz gigante translúcida: marca-d'água que ocupa a faixa marrom, ancorada
+   à direita e saindo da direita para a esquerda (parte da cruz sangra pela
+   borda direita, junto à divisa com o formulário). */
+.watermark {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(28%, -50%);
+  z-index: 0;
+  opacity: 0.1;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.asideCenter {
+  margin: auto 0;
+  position: relative;
+  z-index: 1;
+}
+
+.verse {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: 44px;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  max-width: 16ch;
+  margin: 0;
+}
+
+.verseRef {
+  margin-top: 22px;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+/* ---------------- PANEL (form) ---------------- */
+.panel {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-xl);
+  padding: 48px;
+  overflow-y: auto;
 }
 
 .card {
   width: 100%;
   max-width: 480px;
-  background: var(--color-card);
-  border-radius: 32px;
-  padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-xxl);
+}
+
+.cardBrand {
+  display: none;
+}
+
+.h {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  font-size: 38px;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+
+.sub {
+  color: var(--ink-2);
+  font-size: 14.5px;
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+/* seletor de foto */
+.avatarPick {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
 }
 
-.logoContainer {
-  width: 120px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.title {
-  font-size: var(--font-hero);
-  font-weight: 700;
-  text-align: center;
-  color: var(--color-primary);
-  margin-top: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
-
-.photoPicker {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: var(--spacing-xl);
-  gap: var(--spacing-xxs);
-}
-
-.photoHint {
-  color: var(--color-text-muted);
-  font-size: var(--font-small);
+.avatarHint {
+  color: var(--ink-3);
+  font-size: 12.5px;
   text-align: center;
 }
 
+/* formulário */
 .form {
   width: 100%;
 }
 
-.row {
-  display: flex;
-  flex-direction: row;
-  gap: var(--spacing-xxs);
-  width: 100%;
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
 }
 
-.halfField {
-  flex: 1;
+.grid2 > * {
   min-width: 0;
 }
 
 .submitButton {
-  margin-top: var(--spacing-xl);
+  margin-top: 8px;
   width: 100%;
 }
 
-.loginRow {
-  margin-top: var(--spacing-md);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+.switch {
+  margin-top: 22px;
+  text-align: center;
+  color: var(--ink-2);
+  font-size: 14px;
 }
 
-.loginText {
-  color: var(--color-text-muted);
-  font-size: var(--font-body);
+.switchLink {
+  font-weight: 700;
+  color: var(--accent);
+  padding-left: 6px;
 }
 
-.loginLink {
-  color: var(--color-primary);
-  font-size: var(--font-body);
-  font-weight: 600;
-  background: none;
-  border: none;
+.switchLink:hover {
+  text-decoration: underline;
 }
 
-@media (min-width: 768px) {
-  .card {
-    max-width: 560px;
+/* ---------------- Responsivo ---------------- */
+@media (max-width: 1080px) {
+  .wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .aside {
+    display: none;
+  }
+
+  .panel {
+    padding: 32px 24px;
+  }
+
+  .cardBrand {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+
+  .grid2 {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 }

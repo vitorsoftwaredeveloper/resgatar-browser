@@ -1,21 +1,20 @@
 "use client";
 
-import { Button } from "@/components/Button";
-import { Input } from "@/components/Input";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { LogoResgatar } from "@/components/Svg/Logo";
 import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
-import { useAppTheme } from "@/context/ThemeContext";
-import { Eye, EyeOff, LogIn, Mail } from "lucide-react";
+import { Eye, EyeOff, Lock, LogIn, Mail } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styles from "./login.module.css";
+import { LogoResgatarMark } from "@/components/Svg/LogoMark";
 
-// Portado de resgatar_app/src/screens/LoginScreen. KeyboardAvoidingView/
-// ScrollView não são necessários no browser — o layout flexbox + scroll nativo
-// da página já resolve isso.
+// Portado de resgatar_app/src/screens/LoginScreen — agora no layout editorial
+// "Missal": hero litúrgico à esquerda (desktop) e cartão de acesso à direita.
+// A lógica de autenticação (refs de e-mail/senha, validação e toasts) é a
+// mesma; só a apresentação mudou.
 
 export default function LoginPage() {
   const {
@@ -25,7 +24,6 @@ export default function LoginPage() {
     needsOnboarding,
     onboardingChecked,
   } = useAuth();
-  const { colors } = useAppTheme();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -72,74 +70,97 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="app-shell app-shell--wide" style={{ minHeight: "100dvh" }}>
-      <div className={styles.background}>
+    <div className={styles.wrap}>
+      <aside className={styles.aside}>
+        <div className={styles.watermark} aria-hidden="true">
+          <LogoResgatarMark size={1180} color="#EAD7AE" />
+        </div>
+
+        <div className={styles.asideCenter}>
+          <p className={styles.verse}>
+            &ldquo;Doar a vida por amor à santa cruz.&rdquo;
+          </p>
+          <div className={styles.verseRef}>Mc 10, 45</div>
+        </div>
+      </aside>
+
+      <div className={styles.panel}>
         <div className={styles.card}>
-          <div className={styles.logoContainer}>
-            <LogoResgatar color={colors.primary} size={300} />
+          <div className={styles.cardBrand}>
+            <LogoResgatar size={72} color="var(--accent)" />
           </div>
 
-          <h1 className={styles.title}>Comunidade Resgatar</h1>
+          <h1 className={styles.h}>Bem-vindo de volta</h1>
+          <p className={styles.sub}>
+            Entre para acompanhar leituras, contribuições e a vida da
+            comunidade.
+          </p>
 
-          <div className={styles.motion}>
-            <div className={styles.divider} />
-            <span className={styles.motionText}>
-              Doar a vida por amor a santa cruz!
-            </span>
-            <div className={styles.divider} />
-          </div>
+          <form
+            className={styles.form}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+          >
+            <div>
+              <label className={styles.fieldLabel} htmlFor="login-email">
+                Email
+              </label>
+              <div className={styles.field}>
+                <span className={styles.fi}>
+                  <Mail size={19} />
+                </span>
+                <input
+                  id="login-email"
+                  type="email"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  placeholder="voce@email.com"
+                  onChange={(e) => {
+                    emailRef.current = e.target.value;
+                  }}
+                />
+              </div>
+            </div>
 
-          <p className={styles.subtitle}>Mc 10, 45</p>
-
-          <div className={styles.form}>
-            <Input
-              placeholder="Email"
-              type="email"
-              autoCapitalize="none"
-              onChangeText={(v) => {
-                emailRef.current = v;
-              }}
-              rightIcon={<Mail size={24} color={colors.muted} />}
-            />
-
-            <Input
-              placeholder="Senha"
-              type={showPassword ? "text" : "password"}
-              onChangeText={(v) => {
-                passwordRef.current = v;
-              }}
-              rightIcon={
+            <div>
+              <label className={styles.fieldLabel} htmlFor="login-password">
+                Senha
+              </label>
+              <div className={styles.field}>
+                <span className={styles.fi}>
+                  <Lock size={19} />
+                </span>
+                <input
+                  id="login-password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  placeholder="Sua senha"
+                  onChange={(e) => {
+                    passwordRef.current = e.target.value;
+                  }}
+                />
                 <button
                   type="button"
-                  aria-label="toggle-password"
-                  onClick={() => setShowPassword(!showPassword)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    display: "flex",
-                  }}
+                  className={styles.ghost}
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  onClick={() => setShowPassword((s) => !s)}
                 >
-                  {showPassword ? (
-                    <Eye size={24} color={colors.muted} />
-                  ) : (
-                    <EyeOff size={24} color={colors.muted} />
-                  )}
+                  {showPassword ? <Eye size={19} /> : <EyeOff size={19} />}
                 </button>
-              }
-            />
-          </div>
+              </div>
+            </div>
 
-          <Button
-            title="Entrar"
-            onPress={handleLogin}
-            className={styles.submitButton}
-            leftIcon={<LogIn size={20} color={colors.background} />}
-            loading={loading}
-          />
+            <button type="submit" className={styles.submit} disabled={loading}>
+              <LogIn size={20} />
+              {loading ? "Entrando..." : "Entrar"}
+            </button>
+          </form>
 
-          <div className={styles.registerRow}>
-            <span className={styles.registerText}>Não tem uma conta? </span>
-            <Link href="/register" className={styles.registerLink}>
+          <div className={styles.switch}>
+            Não tem uma conta?
+            <Link href="/register" className={styles.switchLink}>
               Registre-se
             </Link>
           </div>

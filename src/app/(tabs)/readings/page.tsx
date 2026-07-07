@@ -2,13 +2,18 @@
 
 import { CalendarModal } from "@/components/CalendarModal";
 import { DateNavigator } from "@/components/DateNavigator";
-import { DesktopLiturgyReader, type LiturgySection } from "@/components/DesktopLiturgyReader";
+import {
+  DesktopLiturgyReader,
+  DesktopLiturgyReaderSkeleton,
+  type LiturgySection,
+} from "@/components/DesktopLiturgyReader";
 import { Header } from "@/components/Header";
 import { LiturgySeasonBanner } from "@/components/LiturgySeasonBanner";
 import { MarkReadingButton } from "@/components/MarkReadingButton";
 import { PsalmCard } from "@/components/PsalmCard";
 import { ReadingCard } from "@/components/ReadingCard";
 import { LiturgySkeleton } from "@/components/Skeleton/LiturgySkeleton";
+import { StreakCard } from "@/components/StreakCard";
 import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
@@ -17,8 +22,8 @@ import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { LiturgyService } from "@/services/LiturgyService";
 import { ReadingStreakService } from "@/services/ReadingStreakService";
 import { getReadingMarkedDate, setReadingMarkedDate } from "@/storage/localStorage";
-import { ILiturgia } from "@/types/Liturgy";
-import { Pause, RefreshCw, Volume2 } from "lucide-react";
+import { ILiturgia, LITURGICAL_ACCENT } from "@/types/Liturgy";
+import { Pause, Quote, RefreshCw, Volume2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import styles from "./readings.module.css";
 
@@ -39,6 +44,32 @@ function isSameDay(a: Date, b: Date): boolean {
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate()
   );
+}
+
+// "Terça-feira, 7 de julho" — usado no eyebrow do cabeçalho desktop (sem o
+// ano, que já fica implícito pelo contexto da tela).
+function formatEyebrowDate(date: Date): string {
+  const label = date.toLocaleDateString("pt-BR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+  return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
+// Citação de destaque do trilho lateral (desktop): a primeira frase do
+// Evangelho do dia, sem parafrasear — é conteúdo real vindo da API, só
+// recortado para caber como epígrafe.
+function buildQuote(liturgy: ILiturgia): { text: string; ref: string } | null {
+  const evangelho = liturgy.leituras.evangelho;
+  if (!evangelho?.texto) return null;
+  const clean = evangelho.texto.replace(/\s+/g, " ").trim();
+  const firstSentence = clean.split(/(?<=[.!?])\s/)[0] ?? clean;
+  const text =
+    firstSentence.length > 160
+      ? `${firstSentence.slice(0, 157).trimEnd()}…`
+      : firstSentence;
+  return { text, ref: evangelho.referencia };
 }
 
 function buildSectionText(
@@ -261,7 +292,129 @@ export default function ReadingsPage() {
       />
 
       <div className={styles.content}>
-        {loading ? (
+        {isDesktop ? (
+          <>
+            <div className={styles.pageHead}>
+              {liturgy ? (
+                <>
+                  <p className="eyebrow">
+                    Liturgia do dia · {formatEyebrowDate(selectedDate)}
+                  </p>
+                  <h1 className={styles.pageTitle}>{liturgy.liturgia}</h1>
+                  <span
+                    className={styles.colorPill}
+                    style={{
+                      color: LITURGICAL_ACCENT[liturgy.cor],
+                      background: `color-mix(in srgb, ${LITURGICAL_ACCENT[liturgy.cor]} 16%, var(--surface))`,
+                    }}
+                  >
+                    <span className={styles.colorDot} style={{ background: "currentColor" }} />
+                    {liturgy.cor}
+                  </span>
+                </>
+              ) : (
+                <div className="skeleton-pulse" aria-hidden="true">
+                  <span className={styles.skelEyebrow} />
+                  <span className={styles.skelTitle} />
+                </div>
+              )}
+            </div>
+
+            {ttsState !== "idle" && (
+              <button
+                type="button"
+                onClick={ttsState === "playing" ? pause : stop}
+                className={styles.ttsIndicator}
+                disabled={ttsState === "loading"}
+              >
+                <Volume2 size={14} color={colors.primary} />
+                <span className={styles.ttsIndicatorText}>
+                  {ttsState === "loading"
+                    ? "Gerando áudio..."
+                    : ttsState === "playing"
+                      ? "Reproduzindo áudio"
+                      : "Áudio pausado"}
+                </span>
+                {ttsState === "playing" ? (
+                  <Pause size={14} color={colors.primary} />
+                ) : (
+                  <RefreshCw size={14} color={colors.primary} />
+                )}
+              </button>
+            )}
+
+            <div className={styles.readingsGrid}>
+              {error ? (
+                <div className={styles.errorCard}>
+                  <p className={styles.errorTitle}>Não foi possível carregar</p>
+                  <p className={styles.errorSubtitle}>
+                    Verifique sua conexão e tente novamente.
+                  </p>
+                  <button
+                    type="button"
+                    className={styles.retryButton}
+                    onClick={() => fetchLiturgy(selectedDate, true)}
+                  >
+                    <RefreshCw size={16} color={colors.primary} />
+                    <span className={styles.retryText}>Tentar novamente</span>
+                  </button>
+                </div>
+              ) : liturgy ? (
+                <DesktopLiturgyReader
+                  sections={buildSections(liturgy)}
+                  activeId={activeSectionId}
+                  onSelectSection={setActiveSectionId}
+                  getTTS={sectionTTSProps}
+                />
+              ) : (
+                <DesktopLiturgyReaderSkeleton />
+              )}
+
+              {/* O trilho (calendário e ofensiva) não depende da liturgia do
+                  dia selecionado — fica sempre montado, então trocar de dia
+                  não some com nada, só a coluna principal ao lado pulsa. */}
+              <div className={styles.rail}>
+                <DateNavigator
+                  selectedDate={selectedDate}
+                  onPrev={handlePrev}
+                  onNext={handleNext}
+                  onOpenCalendar={() => setCalendarVisible(true)}
+                  onBackToToday={handleBackToToday}
+                />
+
+                {liturgy && isViewingToday && !alreadyReadToday && !markDismissed && (
+                  <MarkReadingButton
+                    streakCount={streakCount}
+                    loading={marking}
+                    onPress={handleMarkRead}
+                  />
+                )}
+
+                <StreakCard />
+
+                {liturgy ? (
+                  (() => {
+                    const quote = buildQuote(liturgy);
+                    if (!quote) return null;
+                    return (
+                      <div className={styles.quoteCard}>
+                        <Quote size={22} strokeWidth={1.4} className={styles.quoteIcon} />
+                        <p className={styles.quoteText}>&ldquo;{quote.text}&rdquo;</p>
+                        <span className={styles.quoteRef}>{quote.ref}</span>
+                      </div>
+                    );
+                  })()
+                ) : !error ? (
+                  <div className={`${styles.quoteCardSkeleton} skeleton-pulse`} aria-hidden="true">
+                    <span style={{ width: "90%" }} />
+                    <span style={{ width: "70%" }} />
+                    <span style={{ width: "40%" }} />
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          </>
+        ) : loading ? (
           <>
             <DateNavigator
               selectedDate={selectedDate}
@@ -334,15 +487,6 @@ export default function ReadingsPage() {
               cor={liturgy.cor}
             />
 
-            {isDesktop ? (
-              <DesktopLiturgyReader
-                sections={buildSections(liturgy)}
-                activeId={activeSectionId}
-                onSelectSection={setActiveSectionId}
-                getTTS={sectionTTSProps}
-              />
-            ) : (
-            <>
             <ReadingCard
               testID="card-primeira-leitura"
               coachId="reading-tts-btn"
@@ -423,8 +567,6 @@ export default function ReadingsPage() {
                 texto={liturgy.oracoes.coleta}
                 {...sectionTTSProps("oracao", liturgy.oracoes.coleta)}
               />
-            )}
-            </>
             )}
           </>
         ) : null}

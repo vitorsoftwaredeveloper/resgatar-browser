@@ -25,6 +25,13 @@
   text-align: left;
 }
 
+.donateIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--color-white);
+}
+
 .donateText {
   flex: 1;
   min-width: 0;
@@ -49,16 +56,142 @@
     min-height: calc(100dvh - 2 * var(--spacing-xl));
     margin-bottom: var(--spacing-xl);
     border-radius: var(--radius-xl);
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--card-grid-min), 1fr));
-    gap: var(--spacing-md);
-    align-content: start;
   }
 
-  /* O card de doação vira uma célula do grid como os demais (mesmo tamanho),
-     preservando o estilo (fundo primário). */
+  /* ---- Cabeçalho editorial ---- */
+  .pageHead {
+    margin-bottom: 26px;
+  }
+
+  .pageTitle {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: 40px;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+    color: var(--ink);
+    margin: 8px 0 12px;
+  }
+
+  .pageSubtitle {
+    color: var(--ink-2);
+    font-size: 15px;
+    max-width: 62ch;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ---- Faixa de resumo: progresso do ano + 2 indicadores ---- */
+  .summaryGrid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .progressCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .progressHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .progressValue {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .progressNumber {
+    font-size: 30px;
+  }
+
+  .progressLabel {
+    color: var(--ink-2);
+    font-weight: 600;
+  }
+
+  /* ---- Banner de doação — cartão em gradiente, com CTA visível ---- */
   .donateBanner {
-    height: 100%;
-    margin-bottom: 0;
+    background: linear-gradient(150deg, var(--accent-2), var(--accent));
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    gap: 22px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 22px;
+  }
+
+  .donateIcon {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--accent-ink);
+  }
+
+  .donateTitle {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--accent-ink);
+  }
+
+  .donateSubtitle {
+    font-size: 14.5px;
+    color: var(--accent-ink);
+    opacity: 0.85;
+    margin-top: 4px;
+  }
+
+  .donateCta {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-ink);
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 20px;
+    border-radius: 999px;
+  }
+
+  /* ---- Cabeçalho de seção + grid de mensalidades ---- */
+  .sectionHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 34px 0 16px;
+  }
+
+  .sectionHead h2 {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: 24px;
+    margin: 0;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .sectionCount {
+    font-size: 13.5px;
+    color: var(--ink-3);
+    font-weight: 600;
+  }
+
+  .monthsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
   }
 }
