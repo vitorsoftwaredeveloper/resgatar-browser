@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties } from "react";
+import { CSSProperties, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "../Button";
 import styles from "./Dialog.module.css";
@@ -19,9 +19,10 @@ type DialogProps = {
   description?: string;
   onClose: () => void;
   actions?: DialogAction[];
+  children?: ReactNode;
 };
 
-export function Dialog({ visible, title, description, onClose, actions = [] }: DialogProps) {
+export function Dialog({ visible, title, description, onClose, actions = [], children }: DialogProps) {
   if (!visible) return null;
 
   // Portal para document.body: alguns pais (ex. Sidebar) usam backdrop-filter,
@@ -37,6 +38,8 @@ export function Dialog({ visible, title, description, onClose, actions = [] }: D
       <div className={styles.container} onClick={(e) => e.stopPropagation()}>
         {title && <p className={styles.title}>{title}</p>}
         {description && <p className={styles.description}>{description}</p>}
+
+        {children}
 
         <div className={styles.actions}>
           {actions.map((action, index) => {

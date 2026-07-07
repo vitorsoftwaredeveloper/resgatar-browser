@@ -22,12 +22,15 @@ export const ChargeServices = {
       throw error;
     }
   },
+  // `value` é opcional, no formato "xx,xx"; quando omitido o backend usa o
+  // valor de contribuição do onboarding (member.paymentInfo.amount).
   registerCashPayment: async (
     memberId: string,
     referenceMonth: number,
+    value?: string,
   ): Promise<void> => {
     try {
-      await api.post("/charges/cash", { memberId, referenceMonth });
+      await api.post("/charges/cash", { memberId, referenceMonth, value });
     } catch (error) {
       console.error("Error registering cash payment", error);
       throw error;
