@@ -172,7 +172,10 @@ export default function BillsPage() {
     const paidEntries = entries.filter((e) => e.paid);
     const totalMonths = entries.length;
     const paidCount = paidEntries.length;
-    const totalPaidValue = paidEntries.reduce((sum, e) => sum + e.value, 0);
+    const totalPaidValue = paidEntries
+      .map((e) => String(e.value).replace(",", "."))
+      .reduce((sum, e) => (sum += Number(e)), 0);
+
     const pendingCount = totalMonths - paidCount;
     const monthlyAmount = Number(member?.paymentInfo.amount ?? 0);
 
