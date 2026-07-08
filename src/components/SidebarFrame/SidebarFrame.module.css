@@ -5,10 +5,10 @@
     transition: padding-left 0.2s ease;
   }
 
-  /* Alinha o conteúdo à esquerda (neutraliza o margin auto do app-shell) e dá
-     o respiro de topo (24px), igual ao gutter lateral entre sidebar e conteúdo. */
+  /* Centraliza no espaço restante ao lado da sidebar (mesmo tratamento do
+     .content em (tabs)/layout.module.css) e dá o respiro de topo (24px). */
   .frame > :global(.app-shell) {
-    margin-inline: 0;
+    margin-inline: auto;
     padding-top: var(--spacing-xl);
   }
 

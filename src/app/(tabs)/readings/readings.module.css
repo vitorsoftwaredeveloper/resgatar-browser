@@ -4,7 +4,6 @@
 
 .content {
   padding-inline: var(--spacing-lg);
-  background: var(--color-soft-brown);
   padding-top: var(--spacing-lg);
   padding-bottom: var(--spacing-xxl);
   border-top-left-radius: var(--radius-xl);

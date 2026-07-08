@@ -120,7 +120,10 @@ export function Sidebar() {
     const node = menuButtonRef.current;
     if (!node) return;
     const rect = node.getBoundingClientRect();
-    setAnchorPosition({ bottom: window.innerHeight - rect.top + 8, left: rect.left });
+    setAnchorPosition({
+      bottom: window.innerHeight - rect.top + 8,
+      left: rect.left,
+    });
     setMenuVisible(true);
   }
 
@@ -128,10 +131,7 @@ export function Sidebar() {
     { label: "Comunidade", items: COMMUNITY_NAV },
     {
       label: "Gestão",
-      items: [
-        ...(member?.role === "admin" ? [ADMIN_ITEM] : []),
-        ACCOUNT_ITEM,
-      ],
+      items: [...(member?.role === "admin" ? [ADMIN_ITEM] : []), ACCOUNT_ITEM],
     },
   ];
 
@@ -145,9 +145,11 @@ export function Sidebar() {
         .join(" ")}
     >
       <div className={styles.brand}>
-        <span className={styles.mark}>
-          <LogoResgatar size={30} color="currentColor" />
-        </span>
+        {!collapsed && (
+          <span className={styles.mark}>
+            <LogoResgatar size={50} color="currentColor" />
+          </span>
+        )}
         {!collapsed && (
           <span className={styles.brandText}>
             <span className={styles.brandName}>Resgatar</span>
@@ -171,7 +173,9 @@ export function Sidebar() {
       <nav className={styles.scroll}>
         {sections.map((section) => (
           <div key={section.label}>
-            {!collapsed && <div className={styles.secLabel}>{section.label}</div>}
+            {!collapsed && (
+              <div className={styles.secLabel}>{section.label}</div>
+            )}
             {section.items.map((item) => {
               const focused = pathname?.startsWith(item.path) ?? false;
               return (

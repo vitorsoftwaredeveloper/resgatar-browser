@@ -5,7 +5,6 @@
 .content {
   padding: var(--spacing-lg);
   padding-bottom: var(--spacing-xxl);
-  background: var(--color-soft-brown);
   border-top-left-radius: var(--radius-xl);
   border-top-right-radius: var(--radius-xl);
   min-height: 60dvh;

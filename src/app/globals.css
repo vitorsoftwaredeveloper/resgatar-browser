@@ -359,6 +359,22 @@ body {
   margin-top: 6px;
 }
 
+.tile-accent {
+  background: linear-gradient(155deg, var(--accent-2), var(--accent));
+  border-color: transparent;
+  color: var(--accent-ink);
+}
+
+.tile-accent .t-top,
+.tile-accent .t-sub {
+  color: color-mix(in srgb, var(--accent-ink) 80%, transparent);
+}
+
+.tile-accent .t-ic {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--accent-ink);
+}
+
 .bar {
   height: 9px;
   border-radius: 999px;

@@ -13,10 +13,38 @@ import { SidebarFrame } from "@/components/SidebarFrame";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { CalendarRange, Gift, Mail, PiggyBank, Receipt, UsersRound } from "lucide-react";
+import { BalanceServices } from "@/services/BalanceService";
+import { ChargeServices } from "@/services/ChargeService";
+import { IMember } from "@/types/Member";
+import { formatMoneyBRL } from "@/utils/helper";
+import {
+  CalendarRange,
+  CircleAlert,
+  Gift,
+  Mail,
+  PiggyBank,
+  Receipt,
+  Target,
+  UsersRound,
+  Wallet,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import styles from "./settings.module.css";
+
+const MONTH_LABELS = [
+  "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+  "julho", "agosto", "setembro", "outubro", "novembro", "dezembro",
+];
+
+interface AdminKpis {
+  saldoEmCaixa: number;
+  metaPercent: number;
+  metaCollected: number;
+  metaGoal: number;
+  inadimplentes: number;
+  membrosAtivos: number;
+}
 
 // Portado de resgatar_app/src/screens/SettingsScreen (área administrativa).
 //
@@ -40,10 +68,50 @@ type AdminScreenItem = Extract<AdminItem, { kind: "screen" }>;
 const SECTIONS: AdminSection[] = ["Financeiro", "Administração"];
 
 export default function SettingsPage() {
-  const { member } = useAuth();
+  const { member, listMembers } = useAuth();
   const { colors } = useAppTheme();
   const { isDesktop } = useBreakpoint();
   const router = useRouter();
+
+  const [kpis, setKpis] = useState<AdminKpis | null>(null);
+
+  // KPIs do hub (saldo em caixa, meta anual, inadimplentes, membros ativos) —
+  // só fazem sentido no layout desktop (o mobile continua o menu simples),
+  // então só busca quando a sidebar/hub em grade está de fato visível.
+  useEffect(() => {
+    if (!isDesktop) return;
+    let cancelled = false;
+    const now = new Date();
+    const year = now.getFullYear();
+
+    Promise.allSettled([
+      BalanceServices.getAnnual(year),
+      ChargeServices.getAnnualSummary(year),
+      ChargeServices.getSummary(year, now.getMonth() + 1),
+      listMembers(),
+    ]).then(([balanceR, annualR, monthR, membersR]) => {
+      if (cancelled) return;
+      setKpis({
+        saldoEmCaixa: balanceR.status === "fulfilled" ? balanceR.value.totals.saldoFinal : 0,
+        metaPercent: annualR.status === "fulfilled" ? annualR.value.totals.percent : 0,
+        metaCollected: annualR.status === "fulfilled" ? annualR.value.totals.collected : 0,
+        metaGoal: annualR.status === "fulfilled" ? annualR.value.totals.goal : 0,
+        inadimplentes: monthR.status === "fulfilled" ? monthR.value.counts.pending : 0,
+        membrosAtivos:
+          membersR.status === "fulfilled"
+            ? (membersR.value as unknown as IMember[]).length
+            : 0,
+      });
+    });
+
+    return () => {
+      cancelled = true;
+    };
+    // listMembers não é memoizado no AuthContext (nova referência a cada
+    // render do provider) — se entrasse nas deps, o efeito dispararia de novo
+    // a cada re-render do AuthProvider, não só quando isDesktop mudasse.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDesktop]);
 
   const [openSendNotification, setOpenSendNotification] = useState(false);
   const [activeKey, setActiveKey] = useState<string | null>(null);
@@ -163,10 +231,78 @@ export default function SettingsPage() {
           <div className={styles.scroll}>
             <div className={styles.content}>
               {isDesktop ? (
-                // Desktop: grid único, sem rótulos de seção.
-                <div className={styles.menuCard}>
-                  {items.map((item, index) => renderItem(item, index === items.length - 1))}
-                </div>
+                <>
+                  <div className={styles.pageHead}>
+                    <p className="eyebrow">Painel de gestão</p>
+                    <h1 className={styles.pageTitle}>Administrativo</h1>
+                    <p className={styles.pageSubtitle}>
+                      Visão financeira e ferramentas de gestão da Comunidade Resgatar.
+                    </p>
+                  </div>
+
+                  <div className={styles.kpiGrid}>
+                    <div className="tile tile-accent">
+                      <div className="t-top">
+                        <span className="t-ic">
+                          <Wallet size={17} />
+                        </span>
+                        Saldo em caixa
+                      </div>
+                      <div className="t-val money">
+                        {kpis ? formatMoneyBRL(kpis.saldoEmCaixa) : "—"}
+                      </div>
+                      <div className="t-sub">Entradas − saídas · {new Date().getFullYear()}</div>
+                    </div>
+
+                    <div className="tile">
+                      <div className="t-top">
+                        <span className="t-ic">
+                          <Target size={17} />
+                        </span>
+                        Meta anual
+                      </div>
+                      <div className="t-val">{kpis ? `${Math.round(kpis.metaPercent)}%` : "—"}</div>
+                      <div className="t-sub">
+                        {kpis
+                          ? `${formatMoneyBRL(kpis.metaCollected)} de ${formatMoneyBRL(kpis.metaGoal)}`
+                          : "Carregando..."}
+                      </div>
+                    </div>
+
+                    <div className="tile">
+                      <div className="t-top">
+                        <span
+                          className="t-ic"
+                          style={{ background: "var(--danger-soft)", color: "var(--danger)" }}
+                        >
+                          <CircleAlert size={17} />
+                        </span>
+                        Inadimplentes
+                      </div>
+                      <div className="t-val">{kpis ? kpis.inadimplentes : "—"}</div>
+                      <div className="t-sub">no mês de {MONTH_LABELS[new Date().getMonth()]}</div>
+                    </div>
+
+                    <div className="tile">
+                      <div className="t-top">
+                        <span className="t-ic">
+                          <UsersRound size={17} />
+                        </span>
+                        Membros ativos
+                      </div>
+                      <div className="t-val">{kpis ? kpis.membrosAtivos : "—"}</div>
+                      <div className="t-sub">na comunidade</div>
+                    </div>
+                  </div>
+
+                  <div className={styles.toolsSectionHead}>
+                    <h2>Ferramentas</h2>
+                  </div>
+
+                  <div className={styles.menuCard}>
+                    {items.map((item, index) => renderItem(item, index === items.length - 1))}
+                  </div>
+                </>
               ) : (
                 // Mobile: dois grupos rotulados.
                 SECTIONS.map((section) => {

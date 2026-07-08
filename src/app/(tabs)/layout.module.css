@@ -15,9 +15,13 @@
     transition: padding-left 0.2s ease;
   }
 
+  /* Centralizado dentro do espaço restante ao lado da sidebar — mesmo
+     tratamento do .page no desenho de referência (max-width + margin:auto),
+     em vez de encostar só na borda esquerda. */
   .content {
     width: 100%;
     max-width: 960px;
+    margin-inline: auto;
   }
 
   /* No desktop a sidebar já traz identidade, ações rápidas (modo escuro e
