@@ -61,6 +61,7 @@
 
   .content {
     margin-inline: 0;
+    width: 100%;
   }
 
   /* Cada seção vira um grid de cards (o fundo/agrupamento do menuCard some;

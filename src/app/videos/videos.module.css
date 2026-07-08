@@ -321,16 +321,16 @@
 /* No desktop o conteúdo não é uma coluna centralizada: fica encostado à direita
    da sidebar (app-shell--wide, alinhado à esquerda). Ancoramos o FAB 20px para
    dentro da borda direita real do card — o menor entre o limite de largura
-   (840/1040) e o gutter do frame (--spacing-xl). */
+   (960/1200) e o gutter do frame (--spacing-xl). */
 @media (min-width: 1024px) {
   .fab {
-    right: calc(20px + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 840px));
+    right: calc(20px + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 960px));
     bottom: 50px;
   }
 }
 
 @media (min-width: 1440px) {
   .fab {
-    right: calc(20px + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 1040px));
+    right: calc(20px + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 1200px));
   }
 }

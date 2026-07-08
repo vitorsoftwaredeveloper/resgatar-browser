@@ -448,15 +448,16 @@ svg {
 
 @media (min-width: 1024px) {
   .app-shell--wide {
-    max-width: 840px;
+    max-width: 960px;
   }
 }
 
 @media (min-width: 1440px) {
   .app-shell--wide {
-    max-width: 1040px;
+    max-width: 1200px;
   }
 }
+
 
 /* Utilitário para ícones de loading (equivalente ao ActivityIndicator do app) */
 .spin {

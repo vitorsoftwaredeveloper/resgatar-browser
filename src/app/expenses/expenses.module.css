@@ -249,12 +249,12 @@
   /* Ancora o FAB 20px para dentro da borda direita real do card (app-shell--wide
      alinhado à direita da sidebar), não de uma coluna centralizada. */
   .fab {
-    right: calc(var(--spacing-lg) + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 840px));
+    right: calc(var(--spacing-lg) + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 960px));
   }
 }
 
 @media (min-width: 1440px) {
   .fab {
-    right: calc(var(--spacing-lg) + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 1040px));
+    right: calc(var(--spacing-lg) + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 1200px));
   }
 }
