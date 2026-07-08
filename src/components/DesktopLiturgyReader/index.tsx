@@ -29,7 +29,10 @@ interface Props {
   // que desmontaria um estado local deste componente.
   activeId: string;
   onSelectSection: (id: string) => void;
-  getTTS: (id: string, text: string) => {
+  getTTS: (
+    id: string,
+    text: string,
+  ) => {
     ttsState: TTSState;
     onTTSPlay: () => void;
     onTTSPause: () => void;
@@ -49,7 +52,12 @@ function formatVerseText(text: string, verseClass: string) {
   );
 }
 
-export function DesktopLiturgyReader({ sections, activeId, onSelectSection, getTTS }: Props) {
+export function DesktopLiturgyReader({
+  sections,
+  activeId,
+  onSelectSection,
+  getTTS,
+}: Props) {
   const { colors } = useAppTheme();
 
   // Preserva a aba escolhida ao trocar de data; se a seção não existir nesse
@@ -71,7 +79,9 @@ export function DesktopLiturgyReader({ sections, activeId, onSelectSection, getT
                 type="button"
                 role="tab"
                 aria-selected={selected}
-                className={[styles.tab, selected && styles.tabActive].filter(Boolean).join(" ")}
+                className={[styles.tab, selected && styles.tabActive]
+                  .filter(Boolean)
+                  .join(" ")}
                 onClick={() => onSelectSection(section.id)}
               >
                 {section.label}
@@ -84,16 +94,31 @@ export function DesktopLiturgyReader({ sections, activeId, onSelectSection, getT
       <article className={styles.reading}>
         <div className={styles.readingHeader}>
           <div className={styles.readingHeadings}>
-            <span className={styles.readingLabel}>{active.label.toUpperCase()}</span>
-            {!!active.referencia && <p className={styles.referencia}>{active.referencia}</p>}
-            {!!active.titulo && <p className={styles.titulo}>{active.titulo}</p>}
+            <span className={styles.readingLabel}>
+              {active.label.toUpperCase()}
+            </span>
+            {!!active.referencia && (
+              <p className={styles.referencia}>{active.referencia}</p>
+            )}
+            {!!active.titulo && (
+              <p className={styles.titulo}>{active.titulo}</p>
+            )}
           </div>
 
           <button
             type="button"
-            onClick={() => (tts.ttsState === "playing" ? tts.onTTSPause() : tts.onTTSPlay())}
-            className={[styles.ttsBtn, tts.ttsState === "playing" && styles.ttsBtnActive].filter(Boolean).join(" ")}
-            aria-label={tts.ttsState === "playing" ? "Pausar leitura" : "Ouvir leitura"}
+            onClick={() =>
+              tts.ttsState === "playing" ? tts.onTTSPause() : tts.onTTSPlay()
+            }
+            className={[
+              styles.ttsBtn,
+              tts.ttsState === "playing" && styles.ttsBtnActive,
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            aria-label={
+              tts.ttsState === "playing" ? "Pausar leitura" : "Ouvir leitura"
+            }
             aria-disabled={tts.ttsState === "loading"}
           >
             {tts.ttsState === "playing" ? (
@@ -112,8 +137,12 @@ export function DesktopLiturgyReader({ sections, activeId, onSelectSection, getT
           </div>
         )}
 
-        <p className={styles.texto}>{formatVerseText(active.texto, styles.verseNumber)}</p>
-        {!!active.formulaFinal && <p className={styles.formulaFinal}>{`— ${active.formulaFinal}`}</p>}
+        <p className={styles.texto}>
+          {formatVerseText(active.texto, styles.verseNumber)}
+        </p>
+        {!!active.formulaFinal && (
+          <p className={styles.formulaFinal}>{`— ${active.formulaFinal}`}</p>
+        )}
       </article>
     </div>
   );

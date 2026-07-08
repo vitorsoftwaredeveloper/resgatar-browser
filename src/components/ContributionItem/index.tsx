@@ -38,7 +38,12 @@ export function ContributionItem({ data, onPay, onShare }: Props) {
         await onPay();
       }}
       style={{ marginTop: isDesktop ? 0 : 16 }}
-      leftIcon={<QrCode size={20} color={mode === "dark" ? colors.black : colors.white} />}
+      leftIcon={
+        <QrCode
+          size={20}
+          color={mode === "dark" ? colors.black : colors.white}
+        />
+      }
     />
   ) : (
     <Button
@@ -60,7 +65,10 @@ export function ContributionItem({ data, onPay, onShare }: Props) {
               <p className={styles.descriptionDesktop}>{data.description}</p>
             </div>
             <span
-              className={[styles.pillDesktop, isPending ? styles.pillWaitDesktop : styles.pillOkDesktop].join(" ")}
+              className={[
+                styles.pillDesktop,
+                isPending ? styles.pillWaitDesktop : styles.pillOkDesktop,
+              ].join(" ")}
             >
               {isPending ? "Pendente" : "Pago"}
             </span>
@@ -83,7 +91,12 @@ export function ContributionItem({ data, onPay, onShare }: Props) {
         <div className={styles.right}>
           <p className={styles.value}>{data.value}</p>
 
-          <span className={[styles.badge, isPending ? styles.pending : styles.paid].join(" ")}>
+          <span
+            className={[
+              styles.badge,
+              isPending ? styles.pending : styles.paid,
+            ].join(" ")}
+          >
             <span className={isPending ? styles.pendingText : styles.paidText}>
               {isPending ? "Pendente" : "Pago"}
             </span>

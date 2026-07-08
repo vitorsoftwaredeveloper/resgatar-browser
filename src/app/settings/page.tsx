@@ -33,8 +33,18 @@ import { ReactNode, useEffect, useState } from "react";
 import styles from "./settings.module.css";
 
 const MONTH_LABELS = [
-  "janeiro", "fevereiro", "março", "abril", "maio", "junho",
-  "julho", "agosto", "setembro", "outubro", "novembro", "dezembro",
+  "janeiro",
+  "fevereiro",
+  "março",
+  "abril",
+  "maio",
+  "junho",
+  "julho",
+  "agosto",
+  "setembro",
+  "outubro",
+  "novembro",
+  "dezembro",
 ];
 
 interface AdminKpis {
@@ -61,7 +71,10 @@ type AdminItem = {
   description: string;
   icon: ReactNode;
   section: AdminSection;
-} & ({ kind: "screen"; route: string; render: () => ReactNode } | { kind: "modal" });
+} & (
+  | { kind: "screen"; route: string; render: () => ReactNode }
+  | { kind: "modal" }
+);
 
 type AdminScreenItem = Extract<AdminItem, { kind: "screen" }>;
 
@@ -92,11 +105,18 @@ export default function SettingsPage() {
     ]).then(([balanceR, annualR, monthR, membersR]) => {
       if (cancelled) return;
       setKpis({
-        saldoEmCaixa: balanceR.status === "fulfilled" ? balanceR.value.totals.saldoFinal : 0,
-        metaPercent: annualR.status === "fulfilled" ? annualR.value.totals.percent : 0,
-        metaCollected: annualR.status === "fulfilled" ? annualR.value.totals.collected : 0,
-        metaGoal: annualR.status === "fulfilled" ? annualR.value.totals.goal : 0,
-        inadimplentes: monthR.status === "fulfilled" ? monthR.value.counts.pending : 0,
+        saldoEmCaixa:
+          balanceR.status === "fulfilled"
+            ? balanceR.value.totals.saldoFinal
+            : 0,
+        metaPercent:
+          annualR.status === "fulfilled" ? annualR.value.totals.percent : 0,
+        metaCollected:
+          annualR.status === "fulfilled" ? annualR.value.totals.collected : 0,
+        metaGoal:
+          annualR.status === "fulfilled" ? annualR.value.totals.goal : 0,
+        inadimplentes:
+          monthR.status === "fulfilled" ? monthR.value.counts.pending : 0,
         membrosAtivos:
           membersR.status === "fulfilled"
             ? (membersR.value as unknown as IMember[]).length
@@ -131,7 +151,8 @@ export default function SettingsPage() {
     {
       key: "balanco-anual",
       title: "Balanço anual",
-      description: "Fechamento do ano: total arrecadado, mês a mês e a situação de cada membro.",
+      description:
+        "Fechamento do ano: total arrecadado, mês a mês e a situação de cada membro.",
       icon: <CalendarRange color={colors.primary} />,
       section: "Financeiro",
       kind: "screen",
@@ -141,7 +162,8 @@ export default function SettingsPage() {
     {
       key: "expenses",
       title: "Despesa mensal",
-      description: "Registre e acompanhe as saídas de caixa do mês por categoria.",
+      description:
+        "Registre e acompanhe as saídas de caixa do mês por categoria.",
       icon: <Receipt color={colors.primary} />,
       section: "Financeiro",
       kind: "screen",
@@ -151,7 +173,8 @@ export default function SettingsPage() {
     {
       key: "donations",
       title: "Listagem de doações",
-      description: "Veja todas as doações avulsas do ano por membro, valor e forma de pagamento.",
+      description:
+        "Veja todas as doações avulsas do ano por membro, valor e forma de pagamento.",
       icon: <Gift color={colors.primary} />,
       section: "Financeiro",
       kind: "screen",
@@ -161,7 +184,8 @@ export default function SettingsPage() {
     {
       key: "member-actions",
       title: "Gestão de membros",
-      description: "Remova membros, gerencie permissões, registre pagamentos e atualize senhas.",
+      description:
+        "Remova membros, gerencie permissões, registre pagamentos e atualize senhas.",
       icon: <UsersRound color={colors.primary} />,
       section: "Administração",
       kind: "screen",
@@ -220,7 +244,10 @@ export default function SettingsPage() {
             <div className={styles.crumb}>
               <Breadcrumb
                 items={[
-                  { label: "Administrativo", onClick: () => setActiveKey(null) },
+                  {
+                    label: "Administrativo",
+                    onClick: () => setActiveKey(null),
+                  },
                   { label: activeItem.title },
                 ]}
               />
@@ -236,7 +263,8 @@ export default function SettingsPage() {
                     <p className="eyebrow">Painel de gestão</p>
                     <h1 className={styles.pageTitle}>Administrativo</h1>
                     <p className={styles.pageSubtitle}>
-                      Visão financeira e ferramentas de gestão da Comunidade Resgatar.
+                      Visão financeira e ferramentas de gestão da Comunidade
+                      Resgatar.
                     </p>
                   </div>
 
@@ -251,7 +279,9 @@ export default function SettingsPage() {
                       <div className="t-val money">
                         {kpis ? formatMoneyBRL(kpis.saldoEmCaixa) : "—"}
                       </div>
-                      <div className="t-sub">Entradas − saídas · {new Date().getFullYear()}</div>
+                      <div className="t-sub">
+                        Entradas − saídas · {new Date().getFullYear()}
+                      </div>
                     </div>
 
                     <div className="tile">
@@ -261,7 +291,9 @@ export default function SettingsPage() {
                         </span>
                         Meta anual
                       </div>
-                      <div className="t-val">{kpis ? `${Math.round(kpis.metaPercent)}%` : "—"}</div>
+                      <div className="t-val money">
+                        {kpis ? `${Math.round(kpis.metaPercent)}%` : "—"}
+                      </div>
                       <div className="t-sub">
                         {kpis
                           ? `${formatMoneyBRL(kpis.metaCollected)} de ${formatMoneyBRL(kpis.metaGoal)}`
@@ -273,14 +305,21 @@ export default function SettingsPage() {
                       <div className="t-top">
                         <span
                           className="t-ic"
-                          style={{ background: "var(--danger-soft)", color: "var(--danger)" }}
+                          style={{
+                            background: "var(--danger-soft)",
+                            color: "var(--danger)",
+                          }}
                         >
                           <CircleAlert size={17} />
                         </span>
                         Inadimplentes
                       </div>
-                      <div className="t-val">{kpis ? kpis.inadimplentes : "—"}</div>
-                      <div className="t-sub">no mês de {MONTH_LABELS[new Date().getMonth()]}</div>
+                      <div className="t-val money">
+                        {kpis ? kpis.inadimplentes : "—"}
+                      </div>
+                      <div className="t-sub">
+                        no mês de {MONTH_LABELS[new Date().getMonth()]}
+                      </div>
                     </div>
 
                     <div className="tile">
@@ -290,7 +329,9 @@ export default function SettingsPage() {
                         </span>
                         Membros ativos
                       </div>
-                      <div className="t-val">{kpis ? kpis.membrosAtivos : "—"}</div>
+                      <div className="t-val money">
+                        {kpis ? kpis.membrosAtivos : "—"}
+                      </div>
                       <div className="t-sub">na comunidade</div>
                     </div>
                   </div>
@@ -300,13 +341,17 @@ export default function SettingsPage() {
                   </div>
 
                   <div className={styles.menuCard}>
-                    {items.map((item, index) => renderItem(item, index === items.length - 1))}
+                    {items.map((item, index) =>
+                      renderItem(item, index === items.length - 1),
+                    )}
                   </div>
                 </>
               ) : (
                 // Mobile: dois grupos rotulados.
                 SECTIONS.map((section) => {
-                  const sectionItems = items.filter((i) => i.section === section);
+                  const sectionItems = items.filter(
+                    (i) => i.section === section,
+                  );
                   return (
                     <div key={section} className={styles.sectionGroup}>
                       <p className={styles.sectionLabel}>{section}</p>
@@ -324,7 +369,10 @@ export default function SettingsPage() {
         )}
 
         {openSendNotification && (
-          <ModalSendNotification visible={openSendNotification} onClose={() => setOpenSendNotification(false)} />
+          <ModalSendNotification
+            visible={openSendNotification}
+            onClose={() => setOpenSendNotification(false)}
+          />
         )}
       </div>
     </SidebarFrame>

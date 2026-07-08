@@ -156,10 +156,10 @@
 .valueDesktop {
   font-family: var(--font-display), Georgia, serif;
   font-weight: 600;
-  font-size: 26px;
+  font-size: 20px;
   color: var(--ink);
   margin-top: 16px;
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: lining-nums;
 }
 
 .footerDesktop {

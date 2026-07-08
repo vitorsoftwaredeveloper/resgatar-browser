@@ -21,7 +21,10 @@ import { useLiturgyTTS } from "@/hooks/useLiturgyTTS";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { LiturgyService } from "@/services/LiturgyService";
 import { ReadingStreakService } from "@/services/ReadingStreakService";
-import { getReadingMarkedDate, setReadingMarkedDate } from "@/storage/localStorage";
+import {
+  getReadingMarkedDate,
+  setReadingMarkedDate,
+} from "@/storage/localStorage";
 import { ILiturgia, LITURGICAL_ACCENT } from "@/types/Liturgy";
 import { Pause, Quote, RefreshCw, Volume2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -106,7 +109,11 @@ function buildSections(liturgy: ILiturgia): LiturgySection[] {
       referencia: leituras.salmo.referencia,
       refrao: leituras.salmo.refrao,
       texto: leituras.salmo.texto,
-      ttsText: buildSectionText("Salmo responsorial", leituras.salmo.referencia, leituras.salmo.texto),
+      ttsText: buildSectionText(
+        "Salmo responsorial",
+        leituras.salmo.referencia,
+        leituras.salmo.texto,
+      ),
     },
   ];
 
@@ -241,7 +248,9 @@ export default function ReadingsPage() {
     fetchLiturgy(selectedDate);
     if (memberId) {
       getReadingMarkedDate(memberId).then((storedDate) => {
-        setMarkDismissed(!!storedDate && isSameDay(new Date(storedDate), today()));
+        setMarkDismissed(
+          !!storedDate && isSameDay(new Date(storedDate), today()),
+        );
       });
     } else {
       setMarkDismissed(false);
@@ -308,7 +317,10 @@ export default function ReadingsPage() {
                       background: `color-mix(in srgb, ${LITURGICAL_ACCENT[liturgy.cor]} 16%, var(--surface))`,
                     }}
                   >
-                    <span className={styles.colorDot} style={{ background: "currentColor" }} />
+                    <span
+                      className={styles.colorDot}
+                      style={{ background: "currentColor" }}
+                    />
                     {liturgy.cor}
                   </span>
                 </>
@@ -382,13 +394,16 @@ export default function ReadingsPage() {
                   onBackToToday={handleBackToToday}
                 />
 
-                {liturgy && isViewingToday && !alreadyReadToday && !markDismissed && (
-                  <MarkReadingButton
-                    streakCount={streakCount}
-                    loading={marking}
-                    onPress={handleMarkRead}
-                  />
-                )}
+                {liturgy &&
+                  isViewingToday &&
+                  !alreadyReadToday &&
+                  !markDismissed && (
+                    <MarkReadingButton
+                      streakCount={streakCount}
+                      loading={marking}
+                      onPress={handleMarkRead}
+                    />
+                  )}
 
                 <StreakCard />
 
@@ -398,14 +413,23 @@ export default function ReadingsPage() {
                     if (!quote) return null;
                     return (
                       <div className={styles.quoteCard}>
-                        <Quote size={22} strokeWidth={1.4} className={styles.quoteIcon} />
-                        <p className={styles.quoteText}>&ldquo;{quote.text}&rdquo;</p>
+                        <Quote
+                          size={22}
+                          strokeWidth={1.4}
+                          className={styles.quoteIcon}
+                        />
+                        <p className={styles.quoteText}>
+                          &ldquo;{quote.text}&rdquo;
+                        </p>
                         <span className={styles.quoteRef}>{quote.ref}</span>
                       </div>
                     );
                   })()
                 ) : !error ? (
-                  <div className={`${styles.quoteCardSkeleton} skeleton-pulse`} aria-hidden="true">
+                  <div
+                    className={`${styles.quoteCardSkeleton} skeleton-pulse`}
+                    aria-hidden="true"
+                  >
                     <span style={{ width: "90%" }} />
                     <span style={{ width: "70%" }} />
                     <span style={{ width: "40%" }} />

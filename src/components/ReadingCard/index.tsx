@@ -71,7 +71,9 @@ export function ReadingCard({
         e.stopPropagation();
         ttsState === "playing" ? onTTSPause?.() : onTTSPlay();
       }}
-      className={[styles.ttsBtn, ttsState === "playing" && styles.ttsBtnActive].filter(Boolean).join(" ")}
+      className={[styles.ttsBtn, ttsState === "playing" && styles.ttsBtnActive]
+        .filter(Boolean)
+        .join(" ")}
       aria-label={ttsState === "playing" ? "Pausar leitura" : "Ouvir leitura"}
       aria-disabled={ttsState === "loading"}
     >
@@ -96,23 +98,40 @@ export function ReadingCard({
     >
       <div className={styles.cardHeader}>
         <span className={styles.label}>{label}</span>
-        {coachId ? <CoachTarget id={coachId}>{ttsButton}</CoachTarget> : ttsButton}
+        {coachId ? (
+          <CoachTarget id={coachId}>{ttsButton}</CoachTarget>
+        ) : (
+          ttsButton
+        )}
       </div>
 
       {!!referencia && <p className={styles.referencia}>{referencia}</p>}
       {!!titulo && <p className={styles.titulo}>{titulo}</p>}
 
       <div className={styles.toggleRow}>
-        <span className={styles.toggleText}>{expanded ? "Ocultar" : "Ver mais"}</span>
-        <span className={[styles.arrow, expanded && styles.arrowExpanded].filter(Boolean).join(" ")}>
+        <span className={styles.toggleText}>
+          {expanded ? "Ocultar" : "Ver mais"}
+        </span>
+        <span
+          className={[styles.arrow, expanded && styles.arrowExpanded]
+            .filter(Boolean)
+            .join(" ")}
+        >
           <ChevronDown size={16} color={colors.primary} />
         </span>
       </div>
 
-      <div className={styles.expandable} style={{ height: expanded ? contentHeight : 0 }}>
+      <div
+        className={styles.expandable}
+        style={{ height: expanded ? contentHeight : 0 }}
+      >
         <div ref={contentRef}>
-          <p className={styles.texto}>{formatVerseText(texto, styles.texto, styles.verseNumber)}</p>
-          {!!formulaFinal && <p className={styles.formulaFinal}>{`— ${formulaFinal}`}</p>}
+          <p className={styles.texto}>
+            {formatVerseText(texto, styles.texto, styles.verseNumber)}
+          </p>
+          {!!formulaFinal && (
+            <p className={styles.formulaFinal}>{`— ${formulaFinal}`}</p>
+          )}
         </div>
       </div>
     </button>

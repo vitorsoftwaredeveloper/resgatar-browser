@@ -39,7 +39,8 @@ const MONTH: Record<string, string> = {
 
 // Ordem jan→dez das chaves em inglês — usada para comparar com
 // `Date.getMonth()` (0=janeiro) ao calcular se há mês em atraso.
-type ContributionMonthKey = keyof IMemberWithContribution["contributions"]["months"];
+type ContributionMonthKey =
+  keyof IMemberWithContribution["contributions"]["months"];
 const MONTH_KEYS_ORDERED = Object.keys(MONTH) as ContributionMonthKey[];
 
 interface ComprovanteData {
@@ -197,12 +198,13 @@ export default function BillsPage() {
         {isDesktop && (
           <div className={styles.pageHead}>
             <p className="eyebrow">
-              Suas contribuições · {member?.contributions.year ?? new Date().getFullYear()}
+              Suas contribuições ·{" "}
+              {member?.contributions.year ?? new Date().getFullYear()}
             </p>
             <h1 className={styles.pageTitle}>Contribuições</h1>
             <p className={styles.pageSubtitle}>
-              Acompanhe seu dízimo mês a mês, emita comprovantes e faça doações extras
-              para a comunidade.
+              Acompanhe seu dízimo mês a mês, emita comprovantes e faça doações
+              extras para a comunidade.
             </p>
           </div>
         )}
@@ -212,14 +214,20 @@ export default function BillsPage() {
             <div className={`card card-pad ${styles.progressCard}`}>
               <div className={styles.progressHead}>
                 <span className="cap">Progresso do ano</span>
-                <span className={`pill ${summary.overdue ? "pill-wait" : "pill-ok"}`}>
+                <span
+                  className={`pill ${summary.overdue ? "pill-wait" : "pill-ok"}`}
+                >
                   <span className="pd" />
                   {summary.overdue ? "Pendências" : "Em dia"}
                 </span>
               </div>
               <div className={styles.progressValue}>
-                <span className={`serif ${styles.progressNumber}`}>{summary.paidCount}</span>
-                <span className={styles.progressLabel}>de {summary.totalMonths} meses pagos</span>
+                <span className={`${styles.progressNumber}`}>
+                  {summary.paidCount}
+                </span>
+                <span className={styles.progressLabel}>
+                  de {summary.totalMonths} meses pagos
+                </span>
               </div>
               <div className="bar">
                 <i style={{ width: `${summary.pct}%` }} />
@@ -233,7 +241,9 @@ export default function BillsPage() {
                 </span>
                 Total pago
               </div>
-              <div className="t-val money">{formatMoneyBRL(summary.totalPaidValue)}</div>
+              <div className="t-val money">
+                {formatMoneyBRL(summary.totalPaidValue)}
+              </div>
               <div className="t-sub">
                 {summary.paidCount === 1
                   ? "1 pagamento confirmado"
@@ -243,12 +253,20 @@ export default function BillsPage() {
 
             <div className="tile">
               <div className="t-top">
-                <span className="t-ic" style={{ background: "var(--warn-soft)", color: "var(--warn)" }}>
+                <span
+                  className="t-ic"
+                  style={{
+                    background: "var(--warn-soft)",
+                    color: "var(--warn)",
+                  }}
+                >
                   <AlertTriangle size={17} />
                 </span>
                 Em aberto
               </div>
-              <div className="t-val money">{formatMoneyBRL(summary.pendingValue)}</div>
+              <div className="t-val money">
+                {formatMoneyBRL(summary.pendingValue)}
+              </div>
               <div className="t-sub">
                 {summary.pendingCount === 1
                   ? "1 mês pendente"
@@ -265,7 +283,11 @@ export default function BillsPage() {
             className={styles.donateBanner}
           >
             <span className={styles.donateIcon}>
-              {isDesktop ? <Gift size={28} /> : <HandHeart color={colors.white} size={28} />}
+              {isDesktop ? (
+                <Gift size={28} />
+              ) : (
+                <HandHeart color={colors.white} size={28} />
+              )}
             </span>
             <div className={styles.donateText}>
               <p className={styles.donateTitle}>Fazer uma doação</p>
@@ -282,7 +304,9 @@ export default function BillsPage() {
         {isDesktop && (
           <div className={styles.sectionHead}>
             <h2>Mensalidades</h2>
-            <span className={styles.sectionCount}>{summary.totalMonths} meses</span>
+            <span className={styles.sectionCount}>
+              {summary.totalMonths} meses
+            </span>
           </div>
         )}
 

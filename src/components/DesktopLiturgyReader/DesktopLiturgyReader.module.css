@@ -54,6 +54,7 @@
 /* Card com o texto completo da aba selecionada. */
 .reading {
   padding: 30px 40px 40px;
+  
 }
 
 .readingHeader {
@@ -62,6 +63,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--spacing-md);
+  
 }
 
 .readingHeadings {
@@ -86,6 +88,8 @@
   color: var(--ink);
   margin: 0 0 4px;
   line-height: 1.15;
+  font-variant-numeric: lining-nums;
+
 }
 
 .titulo {
@@ -93,6 +97,7 @@
   font-style: italic;
   font-size: 18px;
   color: var(--ink-2);
+  font-variant-numeric: lining-nums;
 }
 
 .ttsBtn {

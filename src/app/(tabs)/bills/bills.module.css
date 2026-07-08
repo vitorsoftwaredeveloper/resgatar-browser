@@ -109,6 +109,8 @@
   }
 
   .progressNumber {
+    font-family: var(--font-display), Georgia, serif;
+    font-variant-numeric: lining-nums;
     font-size: 30px;
   }
 
