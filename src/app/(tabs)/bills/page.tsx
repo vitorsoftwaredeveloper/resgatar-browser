@@ -177,7 +177,9 @@ export default function BillsPage() {
       .reduce((sum, e) => (sum += Number(e)), 0);
 
     const pendingCount = totalMonths - paidCount;
-    const monthlyAmount = Number(member?.paymentInfo.amount ?? 0);
+    const monthlyAmount = Number(
+      member?.paymentInfo.amount.replace(",", ".") ?? 0,
+    );
 
     return {
       paidCount,
