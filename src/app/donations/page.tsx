@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { DonationServices } from "@/services/DonationService";
 import { TRANSACTION_STATUS, isReturnedTransaction } from "@/types/Charge";
 import { IDonation } from "@/types/Donation";
@@ -41,6 +42,7 @@ function sumAmounts(donations: IDonation[]): number {
 
 export function DonationsScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors } = useAppTheme();
+  const { isDesktop } = useBreakpoint();
 
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
@@ -97,6 +99,101 @@ export function DonationsScreen({ embedded = false }: { embedded?: boolean }) {
   const total = useMemo(() => sumAmounts(approved), [approved]);
   const pixTotal = useMemo(() => sumAmounts(approved.filter((d) => d.paymentMethodId === "pix")), [approved]);
   const cashTotal = useMemo(() => sumAmounts(approved.filter((d) => d.paymentMethodId === "cash")), [approved]);
+
+  if (isDesktop) {
+    return (
+      <div className={styles.content}>
+        <div className={styles.pageHead}>
+          <p className="eyebrow">Administrativo</p>
+          <h1 className={styles.pageTitle}>Listagem de doações</h1>
+        </div>
+
+        {loading ? (
+          <div className={styles.centered}>
+            <Loader2 size={28} color={colors.primary} className="spin" />
+          </div>
+        ) : (
+          <div className={styles.desktopList}>
+            <div className="monthnav">
+              <button type="button" className="nav-arrow" onClick={goToPreviousMonth} aria-label="Mês anterior">
+                <ChevronLeft size={18} />
+              </button>
+              <span className="mn-lbl">
+                {MONTH_LABELS[month]} {year}
+              </span>
+              <button
+                type="button"
+                className="nav-arrow"
+                onClick={goToNextMonth}
+                disabled={isCurrentMonth}
+                aria-label="Próximo mês"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+
+            <div className="card card-pad">
+              <span className="cap">Total de doações no mês</span>
+              <div className="money" style={{ fontSize: 34, margin: "8px 0 4px" }}>
+                {formatMoneyBRL(total)}
+              </div>
+              <div style={{ color: "var(--ink-3)", fontSize: 13, marginBottom: 18 }}>
+                {approved.length} {approved.length === 1 ? "doação confirmada" : "doações confirmadas"}
+              </div>
+              <hr className="hairline" style={{ margin: "0 0 14px" }} />
+              <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
+                <span style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--ink-2)" }}>
+                  <QrCode size={17} />
+                  PIX
+                </span>
+                <b className="money">{formatMoneyBRL(pixTotal)}</b>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", padding: "6px 0" }}>
+                <span style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--ink-2)" }}>
+                  <Banknote size={17} />
+                  Dinheiro
+                </span>
+                <b className="money">{formatMoneyBRL(cashTotal)}</b>
+              </div>
+            </div>
+
+            <div className="card">
+              {monthDonations.length === 0 ? (
+                <div className="empty">
+                  <div className="e-ic">
+                    <Gift size={28} />
+                  </div>
+                  <p>Nenhuma doação registrada neste mês.</p>
+                </div>
+              ) : (
+                monthDonations.map((item) => {
+                  const isPix = item.paymentMethodId === "pix";
+                  const isApproved = item.status === TRANSACTION_STATUS.APPROVED;
+                  return (
+                    <div key={item.transactionId} className="lrow">
+                      <div className="la">{isPix ? <QrCode size={18} /> : <Banknote size={18} />}</div>
+                      <div className="lt">
+                        <b>{item.donorName?.trim() || "Anônimo"}</b>
+                        <small>{isPix ? "PIX" : "Dinheiro"}</small>
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 2 }}>
+                        <span className="money">{formatMoneyBRL(item.amount)}</span>
+                        {!isApproved && (
+                          <span style={{ fontSize: 12.5, color: "var(--ink-3)" }}>
+                            {item.status === TRANSACTION_STATUS.PENDING ? "Pendente" : "Não confirmada"}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className={styles.content}>

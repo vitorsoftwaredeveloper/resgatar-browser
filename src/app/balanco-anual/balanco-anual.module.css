@@ -439,3 +439,35 @@
   color: var(--color-error);
   font-weight: 600;
 }
+
+/* ---- Desktop: reproduz a tela "Balanço anual" do zip (Missal), branch de
+   render separado (isDesktop) usando as primitivas globais .card/.tile/
+   .tabs/.monthnav/.lrow (globals.css). Bloco mobile acima intocado. ---- */
+@media (min-width: 1024px) {
+  .content {
+    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+  }
+
+  .pageHead {
+    margin-bottom: 26px;
+  }
+
+  .pageTitle {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: 40px;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+    color: var(--ink);
+    margin: 8px 0 0;
+  }
+
+  .desktopList {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+}

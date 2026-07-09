@@ -239,17 +239,51 @@
   }
 }
 
+/* ---- Desktop: reproduz a tela "Despesa mensal" do zip (Missal), branch de
+   render separado (isDesktop) usando as primitivas globais .card/.lrow/
+   .icon-btn/.monthnav (globals.css). Bloco mobile acima intocado. ---- */
 @media (min-width: 1024px) {
   .content {
     min-height: calc(100dvh - 2 * var(--spacing-xl));
     margin-bottom: var(--spacing-xl);
     border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
   }
 
   /* Ancora o FAB 20px para dentro da borda direita real do card (app-shell--wide
      alinhado à direita da sidebar), não de uma coluna centralizada. */
   .fab {
     right: calc(var(--spacing-lg) + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 960px));
+    width: 58px;
+    height: 58px;
+    border-radius: 19px;
+    background: linear-gradient(150deg, var(--accent-2), var(--accent));
+    box-shadow: var(--shadow-pop);
+    transition: transform 0.16s ease;
+  }
+
+  .fab:hover {
+    transform: translateY(-2px) scale(1.03);
+  }
+
+  .pageHead {
+    margin-bottom: 26px;
+  }
+
+  .pageTitle {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: 40px;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+    color: var(--ink);
+    margin: 8px 0 0;
+  }
+
+  .desktopList {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
   }
 }
 

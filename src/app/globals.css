@@ -351,6 +351,7 @@ body {
   font-size: 30px;
   letter-spacing: -0.01em;
   line-height: 1;
+  font-variant-numeric: lining-nums;
 }
 
 .tile .t-sub {
@@ -391,6 +392,237 @@ body {
 
 .bar.gold > i {
   background: linear-gradient(90deg, var(--gold), var(--gold-2));
+}
+
+/* Navegação de mês/ano em pílula — usada pelas telas do Administrativo
+   (Entrada mensal, Balanço anual, Despesa mensal, Doações). */
+.monthnav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  box-shadow: var(--shadow-card);
+}
+
+.monthnav .mn-lbl {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  font-size: 20px;
+  font-variant-numeric: lining-nums;
+}
+
+.monthnav .nav-arrow {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.monthnav .nav-arrow:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.monthnav .nav-arrow:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Faixa de abas em pílula. */
+.tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px;
+}
+
+.tabs button {
+  flex: 1;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink-2);
+  padding: 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.tabs button.on {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: var(--shadow-card);
+}
+
+/* Linhas de lista dentro de um .card único (avatar/ícone + texto + valor). */
+.lrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+}
+
+.lrow + .lrow {
+  border-top: 1px solid var(--line);
+}
+
+.lrow .la {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  flex: none;
+  object-fit: cover;
+  background: var(--surface-2);
+  display: grid;
+  place-items: center;
+  color: var(--ink-3);
+}
+
+.lrow .lt {
+  flex: 1;
+  min-width: 0;
+}
+
+.lrow .lt b {
+  font-weight: 600;
+  font-size: 15px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lrow .lt small {
+  color: var(--ink-3);
+  font-size: 12.5px;
+}
+
+.hairline {
+  height: 1px;
+  background: var(--line);
+  border: none;
+  margin: 0;
+}
+
+.empty {
+  text-align: center;
+  padding: 56px 20px;
+  color: var(--ink-3);
+}
+
+.empty .e-ic {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  color: var(--ink-3);
+}
+
+.empty p {
+  margin: 0;
+  font-size: 15px;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.icon-btn:hover {
+  color: var(--ink);
+  background: var(--surface-2);
+}
+
+/* Botões em pílula. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14.5px;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  padding: 0 20px;
+  height: 48px;
+  transition: transform 0.12s, background 0.16s, border-color 0.16s, box-shadow 0.16s;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: var(--shadow-card);
+}
+
+.btn-primary:hover {
+  background: var(--accent-2);
+}
+
+.btn-soft {
+  background: var(--surface-2);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.btn-soft:hover {
+  background: var(--surface-3);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--ink-2);
+}
+
+.btn-ghost:hover {
+  color: var(--ink);
+  border-color: var(--ink-3);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-lg {
+  height: 54px;
+  font-size: 15.5px;
+}
+
+.btn-sm {
+  height: 40px;
+  font-size: 13.5px;
+  padding: 0 15px;
 }
 
 a {

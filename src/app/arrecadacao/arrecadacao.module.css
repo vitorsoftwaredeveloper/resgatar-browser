@@ -10,14 +10,6 @@
   min-height: 100dvh;
 }
 
-@media (min-width: 1024px) {
-  .content {
-    min-height: calc(100dvh - 2 * var(--spacing-xl));
-    margin-bottom: var(--spacing-xl);
-    border-radius: var(--radius-xl);
-  }
-}
-
 .screenTitle {
   font-size: var(--font-small);
   color: var(--color-text-muted);
@@ -262,4 +254,37 @@
   color: var(--color-text-strong);
   font-weight: 700;
   flex-shrink: 0;
+}
+
+/* ---- Desktop: reproduz a tela "Entrada mensal" do zip (Missal), usando as
+   primitivas globais .card/.tile/.tabs/.monthnav/.lrow (globals.css). O bloco
+   mobile acima fica intocado — este é um branch de render totalmente separado
+   (isDesktop), não um retrofit de CSS em cima das classes mobile. ---- */
+@media (min-width: 1024px) {
+  .content {
+    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+  }
+
+  .pageHead {
+    margin-bottom: 26px;
+  }
+
+  .pageTitle {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: 40px;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+    color: var(--ink);
+    margin: 8px 0 0;
+  }
+
+  .desktopList {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
 }

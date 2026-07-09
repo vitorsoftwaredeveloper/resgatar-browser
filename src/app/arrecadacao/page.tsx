@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { ChargeServices } from "@/services/ChargeService";
 import { IChargeSummary, IChargeSummaryMember } from "@/types/Charge";
 import { formatDateFromTimestamp, formatMoneyBRL } from "@/utils/helper";
@@ -34,6 +35,7 @@ type Tab = "paid" | "pending";
 
 export function ArrecadacaoScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors } = useAppTheme();
+  const { isDesktop } = useBreakpoint();
 
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
@@ -104,6 +106,164 @@ export function ArrecadacaoScreen({ embedded = false }: { embedded?: boolean }) 
           </p>
         </div>
         <span className={styles.memberValue}>{formatMoneyBRL(item.amount)}</span>
+      </div>
+    );
+  }
+
+  function renderDesktopMember(item: IChargeSummaryMember) {
+    const methodLabel = item.method === "cash" ? "Dinheiro" : "PIX";
+    return (
+      <div key={item.id} className="lrow">
+        <Avatar photo={item.photo} size={44} />
+        <div className="lt">
+          <b>{item.name}</b>
+          <small>
+            {item.paid
+              ? `Pago em ${formatDateFromTimestamp(item.paidAt ? new Date(item.paidAt).getTime() : undefined)} · ${methodLabel}`
+              : "Pagamento pendente"}
+          </small>
+        </div>
+        <span className="money">{formatMoneyBRL(item.amount)}</span>
+      </div>
+    );
+  }
+
+  if (isDesktop) {
+    return (
+      <div className={styles.content}>
+        <div className={styles.pageHead}>
+          <p className="eyebrow">Administrativo</p>
+          <h1 className={styles.pageTitle}>Entrada mensal</h1>
+        </div>
+
+        {loading ? (
+          <div className={styles.centered}>
+            <Loader2 size={28} color={colors.primary} className="spin" />
+          </div>
+        ) : !summary ? (
+          <div className={styles.centered}>
+            <p className={styles.emptyText}>Não foi possível carregar a arrecadação.</p>
+          </div>
+        ) : (
+          <div className={styles.desktopList}>
+            <div className="monthnav">
+              <button type="button" className="nav-arrow" onClick={goToPreviousMonth} aria-label="Mês anterior">
+                <ChevronLeft size={18} />
+              </button>
+              <span className="mn-lbl">
+                {MONTH_LABELS[month]} {year}
+              </span>
+              <button
+                type="button"
+                className="nav-arrow"
+                onClick={goToNextMonth}
+                disabled={isCurrentMonth}
+                aria-label="Próximo mês"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+
+            <div className="card card-pad">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span className="cap">Meta do mês</span>
+                <span className="serif" style={{ fontSize: 22, color: "var(--ok)" }}>
+                  {Math.round(progress * 100)}%
+                </span>
+              </div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10, margin: "8px 0 14px" }}>
+                <span className="money" style={{ fontSize: 34 }}>
+                  {formatMoneyBRL(summary.collected)}
+                </span>
+                <span style={{ color: "var(--ink-3)", fontWeight: 600 }}>/ {formatMoneyBRL(summary.goal)}</span>
+              </div>
+              <div className="bar">
+                <i style={{ width: `${progress * 100}%` }} />
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 14, color: "var(--ink-2)", fontSize: 14 }}>
+                {summary.goal <= 0 ? (
+                  <>
+                    <Target size={17} color={colors.textMuted} />
+                    <span>Nenhuma contribuição prevista neste mês.</span>
+                  </>
+                ) : summary.remaining > 0 ? (
+                  <>
+                    <Target size={17} style={{ color: "var(--gold)" }} />
+                    Falta <b style={{ color: "var(--ink)" }}>{formatMoneyBRL(summary.remaining)}</b>&nbsp;para a meta
+                  </>
+                ) : (
+                  <>
+                    <CircleCheck size={17} style={{ color: "var(--ok)" }} />
+                    <span>Meta atingida!</span>
+                  </>
+                )}
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
+              <div className="tile">
+                <div className="t-top">
+                  <span className="t-ic">
+                    <QrCode size={16} />
+                  </span>
+                  PIX
+                </div>
+                <div className="t-val money">{formatMoneyBRL(summary.byMethod.pix)}</div>
+              </div>
+              <div className="tile">
+                <div className="t-top">
+                  <span className="t-ic">
+                    <Banknote size={16} />
+                  </span>
+                  Dinheiro
+                </div>
+                <div className="t-val money">{formatMoneyBRL(summary.byMethod.cash)}</div>
+              </div>
+              <div className="tile">
+                <div className="t-top">
+                  <span className="t-ic" style={{ background: "var(--ok-soft)", color: "var(--ok)" }}>
+                    <CircleCheck size={16} />
+                  </span>
+                  Pagaram
+                </div>
+                <div className="t-val">
+                  {summary.counts.paid} <span style={{ fontSize: 16, color: "var(--ink-3)" }}>de {summary.counts.total}</span>
+                </div>
+              </div>
+              <div className="tile">
+                <div className="t-top">
+                  <span className="t-ic" style={{ background: "var(--danger-soft)", color: "var(--danger)" }}>
+                    <CircleAlert size={16} />
+                  </span>
+                  Inadimplentes
+                </div>
+                <div className="t-val money">{summary.counts.pending}</div>
+              </div>
+            </div>
+
+            <div className="tabs">
+              <button type="button" className={tab === "paid" ? "on" : ""} onClick={() => setTab("paid")}>
+                Pagaram ({summary.counts.paid})
+              </button>
+              <button type="button" className={tab === "pending" ? "on" : ""} onClick={() => setTab("pending")}>
+                Inadimplentes ({summary.counts.pending})
+              </button>
+            </div>
+
+            <div className="card">
+              {members.length === 0 ? (
+                <div className="empty">
+                  <div className="e-ic">
+                    <CircleCheck size={28} />
+                  </div>
+                  <p>{tab === "paid" ? "Ninguém pagou ainda neste mês." : "Nenhum inadimplente neste mês."}</p>
+                </div>
+              ) : (
+                members.map(renderDesktopMember)
+              )}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
