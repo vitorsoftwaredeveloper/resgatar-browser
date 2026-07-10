@@ -193,11 +193,17 @@ export function Sidebar() {
           aria-label="Sair"
           title="Sair"
         >
-          <LogOutIcon size={15} color={colors.error} style={{ transform: "rotate(180deg)" }} />
-          {!collapsed && <span>Sair</span>}
+          <LogOutIcon
+            size={15}
+            color={colors.error}
+            style={{ transform: "rotate(180deg)" }}
+          />
         </button>
 
-        <div className={styles.userRow} title={collapsed ? fullName : undefined}>
+        <div
+          className={styles.userRow}
+          title={collapsed ? fullName : undefined}
+        >
           <div className={styles.userAvatar}>
             <Avatar photo={member?.profileImage} size={38} />
           </div>
