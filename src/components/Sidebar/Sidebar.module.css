@@ -204,7 +204,9 @@
    (sair), sem menu de mais ações; tema fica no topbar do desktop. */
 .userCard {
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
   gap: 6px;
   padding: 10px;
   border-radius: 14px;
