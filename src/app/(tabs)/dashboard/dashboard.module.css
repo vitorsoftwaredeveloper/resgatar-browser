@@ -86,6 +86,11 @@
        não sobrepor um item de span completo. */
     grid-auto-flow: dense;
     align-items: stretch;
+    /* start, não o "normal" (~stretch) implícito: sem isso, quando a soma das
+       alturas naturais das linhas fica abaixo do min-height abaixo, o espaço
+       sobrando é distribuído entre TODAS as linhas do grid (inflando cada
+       card), em vez de sobrar só depois da última linha. */
+    align-content: start;
     gap: var(--spacing-lg);
     min-height: calc(100dvh - 2 * var(--spacing-xl));
     margin-bottom: var(--spacing-xl);
