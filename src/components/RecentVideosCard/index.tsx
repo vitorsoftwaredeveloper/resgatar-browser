@@ -6,7 +6,7 @@ import { ModalVideoFeed } from "@/components/ModalVideoFeed";
 import { VideoCardSkeleton } from "@/components/Skeleton/VideoCardSkeleton";
 import { useAuth } from "@/context/AuthContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
-import { ChevronRight, Play } from "lucide-react";
+import { ChevronRight, Clapperboard, Play } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styles from "./RecentVideosCard.module.css";
@@ -44,7 +44,10 @@ export function RecentVideosCard() {
             ))}
           </div>
         ) : videos.length === 0 ? (
-          <p className={styles.emptyText}>Nenhum vídeo publicado ainda.</p>
+          <div className={styles.emptyState}>
+            <Clapperboard size={22} color="var(--color-text-muted)" />
+            <p className={styles.emptyText}>Nenhum vídeo publicado ainda</p>
+          </div>
         ) : (
           <div className={styles.list}>
             {videos.map((item, index) => (

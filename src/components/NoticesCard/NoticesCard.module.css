@@ -4,6 +4,11 @@
   padding-inline: var(--spacing-md);
   margin-bottom: var(--spacing-md);
   border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
@@ -46,10 +51,46 @@
   text-overflow: ellipsis;
 }
 
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  text-align: center;
+  padding-block: var(--spacing-xl);
+  margin-block: var(--spacing-sm2);
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  flex: 1;
+}
+
 .emptyText {
   font-size: var(--font-small);
   color: var(--color-text-muted);
-  padding-block: var(--spacing-md);
+}
+
+/* Limita a lista de compromissos a ~5 itens visíveis (evita o card crescer
+   sem fim quando a comunidade acumula muitos compromissos publicados) —
+   além disso rola internamente, sem cortar dados. */
+.list {
+  overflow-y: auto;
+  max-height: 280px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
 }
 
 .titleRow {
@@ -121,11 +162,4 @@
 
 .dateToday {
   color: var(--color-text);
-}
-
-@media (min-width: 1024px) {
-  .container {
-    height: 100%;
-    box-sizing: border-box;
-  }
 }

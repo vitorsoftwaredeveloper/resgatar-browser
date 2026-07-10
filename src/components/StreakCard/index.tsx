@@ -40,7 +40,9 @@ function buildWeek(streak: ReadingStreak | null | undefined): DayCell[] {
 
     let read = false;
     if (lastReadDate && current > 0) {
-      const diffFromLastRead = Math.round((lastReadDate.getTime() - d.getTime()) / 86_400_000);
+      const diffFromLastRead = Math.round(
+        (lastReadDate.getTime() - d.getTime()) / 86_400_000,
+      );
       read = diffFromLastRead >= 0 && diffFromLastRead < current;
     }
 
@@ -66,11 +68,13 @@ export function StreakCard() {
       : "Comece sua sequência hoje";
 
   const recordText = (() => {
-    if (!data || data.longestStreak <= 0) return "Abra a liturgia todo dia para evoluir";
-    if (!active) return `Recorde: ${data.longestStreak} ${data.longestStreak === 1 ? "dia" : "dias"}`;
+    if (!data || data.longestStreak <= 0)
+      return "Abra a liturgia todo dia para evoluir";
+    if (!active)
+      return `Recorde: ${data.longestStreak} ${data.longestStreak === 1 ? "dia" : "dias"}`;
 
     const toRecord = data.longestStreak - current;
-    if (toRecord <= 0) return "Você está no seu recorde! 🔥";
+    if (toRecord <= 0) return "Você está no seu recorde!";
     return `Faltam ${toRecord} ${toRecord === 1 ? "dia" : "dias"} para o recorde de ${data.longestStreak}`;
   })();
 
@@ -81,7 +85,11 @@ export function StreakCard() {
 
         <div className={styles.row}>
           <div className={styles.left}>
-            <div className={[styles.flameWrap, !active && styles.flameWrapDim].filter(Boolean).join(" ")}>
+            <div
+              className={[styles.flameWrap, !active && styles.flameWrapDim]
+                .filter(Boolean)
+                .join(" ")}
+            >
               <Flame
                 size={22}
                 color={active ? STREAK_ACCENT : STREAK_ACCENT_DIM}

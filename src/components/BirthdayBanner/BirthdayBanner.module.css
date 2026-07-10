@@ -1,9 +1,14 @@
 .container {
   background: var(--color-card);
   border-radius: var(--radius-md);
-  padding: var(--spacing-md);
+  padding-inline: var(--spacing-md);
   margin-bottom: var(--spacing-md);
   border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
@@ -11,7 +16,8 @@
   flex-direction: row;
   align-items: center;
   gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-sm2);
+  padding-block: var(--spacing-sm2);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .label {
@@ -21,12 +27,33 @@
   letter-spacing: 0.8px;
 }
 
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  text-align: center;
+  padding-block: var(--spacing-xl);
+  margin-block: var(--spacing-sm2);
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  flex: 1;
+}
+
+.emptyText {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+}
+
 .list {
   display: flex;
   flex-direction: row;
   gap: var(--spacing-md);
   overflow-x: auto;
-  padding-right: var(--spacing-xs);
+  padding-block: var(--spacing-sm2);
+  flex: 1;
+  align-items: center;
 }
 
 .item {
@@ -86,11 +113,4 @@
 
 .todayBadgeText {
   font-size: 10px;
-}
-
-@media (min-width: 1024px) {
-  .container {
-    height: 100%;
-    box-sizing: border-box;
-  }
 }

@@ -1,10 +1,11 @@
 "use client";
 
 import { Avatar } from "@/components/Avatar";
+import { CoachTarget } from "@/components/CoachTarget";
 import { useBirthday } from "@/context/BirthdayContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { IMember } from "@/types/Member";
-import { Cake } from "lucide-react";
+import { PartyPopper } from "lucide-react";
 import { useMemo } from "react";
 import styles from "./BirthdayBanner.module.css";
 
@@ -24,7 +25,10 @@ function getBirthdaysThisMonth(members: IMember[]): BirthdayMember[] {
   const currentMonth = now.getMonth();
   const currentDay = now.getDate();
   return members
-    .filter((m) => m.dateOfBirth && new Date(m.dateOfBirth).getMonth() === currentMonth)
+    .filter(
+      (m) =>
+        m.dateOfBirth && new Date(m.dateOfBirth).getMonth() === currentMonth,
+    )
     .map((m) => {
       const day = new Date(m.dateOfBirth).getDate();
       return {
@@ -44,37 +48,57 @@ function getBirthdaysThisMonth(members: IMember[]): BirthdayMember[] {
 export function BirthdayBanner() {
   const { colors } = useAppTheme();
   const { members: birthdayMembers } = useBirthday();
-  const members = useMemo(() => getBirthdaysThisMonth(birthdayMembers), [birthdayMembers]);
-
-  if (members.length === 0) return null;
+  const members = useMemo(
+    () => getBirthdaysThisMonth(birthdayMembers),
+    [birthdayMembers],
+  );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <Cake size={14} color={colors.textMuted} />
-        <span className={styles.label}>ANIVERSARIANTES DO MÊS</span>
-      </div>
+    <CoachTarget id="birthdays-card">
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <span className={styles.label}>ANIVERSARIANTES DO MÊS</span>
+        </div>
 
-      <div className={styles.list}>
-        {members.map((item) => (
-          <div key={item._id} className={styles.item}>
-            <div style={{ position: "relative" }} className={item.isToday ? styles.avatarRing : undefined}>
-              <Avatar photo={item.profileImage} size={44} />
-              {item.isToday && (
-                <div className={styles.todayBadge}>
-                  <span className={styles.todayBadgeText}>🎂</span>
-                </div>
-              )}
-            </div>
-            <span className={[styles.name, item.isToday && styles.nameToday].filter(Boolean).join(" ")}>
-              {item.firstName}
-            </span>
-            <span className={[styles.day, item.isToday && styles.dayToday].filter(Boolean).join(" ")}>
-              {item.isToday ? "hoje!" : `dia ${item.day}`}
-            </span>
+        {members.length === 0 ? (
+          <div className={styles.emptyState}>
+            <PartyPopper size={22} color="var(--color-text-muted)" />
+            <p className={styles.emptyText}>Nenhum aniversariante este mês</p>
           </div>
-        ))}
+        ) : (
+          <div className={styles.list}>
+            {members.map((item) => (
+              <div key={item._id} className={styles.item}>
+                <div
+                  style={{ position: "relative" }}
+                  className={item.isToday ? styles.avatarRing : undefined}
+                >
+                  <Avatar photo={item.profileImage} size={44} />
+                  {item.isToday && (
+                    <div className={styles.todayBadge}>
+                      <span className={styles.todayBadgeText}>🎂</span>
+                    </div>
+                  )}
+                </div>
+                <span
+                  className={[styles.name, item.isToday && styles.nameToday]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  {item.firstName}
+                </span>
+                <span
+                  className={[styles.day, item.isToday && styles.dayToday]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  {item.isToday ? "hoje!" : `dia ${item.day}`}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+    </CoachTarget>
   );
 }

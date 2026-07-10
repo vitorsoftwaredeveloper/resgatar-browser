@@ -1,7 +1,7 @@
 .container {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: 1000;
   background: #000;
   display: flex;
   flex-direction: column;
@@ -51,6 +51,20 @@
   width: 100%;
   height: 100%;
   border: none;
+}
+
+/* Em telas grandes o wrapper vira bem mais largo que 16:9 (a proporção real
+   do embed do YouTube) — sem isso o iframe é esticado pro viewport inteiro e
+   o player interno acaba cortando/distorcendo o vídeo. Trava o iframe numa
+   caixa 16:9 centralizada, com letterbox preto ao redor (mesmo fundo do
+   .container), em vez de preencher a tela crua. Mobile fica como estava. */
+@media (min-width: 1024px) {
+  .player {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+  }
 }
 
 .navArrow {

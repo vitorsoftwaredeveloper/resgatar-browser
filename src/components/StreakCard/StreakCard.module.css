@@ -5,22 +5,28 @@
   margin-bottom: var(--spacing-md);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-card);
+  box-sizing: border-box;
+  height: 100%;
 }
 
+/* Realce editorial (número em serifada, label versalete e "trilhos" de dia
+   largos, como no trilho de Leituras) aplicado sempre — mobile copia o
+   mesmo estilo do desktop, não só o layout compacto. */
 .label {
   display: block;
-  font-size: var(--font-xsmall);
+  font-size: 11px;
   font-weight: 600;
   color: var(--color-text-muted);
-  letter-spacing: 0.8px;
+  letter-spacing: 0.18em;
   margin-bottom: var(--spacing-sm2);
 }
 
+/* Card empilhado (ícone+número em cima, barras cheias embaixo). */
 .row {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
 }
 
 .left {
@@ -51,8 +57,10 @@
 }
 
 .headline {
-  font-size: var(--font-subtitle);
-  font-weight: 700;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.01em;
   color: var(--color-text);
   font-variant-numeric: lining-nums;
 }
@@ -68,30 +76,36 @@
   flex-direction: row;
   align-items: center;
   gap: var(--spacing-xs);
+  width: 100%;
 }
 
 .week {
   display: flex;
   flex-direction: row;
-  gap: var(--spacing-xs);
+  gap: 10px;
+  width: 100%;
 }
 
 .dayCol {
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   gap: 4px;
 }
 
 .dayInitial {
-  font-size: var(--font-xsmall);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
   color: var(--color-text-muted);
 }
 
 .dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 5px;
+  order: -1;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  margin-bottom: 6px;
   background: var(--color-border);
 }
 
@@ -102,63 +116,4 @@
 .dotToday {
   background: transparent;
   border: 1.5px solid var(--gold);
-}
-
-/* ---- Realce editorial no desktop (>=1024px): número em serifada, label
-   versalete e "trilhos" de dia mais largos, como no trilho de Leituras. ---- */
-@media (min-width: 1024px) {
-  .container {
-    height: 100%;
-    box-sizing: border-box;
-  }
-
-  .label {
-    font-size: 11px;
-    letter-spacing: 0.18em;
-  }
-
-  .headline {
-    font-family: var(--font-display), Georgia, serif;
-    font-weight: 600;
-    font-size: 22px;
-    letter-spacing: -0.01em;
-  }
-
-  .week {
-    gap: 10px;
-  }
-
-  /* Card empilhado (ícone+número em cima, barras cheias embaixo) em vez do
-     layout compacto mobile (ícone à esquerda, pontos pequenos à direita). */
-  .row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 14px;
-  }
-
-  .right {
-    width: 100%;
-  }
-
-  .week {
-    width: 100%;
-  }
-
-  .dayCol {
-    flex: 1;
-    flex-direction: column;
-  }
-
-  .dot {
-    order: -1;
-    width: 100%;
-    height: 8px;
-    border-radius: 999px;
-    margin-bottom: 6px;
-  }
-
-  .dayInitial {
-    font-size: 10.5px;
-    letter-spacing: 0.06em;
-  }
 }

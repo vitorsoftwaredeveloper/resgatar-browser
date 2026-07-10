@@ -5,7 +5,7 @@ import { NoticesCardSkeleton } from "@/components/Skeleton/NoticesCardSkeleton";
 import { useAuth } from "@/context/AuthContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
 import { commitmentScheduleLabel, isCommitmentToday } from "@/utils/commitment";
-import { ChevronRight } from "lucide-react";
+import { CalendarDays, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { NoticeBoardModal } from "./NoticeBoardModal";
 import styles from "./NoticesCard.module.css";
@@ -42,39 +42,44 @@ export function NoticesCard() {
         {!loaded ? (
           <NoticesCardSkeleton />
         ) : items.length === 0 ? (
-          <p className={styles.emptyText}>Nenhum compromisso publicado ainda.</p>
+          <div className={styles.emptyState}>
+            <CalendarDays size={22} color="var(--color-text-muted)" />
+            <p className={styles.emptyText}>Nenhum compromisso publicado ainda</p>
+          </div>
         ) : (
-          items.map((item, i) => {
-            const today = isCommitmentToday(item);
-            return (
-              <div
-                key={item.id}
-                className={[
-                  styles.row,
-                  today ? styles.rowToday : i < items.length - 1 ? styles.rowBorder : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-              >
-                <div className={styles.texts}>
-                  <div className={styles.titleRow}>
-                    <span className={[styles.title, today && styles.titleToday].filter(Boolean).join(" ")}>
-                      {item.title}
-                    </span>
-                    {today && (
-                      <span className={styles.todayTag}>
-                        <span className={styles.todayTagText}>HOJE</span>
+          <div className={styles.list}>
+            {items.map((item, i) => {
+              const today = isCommitmentToday(item);
+              return (
+                <div
+                  key={item.id}
+                  className={[
+                    styles.row,
+                    today ? styles.rowToday : i < items.length - 1 ? styles.rowBorder : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  <div className={styles.texts}>
+                    <div className={styles.titleRow}>
+                      <span className={[styles.title, today && styles.titleToday].filter(Boolean).join(" ")}>
+                        {item.title}
                       </span>
-                    )}
+                      {today && (
+                        <span className={styles.todayTag}>
+                          <span className={styles.todayTagText}>HOJE</span>
+                        </span>
+                      )}
+                    </div>
+                    <p className={[styles.date, today && styles.dateToday].filter(Boolean).join(" ")}>
+                      {commitmentScheduleLabel(item)} · <span className={styles.timeTag}>{item.time}</span> ·{" "}
+                      {item.location}
+                    </p>
                   </div>
-                  <p className={[styles.date, today && styles.dateToday].filter(Boolean).join(" ")}>
-                    {commitmentScheduleLabel(item)} · <span className={styles.timeTag}>{item.time}</span> ·{" "}
-                    {item.location}
-                  </p>
                 </div>
-              </div>
-            );
-          })
+              );
+            })}
+          </div>
         )}
       </div>
 

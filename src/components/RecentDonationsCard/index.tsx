@@ -6,7 +6,7 @@ import { useAppTheme } from "@/context/ThemeContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
 import { TRANSACTION_STATUS } from "@/types/Charge";
 import { formatMoneyBRL } from "@/utils/helper";
-import { Banknote, QrCode } from "lucide-react";
+import { Banknote, HandCoins, QrCode } from "lucide-react";
 import styles from "./RecentDonationsCard.module.css";
 
 // Prévia das doações avulsas do mês corrente — visível pra qualquer membro,
@@ -31,7 +31,10 @@ export function RecentDonationsCard() {
         {!loaded ? (
           <NoticesCardSkeleton rows={3} />
         ) : items.length === 0 ? (
-          <p className={styles.emptyText}>Nenhuma doação registrada neste mês.</p>
+          <div className={styles.emptyState}>
+            <HandCoins size={22} color="var(--color-text-muted)" />
+            <p className={styles.emptyText}>Nenhuma doação registrada neste mês</p>
+          </div>
         ) : (
           items.map((item, i) => {
             const isPix = item.paymentMethodId === "pix";

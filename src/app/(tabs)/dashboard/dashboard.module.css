@@ -20,6 +20,41 @@
     transform 0.15s ease;
 }
 
+/* Flex column em todo card exceto banners (o carrossel já controla a
+   própria altura) — sem min-height fixo: cada card adapta a própria altura
+   ao conteúdo (um card com 1 doação ou nenhum aniversariante fica baixo, um
+   com mais itens fica mais alto). No desktop, align-items:stretch do grid
+   (abaixo) ainda nivela os dois cards de uma mesma linha entre si, então o
+   vizinho mais curto não sobra com espaço em branco — só não existe mais um
+   piso artificial igual pra todos. */
+.cardWrapper:not([data-card="banners"]) {
+  display: flex;
+  flex-direction: column;
+}
+
+/* O filho direto do wrapper é sempre o <div> não estilizado do CoachTarget
+   (cada card embrulha o próprio conteúdo nele) — esticá-lo com flex:1 não
+   basta, porque o card real (.container de cada componente, que usa
+   height:100%) é um neto, não um filho direto. height:100% só resolve de
+   forma confiável quando a altura do wrapper é extrínseca (grid stretch no
+   desktop); no mobile (sem grid, altura vindo só de min-height) o
+   percentual falha silenciosamente e cada card encolhe pro tamanho do
+   próprio conteúdo, sobrando um vão em branco antes do próximo card.
+   flex:1 no neto contorna isso: flex-grow distribui o espaço livre do
+   flex container (o próprio <div> do CoachTarget, já esticado) sem
+   depender de percentual, então funciona em qualquer contexto. */
+.cardWrapper:not([data-card="banners"]) > * {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.cardWrapper:not([data-card="banners"]) > * > * {
+  flex: 1;
+  min-height: 0;
+}
+
 .cardWrapper:active {
   cursor: grabbing;
 }
@@ -29,10 +64,9 @@
   transform: scale(1.02);
 }
 
-/* Card cujo componente renderiza null (ex.: aniversariantes sem ninguém
-   fazendo aniversário no mês, doações pra quem não é admin) não deixa um slot
-   vazio — o :empty tira o wrapper do fluxo (inclusive do grid), então o card
-   seguinte ocupa o lugar em vez de sobrar buraco. */
+/* Card cujo componente renderiza null (ex.: doações pra quem não é admin) não
+   deixa um slot vazio — o :empty tira o wrapper do fluxo (inclusive do
+   grid), então o card seguinte ocupa o lugar em vez de sobrar buraco. */
 .cardWrapper:empty {
   display: none;
 }
@@ -46,10 +80,10 @@
        aí a 1ª coluna infla pra caber esse conteúdo e espreme a 2ª a uma tira
        de ~180px, além de estourar a largura do grid inteiro. */
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    /* dense: preenche buracos deixados por cards de coluna cheia (banners,
-       notices) com os cards seguintes, em vez de deixar uma célula vazia no
-       meio do grid quando o auto-flow normal pularia ela pra não sobrepor um
-       item de span completo. */
+    /* dense: preenche buracos deixados pelo carrossel de banners (único card
+       de coluna cheia fixo) com os cards seguintes, em vez de deixar uma
+       célula vazia no meio do grid quando o auto-flow normal pularia ela pra
+       não sobrepor um item de span completo. */
     grid-auto-flow: dense;
     align-items: stretch;
     gap: var(--spacing-lg);
@@ -58,22 +92,26 @@
     border-radius: var(--radius-xl);
   }
 
-  .content [data-card="banners"],
-  .content [data-card="notices"] {
+  .content [data-card="banners"] {
     grid-column: 1 / -1;
   }
 
-  /* Todo card estica pra altura da linha (par ao lado) e o componente em si
-     preenche 100% dessa altura — padroniza o tamanho mínimo visual em vez de
-     um card curto (ex.: Doações do mês com 1 item) deixar espaço em branco
-     abaixo dele enquanto o par ao lado (ex.: Vídeos recentes) é bem mais alto. */
-  .cardWrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: var(--dashboard-card-min-height, 210px);
-  }
+  /* Compromissos (notices) não é mais full-width fixo — é um card de coluna
+     única igual aos demais: divide a linha com o vizinho quando tem par, e
+     só ocupa a linha inteira sozinho pela mesma regra abaixo. */
 
-  .cardWrapper > * {
-    flex: 1;
+  /* Card de coluna única (não banners) que sobra sozinho na última posição de
+     uma sequência ímpar (após remover cards escondidos por :empty) ocupa a
+     linha inteira em vez de ficar pela metade com espaço em branco ao lado.
+     :nth-child(of S) conta só entre os cards que batem com o filtro S, então
+     funciona com qualquer ordem de drag-and-reorder e independe de cards
+     ocultos por permissão (ex.: meta comunitária sem progresso). */
+  .content
+    .cardWrapper:nth-child(
+      odd of .cardWrapper:not([data-card="banners"]):not(:empty)
+    ):nth-last-child(
+      1 of .cardWrapper:not([data-card="banners"]):not(:empty)
+    ) {
+    grid-column: 1 / -1;
   }
 }

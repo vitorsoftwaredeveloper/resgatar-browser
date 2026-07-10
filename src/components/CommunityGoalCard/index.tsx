@@ -34,7 +34,22 @@ export function CommunityGoalCard() {
 
   if (loading && !progress) return <CommunityGoalCardSkeleton />;
 
-  if (!progress || !Number.isFinite(progress.percent)) return null;
+  if (!progress || !Number.isFinite(progress.percent)) {
+    return (
+      <CoachTarget id="community-goal-card">
+        <div className={styles.card}>
+          <div className={styles.header}>
+            <span className={styles.title}>Meta da comunidade</span>
+          </div>
+
+          <div className={styles.emptyState}>
+            <Target size={22} color="var(--color-text-muted)" />
+            <p className={styles.emptyText}>Nenhuma meta definida para este mês</p>
+          </div>
+        </div>
+      </CoachTarget>
+    );
+  }
 
   const percent = Math.max(0, Math.min(100, Math.round(progress.percent)));
   const reached = percent >= 100;
