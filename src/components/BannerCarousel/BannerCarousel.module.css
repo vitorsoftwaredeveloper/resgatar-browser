@@ -33,7 +33,7 @@
 
 .empty {
   width: 100%;
-  height: 260px;
+  height: 160px;
   border-radius: var(--radius-lg);
   border: 1.5px dashed var(--color-border);
   background: none;
@@ -106,7 +106,7 @@
 
 .skeleton {
   width: 100%;
-  height: 260px;
+  height: 160px;
   border-radius: var(--radius-lg);
   background: var(--color-skeleton-bg);
   animation: pulse 0.8s ease-in-out infinite alternate;
@@ -122,13 +122,17 @@
 }
 
 @media (min-width: 768px) {
-  .slide {
+  .slide,
+  .empty,
+  .skeleton {
     height: 360px;
   }
 }
 
 @media (min-width: 1024px) {
-  .slide {
+  .slide,
+  .empty,
+  .skeleton {
     height: 460px;
   }
 }
