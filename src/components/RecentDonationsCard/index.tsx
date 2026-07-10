@@ -12,10 +12,9 @@ import { Banknote, ChevronRight, QrCode } from "lucide-react";
 import { useRouter } from "next/navigation";
 import styles from "./RecentDonationsCard.module.css";
 
-// Prévia das doações avulsas do mês corrente — dado financeiro, então segue o
-// mesmo recorte de acesso da tela /donations (só aparece pra admin no hub
-// Administrativo). O DashboardDataContext já nem busca doações pra membro
-// comum, então aqui basta não renderizar nada.
+// Prévia das doações avulsas do mês corrente — visível pra qualquer membro.
+// Só o atalho pro hub Administrativo (/settings) continua restrito a admin:
+// membro comum vai direto pra rota standalone /donations.
 
 const DISPLAY_LIMIT = 5;
 
@@ -27,17 +26,14 @@ export function RecentDonationsCard() {
   const isAdmin = member?.role === "admin";
   const { donations, donationsLoading: loading } = useDashboardData();
 
-  if (!isAdmin) return null;
-
   const items = donations.slice(0, DISPLAY_LIMIT);
   const loaded = !loading;
 
-  // No desktop, "doações" é uma tela embutida no master-detail do
-  // Administrativo (/settings), não uma rota própria — ?open=donations avisa
-  // o hub pra abrir direto o detalhe. No mobile não existe esse master-detail,
-  // então navega pra rota standalone normalmente (mesmo destino do menu).
+  // No desktop, admin abre "doações" embutido no master-detail do
+  // Administrativo (/settings?open=donations). Membro comum não tem acesso a
+  // esse hub, então (em qualquer breakpoint) vai pra rota standalone.
   function openDonations() {
-    router.push(isDesktop ? "/settings?open=donations" : "/donations");
+    router.push(isAdmin && isDesktop ? "/settings?open=donations" : "/donations");
   }
 
   return (

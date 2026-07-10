@@ -58,8 +58,7 @@ const DashboardDataContext = createContext<DashboardDataContextValue>({
 });
 
 export function DashboardDataProvider({ children }: { children: React.ReactNode }) {
-  const { isLoggedIn, member } = useContext(AuthContext);
-  const isAdmin = member?.role === "admin";
+  const { isLoggedIn } = useContext(AuthContext);
   const [banners, setBanners] = useState<IBanner[]>([]);
   const [bannersLoading, setBannersLoading] = useState(true);
   const [goalProgress, setGoalProgress] = useState<IGoalProgress | null>(null);
@@ -106,15 +105,6 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       .catch(() => setVideos([]))
       .finally(() => setVideosLoading(false));
 
-    // Doações são dado financeiro, só interessa a admin (mesmo recorte de
-    // acesso da tela /donations, cujo link só aparece no hub Administrativo
-    // pra admins) — membro comum nem dispara a requisição.
-    if (!isAdmin) {
-      setDonations([]);
-      setDonationsLoading(false);
-      return;
-    }
-
     const now = new Date();
     DonationServices.list(now.getFullYear())
       .then((data) =>
@@ -122,7 +112,7 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       )
       .catch(() => setDonations([]))
       .finally(() => setDonationsLoading(false));
-  }, [isLoggedIn, isAdmin]);
+  }, [isLoggedIn]);
 
   async function refetchBanners() {
     try {

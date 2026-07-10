@@ -42,7 +42,9 @@ function sumAmounts(donations: IDonation[]): number {
 
 export function DonationsScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors } = useAppTheme();
+  const { member } = useAuth();
   const { isDesktop } = useBreakpoint();
+  const isAdmin = member?.role === "admin";
 
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
@@ -104,7 +106,7 @@ export function DonationsScreen({ embedded = false }: { embedded?: boolean }) {
     return (
       <div className={styles.content}>
         <div className={styles.pageHead}>
-          <p className="eyebrow">Administrativo</p>
+          {isAdmin && <p className="eyebrow">Administrativo</p>}
           <h1 className={styles.pageTitle}>Listagem de doações</h1>
         </div>
 
