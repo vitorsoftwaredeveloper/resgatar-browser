@@ -87,3 +87,10 @@
 .todayBadgeText {
   font-size: 10px;
 }
+
+@media (min-width: 1024px) {
+  .container {
+    height: 100%;
+    box-sizing: border-box;
+  }
+}

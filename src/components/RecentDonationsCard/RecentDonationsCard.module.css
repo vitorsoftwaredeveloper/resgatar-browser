@@ -20,19 +20,7 @@
   border-right: none;
   border-top: none;
   text-align: left;
-  cursor: default;
-}
-
-.header:not(:disabled) {
   cursor: pointer;
-}
-
-.headerLeft {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--spacing-sm);
-  min-width: 0;
 }
 
 .headerTitle {
@@ -41,9 +29,6 @@
   color: var(--color-text-muted);
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .emptyText {
@@ -52,37 +37,11 @@
   padding-block: var(--spacing-md);
 }
 
-.titleRow {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--spacing-xs);
-}
-
-.todayTag {
-  padding: 1px var(--spacing-xs);
-  border-radius: var(--radius-sm);
-  background: var(--color-waiting);
-  display: inline-block;
-}
-
-.todayTagText {
-  font-size: var(--font-xsmall);
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: #3e2c1c;
-}
-
-.timeTag {
-  font-weight: 700;
-  color: var(--color-text);
-}
-
 .row {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-sm2);
   padding-block: var(--spacing-sm2);
 }
 
@@ -90,37 +49,56 @@
   border-bottom: 1px solid var(--color-border);
 }
 
-.rowToday {
-  background: rgba(224, 185, 106, 0.18);
+.methodIcon {
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-sm);
-  padding-inline: var(--spacing-sm);
-  margin-block: var(--spacing-xs);
+  background: var(--color-soft-brown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .texts {
+  flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.title {
+.name {
   font-size: var(--font-body);
-  font-weight: 600;
   color: var(--color-text);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.titleToday {
-  font-size: var(--font-subtitle);
-  font-weight: 800;
-  color: var(--color-text-strong);
-}
-
-.date {
+.meta {
   font-size: var(--font-small);
   color: var(--color-text-muted);
-  margin-top: 2px;
 }
 
-.dateToday {
-  color: var(--color-text);
+.values {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.value {
+  font-size: var(--font-body);
+  color: var(--color-text-strong);
+  font-weight: 700;
+}
+
+.status {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
 }
 
 @media (min-width: 1024px) {

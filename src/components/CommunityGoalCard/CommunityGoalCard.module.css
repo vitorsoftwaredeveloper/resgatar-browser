@@ -15,9 +15,11 @@
 }
 
 .title {
-  font-size: var(--font-subtitle);
-  color: var(--color-text);
+  font-size: var(--font-xsmall);
+  color: var(--color-text-muted);
   font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
 }
 
 .valueRow {
@@ -53,16 +55,39 @@
   transition: width 0.3s ease;
 }
 
-.reachedRow {
+.highlightBox {
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm) var(--spacing-sm2);
+  margin-top: var(--spacing-sm);
+}
+
+.highlightRow {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: var(--spacing-xs);
-  margin-top: var(--spacing-sm);
 }
 
-.reachedText {
+.highlightText {
   font-size: var(--font-small);
-  color: var(--color-success);
   font-weight: 600;
+  color: var(--color-text);
+}
+
+.remainingStrong {
+  font-weight: 700;
+}
+
+.highlightMessage {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin: 4px 0 0;
+}
+
+@media (min-width: 1024px) {
+  .card {
+    height: 100%;
+    box-sizing: border-box;
+  }
 }

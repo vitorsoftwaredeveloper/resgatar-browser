@@ -28,8 +28,8 @@ import {
   UsersRound,
   Wallet,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ReactNode, Suspense, useEffect, useState } from "react";
 import styles from "./settings.module.css";
 
 const MONTH_LABELS = [
@@ -80,11 +80,22 @@ type AdminScreenItem = Extract<AdminItem, { kind: "screen" }>;
 
 const SECTIONS: AdminSection[] = ["Financeiro", "Administração"];
 
+// useSearchParams() exige um limite de Suspense (Next.js opta a rota por
+// renderização client-side até esse limite durante o build estático).
 export default function SettingsPage() {
+  return (
+    <Suspense fallback={null}>
+      <SettingsPageContent />
+    </Suspense>
+  );
+}
+
+function SettingsPageContent() {
   const { member, listMembers } = useAuth();
   const { colors } = useAppTheme();
   const { isDesktop } = useBreakpoint();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [kpis, setKpis] = useState<AdminKpis | null>(null);
 
@@ -201,6 +212,19 @@ export default function SettingsPage() {
       kind: "modal",
     },
   ];
+
+  // Permite abrir uma tela específica direto por URL (?open=donations) — usado
+  // pelo card "Doações do mês" da Dashboard pra levar reto ao detalhe dentro
+  // do Administrativo, em vez de navegar pra rota standalone (mobile) que não
+  // tem o master-detail. Só faz sentido no desktop, onde o master-detail existe.
+  const openParam = searchParams.get("open");
+  useEffect(() => {
+    if (!isDesktop || !openParam) return;
+    if (items.some((i) => i.key === openParam && i.kind === "screen")) {
+      setActiveKey(openParam);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDesktop, openParam]);
 
   const activeItem = items.find(
     (i): i is AdminScreenItem => i.key === activeKey && i.kind === "screen",

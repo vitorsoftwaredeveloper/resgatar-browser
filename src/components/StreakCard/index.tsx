@@ -65,10 +65,14 @@ export function StreakCard() {
       ? "Retome sua sequência"
       : "Comece sua sequência hoje";
 
-  const recordText =
-    data && data.longestStreak > 0
-      ? `Recorde: ${data.longestStreak} ${data.longestStreak === 1 ? "dia" : "dias"}`
-      : "Abra a liturgia todo dia para evoluir";
+  const recordText = (() => {
+    if (!data || data.longestStreak <= 0) return "Abra a liturgia todo dia para evoluir";
+    if (!active) return `Recorde: ${data.longestStreak} ${data.longestStreak === 1 ? "dia" : "dias"}`;
+
+    const toRecord = data.longestStreak - current;
+    if (toRecord <= 0) return "Você está no seu recorde! 🔥";
+    return `Faltam ${toRecord} ${toRecord === 1 ? "dia" : "dias"} para o recorde de ${data.longestStreak}`;
+  })();
 
   return (
     <CoachTarget id="streak-card">

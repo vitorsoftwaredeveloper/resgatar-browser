@@ -1,9 +1,12 @@
 "use client";
 
 import { BannerCarousel } from "@/components/BannerCarousel";
+import { BirthdayBanner } from "@/components/BirthdayBanner";
 import { CommunityGoalCard } from "@/components/CommunityGoalCard";
 import { Header } from "@/components/Header";
 import { NoticesCard } from "@/components/NoticesCard";
+import { RecentDonationsCard } from "@/components/RecentDonationsCard";
+import { RecentVideosCard } from "@/components/RecentVideosCard";
 import { StreakCard } from "@/components/StreakCard";
 import { useAuth } from "@/context/AuthContext";
 import { getDashboardOrder, setDashboardOrder } from "@/storage/localStorage";
@@ -15,16 +18,31 @@ import styles from "./dashboard.module.css";
 // + dragstart/dragover/drop) — dispensa biblioteca extra e funciona com mouse
 // e touch nos browsers mobile modernos.
 
-type CardId = "banners" | "streak" | "communityGoal" | "notices";
+type CardId = "banners" | "birthdays" | "streak" | "communityGoal" | "notices" | "recentVideos" | "recentDonations";
 
 const CARD_REGISTRY: Record<CardId, ComponentType> = {
   banners: BannerCarousel,
+  birthdays: BirthdayBanner,
   streak: StreakCard,
   communityGoal: CommunityGoalCard,
   notices: NoticesCard,
+  recentVideos: RecentVideosCard,
+  recentDonations: RecentDonationsCard,
 };
 
-const DEFAULT_ORDER: CardId[] = ["banners", "streak", "communityGoal", "notices"];
+// Os dois cards de largura cheia (banners, notices) ficam adjacentes no topo
+// — assim o grid desktop (2 colunas) não precisa contar só com
+// grid-auto-flow: dense pra evitar buraco quando um card de coluna única é
+// seguido por um de span completo.
+const DEFAULT_ORDER: CardId[] = [
+  "banners",
+  "notices",
+  "birthdays",
+  "streak",
+  "communityGoal",
+  "recentVideos",
+  "recentDonations",
+];
 
 export default function DashboardPage() {
   const { member } = useAuth();

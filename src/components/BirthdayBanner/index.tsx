@@ -1,11 +1,11 @@
 "use client";
 
 import { Avatar } from "@/components/Avatar";
+import { useBirthday } from "@/context/BirthdayContext";
 import { useAppTheme } from "@/context/ThemeContext";
-import { MemberServices } from "@/services/MemberService";
 import { IMember } from "@/types/Member";
 import { Cake } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import styles from "./BirthdayBanner.module.css";
 
 // Portado de resgatar_app/src/components/BirthdayBanner. FlatList horizontal
@@ -43,17 +43,8 @@ function getBirthdaysThisMonth(members: IMember[]): BirthdayMember[] {
 
 export function BirthdayBanner() {
   const { colors } = useAppTheme();
-  const [members, setMembers] = useState<BirthdayMember[]>([]);
-
-  useEffect(() => {
-    MemberServices.listMembers()
-      .then((data: IMember[]) => {
-        setMembers(getBirthdaysThisMonth(data));
-      })
-      .catch(() => {
-        setMembers([]);
-      });
-  }, []);
+  const { members: birthdayMembers } = useBirthday();
+  const members = useMemo(() => getBirthdaysThisMonth(birthdayMembers), [birthdayMembers]);
 
   if (members.length === 0) return null;
 

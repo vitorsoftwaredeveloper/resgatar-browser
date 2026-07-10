@@ -14,6 +14,7 @@
 
 .cardWrapper {
   cursor: grab;
+  min-width: 0;
   transition:
     opacity 0.15s ease,
     transform 0.15s ease;
@@ -28,10 +29,29 @@
   transform: scale(1.02);
 }
 
+/* Card cujo componente renderiza null (ex.: aniversariantes sem ninguém
+   fazendo aniversário no mês, doações pra quem não é admin) não deixa um slot
+   vazio — o :empty tira o wrapper do fluxo (inclusive do grid), então o card
+   seguinte ocupa o lugar em vez de sobrar buraco. */
+.cardWrapper:empty {
+  display: none;
+}
+
 @media (min-width: 1024px) {
   .content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* minmax(0, 1fr), não só 1fr: sem o mínimo explícito em 0, a coluna não
+       pode encolher abaixo do conteúdo intrínseco de algum card (ex.: a lista
+       horizontal de miniaturas do "Vídeos recentes", que não quebra linha) —
+       aí a 1ª coluna infla pra caber esse conteúdo e espreme a 2ª a uma tira
+       de ~180px, além de estourar a largura do grid inteiro. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    /* dense: preenche buracos deixados por cards de coluna cheia (banners,
+       notices) com os cards seguintes, em vez de deixar uma célula vazia no
+       meio do grid quando o auto-flow normal pularia ela pra não sobrepor um
+       item de span completo. */
+    grid-auto-flow: dense;
+    align-items: stretch;
     gap: var(--spacing-lg);
     min-height: calc(100dvh - 2 * var(--spacing-xl));
     margin-bottom: var(--spacing-xl);
@@ -41,5 +61,19 @@
   .content [data-card="banners"],
   .content [data-card="notices"] {
     grid-column: 1 / -1;
+  }
+
+  /* Todo card estica pra altura da linha (par ao lado) e o componente em si
+     preenche 100% dessa altura — padroniza o tamanho mínimo visual em vez de
+     um card curto (ex.: Doações do mês com 1 item) deixar espaço em branco
+     abaixo dele enquanto o par ao lado (ex.: Vídeos recentes) é bem mais alto. */
+  .cardWrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: var(--dashboard-card-min-height, 210px);
+  }
+
+  .cardWrapper > * {
+    flex: 1;
   }
 }

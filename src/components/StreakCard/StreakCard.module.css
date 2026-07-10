@@ -107,6 +107,11 @@
 /* ---- Realce editorial no desktop (>=1024px): número em serifada, label
    versalete e "trilhos" de dia mais largos, como no trilho de Leituras. ---- */
 @media (min-width: 1024px) {
+  .container {
+    height: 100%;
+    box-sizing: border-box;
+  }
+
   .label {
     font-size: 11px;
     letter-spacing: 0.18em;

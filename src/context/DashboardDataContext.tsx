@@ -3,18 +3,27 @@
 import { BannerService } from "@/services/BannerService";
 import { ChargeServices } from "@/services/ChargeService";
 import { CommitmentService } from "@/services/CommitmentService";
+import { DonationServices } from "@/services/DonationService";
+import { VideoService } from "@/services/VideoService";
 import { IBanner } from "@/types/Banner";
-import { IGoalProgress } from "@/types/Charge";
+import { IGoalProgress, isReturnedTransaction } from "@/types/Charge";
 import { ICommitment } from "@/types/Commitment";
+import { IDonation } from "@/types/Donation";
+import { IVideoFeedItem } from "@/types/Video";
 import { AuthContext } from "@/context/AuthContext";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-// Dados dos cards da Dashboard (banners, meta da comunidade, compromissos) não
-// mudam a cada troca de aba — buscá-los de novo toda vez que a página remonta
-// (ao voltar para "Início") é desperdício. Este provider é montado uma vez em
-// providers.tsx (acima do router, ao lado da tela de login), então a busca só
-// pode disparar quando `isLoggedIn` fica true — buscar no mount incondicional
-// significa buscar antes do login existir, sem token, e nunca mais (deps []).
+// Dados dos cards da Dashboard (banners, meta da comunidade, compromissos,
+// aniversariantes, vídeos e doações recentes) não mudam a cada troca de aba —
+// buscá-los de novo toda vez que a página remonta (ao voltar para "Início") é
+// desperdício. Este provider é montado uma vez em providers.tsx (acima do
+// router, ao lado da tela de login), então a busca só pode disparar quando
+// `isLoggedIn` fica true — buscar no mount incondicional significa buscar
+// antes do login existir, sem token, e nunca mais (deps []).
+
+// Quantidade exibida no card "Vídeos recentes" — mesmo PAGE_SIZE não faria
+// sentido aqui, é só uma prévia que linka pra /videos.
+const RECENT_VIDEOS_LIMIT = 6;
 
 interface DashboardDataContextValue {
   banners: IBanner[];
@@ -23,8 +32,13 @@ interface DashboardDataContextValue {
   goalLoading: boolean;
   commitments: ICommitment[];
   commitmentsLoading: boolean;
+  videos: IVideoFeedItem[];
+  videosLoading: boolean;
+  donations: IDonation[];
+  donationsLoading: boolean;
   refetchBanners: () => Promise<void>;
   refetchCommitments: () => Promise<void>;
+  refetchVideos: () => Promise<void>;
 }
 
 const DashboardDataContext = createContext<DashboardDataContextValue>({
@@ -34,18 +48,28 @@ const DashboardDataContext = createContext<DashboardDataContextValue>({
   goalLoading: true,
   commitments: [],
   commitmentsLoading: true,
+  videos: [],
+  videosLoading: true,
+  donations: [],
+  donationsLoading: true,
   refetchBanners: async () => {},
   refetchCommitments: async () => {},
+  refetchVideos: async () => {},
 });
 
 export function DashboardDataProvider({ children }: { children: React.ReactNode }) {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, member } = useContext(AuthContext);
+  const isAdmin = member?.role === "admin";
   const [banners, setBanners] = useState<IBanner[]>([]);
   const [bannersLoading, setBannersLoading] = useState(true);
   const [goalProgress, setGoalProgress] = useState<IGoalProgress | null>(null);
   const [goalLoading, setGoalLoading] = useState(true);
   const [commitments, setCommitments] = useState<ICommitment[]>([]);
   const [commitmentsLoading, setCommitmentsLoading] = useState(true);
+  const [videos, setVideos] = useState<IVideoFeedItem[]>([]);
+  const [videosLoading, setVideosLoading] = useState(true);
+  const [donations, setDonations] = useState<IDonation[]>([]);
+  const [donationsLoading, setDonationsLoading] = useState(true);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -55,6 +79,10 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       setGoalLoading(true);
       setCommitments([]);
       setCommitmentsLoading(true);
+      setVideos([]);
+      setVideosLoading(true);
+      setDonations([]);
+      setDonationsLoading(true);
       return;
     }
 
@@ -72,7 +100,29 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       .then(setCommitments)
       .catch(() => setCommitments([]))
       .finally(() => setCommitmentsLoading(false));
-  }, [isLoggedIn]);
+
+    VideoService.listAllVideos(1, RECENT_VIDEOS_LIMIT)
+      .then((data) => setVideos(data.items))
+      .catch(() => setVideos([]))
+      .finally(() => setVideosLoading(false));
+
+    // Doações são dado financeiro, só interessa a admin (mesmo recorte de
+    // acesso da tela /donations, cujo link só aparece no hub Administrativo
+    // pra admins) — membro comum nem dispara a requisição.
+    if (!isAdmin) {
+      setDonations([]);
+      setDonationsLoading(false);
+      return;
+    }
+
+    const now = new Date();
+    DonationServices.list(now.getFullYear())
+      .then((data) =>
+        setDonations(data.filter((d) => d.referenceMonth === now.getMonth() && !isReturnedTransaction(d.status))),
+      )
+      .catch(() => setDonations([]))
+      .finally(() => setDonationsLoading(false));
+  }, [isLoggedIn, isAdmin]);
 
   async function refetchBanners() {
     try {
@@ -90,6 +140,15 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
     }
   }
 
+  async function refetchVideos() {
+    try {
+      const data = await VideoService.listAllVideos(1, RECENT_VIDEOS_LIMIT);
+      setVideos(data.items);
+    } catch {
+      setVideos([]);
+    }
+  }
+
   return (
     <DashboardDataContext.Provider
       value={{
@@ -99,8 +158,13 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
         goalLoading,
         commitments,
         commitmentsLoading,
+        videos,
+        videosLoading,
+        donations,
+        donationsLoading,
         refetchBanners,
         refetchCommitments,
+        refetchVideos,
       }}
     >
       {children}

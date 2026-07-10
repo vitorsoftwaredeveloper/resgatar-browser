@@ -36,7 +36,7 @@ export function NoticesCard() {
           <div className={styles.headerLeft}>
             <span className={styles.headerTitle}>Compromissos da comunidade</span>
           </div>
-          {isAdmin && <ChevronRight size={20} color="var(--color-text-muted)" />}
+          {isAdmin && <ChevronRight size={16} color="var(--color-text-muted)" />}
         </button>
 
         {!loaded ? (
