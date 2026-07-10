@@ -32,19 +32,37 @@
   box-shadow: var(--shadow-card);
 }
 
+/* ---- Desktop: mesmo cabeçalho editorial (eyebrow + serif) das telas do
+   Administrativo (ex.: arrecadacao.module.css, member-actions.module.css);
+   as opções viram um grid de cards, sem o agrupamento branco do mobile. ---- */
 @media (min-width: 1024px) {
   .content {
     margin-inline: 0;
     min-height: calc(100dvh - 2 * var(--spacing-xl));
     margin-bottom: var(--spacing-xl);
     border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+  }
+
+  .pageHead {
+    margin-bottom: 26px;
+  }
+
+  .pageTitle {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: 40px;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+    color: var(--ink);
+    margin: 8px 0 0;
   }
 
   /* Cada opção vira um card no grid (ItemActionList variant="card"); o
      agrupamento/fundo do menuCard some. */
   .menuCard {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-grid-min), 1fr));
     gap: var(--spacing-md);
     background: none;
     box-shadow: none;

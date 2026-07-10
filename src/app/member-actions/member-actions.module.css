@@ -32,13 +32,29 @@
   box-shadow: var(--shadow-card);
 }
 
-/* Desktop: mesmas opções viram um grid de cards (igual à tela Administrativo);
-   o agrupamento branco some e cada ItemActionList variant="card" é seu card. */
+/* ---- Desktop: reproduz o cabeçalho editorial (eyebrow + serif) das demais
+   telas do Administrativo (ex.: arrecadacao.module.css); as mesmas opções
+   viram um grid de cards, sem o agrupamento branco do mobile. ---- */
 @media (min-width: 1024px) {
   .content {
     min-height: calc(100dvh - 2 * var(--spacing-xl));
     margin-bottom: var(--spacing-xl);
     border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+  }
+
+  .pageHead {
+    margin-bottom: 26px;
+  }
+
+  .pageTitle {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: 40px;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+    color: var(--ink);
+    margin: 8px 0 0;
   }
 
   .menuCard {
