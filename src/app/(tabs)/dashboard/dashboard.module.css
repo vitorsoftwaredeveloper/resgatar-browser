@@ -71,7 +71,11 @@
   display: none;
 }
 
-@media (min-width: 1024px) {
+/* Grid de 2 colunas já a partir de 768px (antes só em 1024px): entre tablet e
+   desktop o shell agora é full-width, então há largura de sobra pra preencher
+   com 2 colunas de cards em vez de uma única coluna esticada. Em 1024px+ a
+   sidebar entra e o layout.module.css recentraliza o conteúdo. */
+@media (min-width: 768px) {
   .content {
     display: grid;
     /* minmax(0, 1fr), não só 1fr: sem o mínimo explícito em 0, a coluna não

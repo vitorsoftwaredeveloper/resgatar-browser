@@ -5,6 +5,7 @@
   align-items: center;
   background: var(--color-background);
   padding-top: var(--spacing-xxl);
+  padding-bottom: var(--spacing-sm);
   position: relative;
   z-index: 100;
 }

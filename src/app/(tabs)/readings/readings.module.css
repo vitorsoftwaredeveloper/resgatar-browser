@@ -12,6 +12,24 @@
   background: var(--color-soft-brown);
 }
 
+/* Respiro vertical entre os blocos do leitor de coluna única (mobile/tablet):
+   título editorial, datepicker, botão de marcar e o leitor ganham um gap
+   consistente em vez de ficarem colados. No desktop (>=1024px) o grid de 2
+   colunas cuida do próprio espaçamento, então isso fica restrito a <1024px. */
+@media (max-width: 1023px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  /* O gap acima já separa o título do próximo bloco; sem zerar isto o
+     espaçamento dobraria (margem + gap). */
+  .pageHead {
+    margin-bottom: 0;
+  }
+}
+
 .errorContainer {
   display: flex;
   flex-direction: column;
@@ -74,7 +92,10 @@
   text-align: center;
 }
 
-@media (min-width: 1024px) {
+/* 768px (não 1024px): o leitor de 2 colunas passa a renderizar já no tablet
+   (ver isWideReader em page.tsx), então a moldura de conteúdo do desktop
+   precisa acompanhar a partir da mesma largura. */
+@media (min-width: 768px) {
   .content {
     margin-inline: 0;
     min-height: calc(100dvh - 2 * var(--spacing-xl));

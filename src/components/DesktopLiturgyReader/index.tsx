@@ -2,7 +2,7 @@
 
 import { useAppTheme } from "@/context/ThemeContext";
 import { Pause, Play } from "lucide-react";
-import { Fragment } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import styles from "./DesktopLiturgyReader.module.css";
 
 // Variante desktop (>=1024px) da tela de Leituras. No mobile as seções ficam
@@ -60,6 +60,28 @@ export function DesktopLiturgyReader({
 }: Props) {
   const { colors } = useAppTheme();
 
+  // Detecta quando as abas quebram em mais de uma linha. A pílula (fundo +
+  // borda em volta do grupo) só fica boa quando os itens cabem numa linha só;
+  // quebrada, ela vira uma moldura torta. Nesse caso o grupo é "desmoldurado"
+  // (ver .tabsUnboxed) e cada aba vira um chip independente.
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const [tabsWrapped, setTabsWrapped] = useState(false);
+
+  useEffect(() => {
+    const el = tabsRef.current;
+    if (!el) return;
+    const check = () => {
+      const items = Array.from(el.children) as HTMLElement[];
+      if (items.length === 0) return;
+      const firstTop = items[0].offsetTop;
+      setTabsWrapped(items.some((it) => it.offsetTop !== firstTop));
+    };
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [sections.length]);
+
   // Preserva a aba escolhida ao trocar de data; se a seção não existir nesse
   // dia (ex.: Segunda Leitura só aos domingos) cai na primeira disponível.
   const active = sections.find((s) => s.id === activeId) ?? sections[0];
@@ -70,7 +92,13 @@ export function DesktopLiturgyReader({
   return (
     <div className={styles.panel}>
       <div className={styles.tabsWrap}>
-        <div className={styles.tabs} role="tablist">
+        <div
+          ref={tabsRef}
+          className={[styles.tabs, tabsWrapped && styles.tabsUnboxed]
+            .filter(Boolean)
+            .join(" ")}
+          role="tablist"
+        >
           {sections.map((section) => {
             const selected = section.id === active.id;
             return (

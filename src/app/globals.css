@@ -60,6 +60,10 @@
     0 12px 30px -24px rgba(60, 42, 26, 0.35);
   --shadow-pop: 0 40px 90px -40px rgba(52, 36, 20, 0.5),
     0 8px 22px -14px rgba(52, 36, 20, 0.3);
+  /* Sombra da divisória header ↔ conteúdo no mobile (o Header projeta pra
+     baixo, sobre o painel de conteúdo). Tema escuro reforça (ver override em
+     [data-theme="dark"]), porque lá as duas superfícies quase se confundem. */
+  --header-divider: 0 7px 16px -8px rgba(60, 42, 26, 0.22);
 
   /* Gradientes de marca */
   --sidebar-bg: linear-gradient(180deg, #fbf7ee, #f4ecdc);
@@ -178,6 +182,10 @@
   --shadow-card: 0 1px 0 rgba(0, 0, 0, 0.3), 0 18px 40px -30px rgba(0, 0, 0, 0.8);
   --shadow-pop: 0 50px 100px -40px rgba(0, 0, 0, 0.85),
     0 10px 30px -16px rgba(0, 0, 0, 0.6);
+  /* Divisória header ↔ conteúdo mais forte no escuro: sombra densa + um fio
+     claro logo abaixo pra desenhar a borda mesmo com as superfícies próximas. */
+  --header-divider: 0 9px 20px -6px rgba(0, 0, 0, 0.7),
+    0 1px 0 rgba(241, 231, 213, 0.06);
   --sidebar-bg: linear-gradient(180deg, #1d160d, #16100a);
   --hero-ink: #f6ecd8;
 
@@ -674,7 +682,10 @@ svg {
 
 @media (min-width: 768px) {
   .app-shell--wide {
-    max-width: 640px;
+    /* Cresce fluidamente de 640px (768px de viewport) até 960px (1024px,
+       valor exato do próximo degrau) — sem isso o conteúdo ficava travado em
+       640px com vão vazio crescente nas laterais até o salto brusco. */
+    max-width: clamp(640px, calc(640px + (100vw - 768px) * 1.25), 960px);
   }
 }
 

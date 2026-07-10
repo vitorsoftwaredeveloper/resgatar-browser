@@ -51,6 +51,35 @@
   box-shadow: var(--shadow-card);
 }
 
+/* Grupo de abas quebrado em mais de uma linha (detectado em JS via
+   tabsWrapped): tira a moldura de pílula do container — que fica torta quando
+   os itens não cabem numa linha — e transforma cada aba num chip autônomo, de
+   largura natural e alinhado à esquerda, em vez de esticar o item sozinho da
+   última linha. */
+.tabsUnboxed {
+  background: none;
+  border-color: transparent;
+  padding: 0;
+  gap: 8px;
+}
+
+.tabsUnboxed .tab {
+  flex: 0 1 auto;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.tabsUnboxed .tab:hover {
+  background: var(--surface-2);
+}
+
+.tabsUnboxed .tabActive,
+.tabsUnboxed .tabActive:hover {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
 /* Card com o texto completo da aba selecionada. */
 .reading {
   padding: 30px 40px 40px;
@@ -224,4 +253,29 @@
   border-radius: 5px;
   background: var(--color-skeleton-bg);
   margin-bottom: 16px;
+}
+
+/* ---------------------------------------------------------------------------
+   Ajustes para telas estreitas (<768px): o leitor agora também é usado no
+   mobile (coluna única). O padding lateral generoso do desktop sufoca a
+   leitura num celular, e o título da referência precisa encolher um pouco.
+   As abas já quebram linha sozinhas (flex-wrap no .tabs).
+   --------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .tabsWrap {
+    padding: 14px;
+  }
+
+  .reading {
+    padding: 22px 18px 28px;
+  }
+
+  .referencia {
+    font-size: 26px;
+  }
+
+  .texto {
+    font-size: 19px;
+    line-height: 1.6;
+  }
 }

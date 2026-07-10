@@ -113,19 +113,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   async function checkSession() {
     try {
       await getCurrentUser();
-
-      const storedMember = await getStoredMember();
-
-      if (storedMember) {
-        setMember(storedMember);
-      } else {
-        const memberData = await MemberServices.getMember();
-        setMember(memberData);
-        await saveMember(memberData);
-      }
     } catch {
       setMember(null);
+      setLoading(false);
+      return;
     }
+
+    const storedMember = await getStoredMember();
+    if (storedMember) setMember(storedMember);
+
+    // Sempre revalida com a API, mesmo com cache local: garante que dados
+    // como readingStreak reflitam o estado real do servidor (ex.: uma
+    // leitura marcada no app mobile precisa aparecer aqui sem precisar
+    // deslogar). O cache só fica de pé se essa revalidação falhar.
+    try {
+      const memberData = await MemberServices.getMember();
+      setMember(memberData);
+      await saveMember(memberData);
+    } catch {
+      if (!storedMember) setMember(null);
+    }
+
     setLoading(false);
   }
 

@@ -9,7 +9,6 @@ import { IMemberWithContribution } from "@/types/Member";
 const MEMBER_KEY = "@auth:member";
 const ONBOARDING_KEY_PREFIX = "@onboarding:seen:";
 const DASHBOARD_ORDER_PREFIX = "@dashboard:order:";
-const READING_MARKED_PREFIX = "@reading:marked:";
 const LITURGY_CACHE_PREFIX = "@liturgy:";
 
 const isBrowser = () => typeof window !== "undefined";
@@ -76,19 +75,6 @@ export async function setDashboardOrder(
   order: string[],
 ): Promise<void> {
   setItem(`${DASHBOARD_ORDER_PREFIX}${memberId}`, JSON.stringify(order));
-}
-
-export async function getReadingMarkedDate(
-  memberId: string,
-): Promise<string | null> {
-  return getItem(`${READING_MARKED_PREFIX}${memberId}`);
-}
-
-export async function setReadingMarkedDate(
-  memberId: string,
-  isoDate: string,
-): Promise<void> {
-  setItem(`${READING_MARKED_PREFIX}${memberId}`, isoDate);
 }
 
 export async function getLiturgyCache<T>(dateKey: string): Promise<T | null> {

@@ -3,14 +3,13 @@
 import { Avatar } from "@/components/Avatar";
 import { type BreadcrumbItem } from "@/components/Breadcrumb";
 import { CoachTarget } from "@/components/CoachTarget";
-import { QuickActionsSheet } from "@/components/QuickActionsSheet";
 import { LogoResgatar } from "@/components/Svg/Logo";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useBirthday } from "@/context/BirthdayContext";
 import { useTopbar } from "@/context/TopbarContext";
 import { resolveAvatarUri } from "@/utils/image";
-import { ChevronLeft, EllipsisVertical } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { ChevronLeft, Moon, Sun } from "lucide-react";
+import { useEffect } from "react";
 import styles from "./Header.module.css";
 
 // Portado de resgatar_app/src/components/Header. measure() nativo vira
@@ -33,12 +32,9 @@ interface Props {
 }
 
 export function Header({ name, photo, onBack, crumbs }: Props) {
-  const { colors } = useAppTheme();
+  const { colors, mode, toggleTheme } = useAppTheme();
   const { todayBirthdays } = useBirthday();
   const { setCrumbs } = useTopbar();
-  const [sheetVisible, setSheetVisible] = useState(false);
-  const [anchorPosition, setAnchorPosition] = useState<{ top: number; right: number } | undefined>();
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const avatarUri = resolveAvatarUri(photo);
 
@@ -46,14 +42,6 @@ export function Header({ name, photo, onBack, crumbs }: Props) {
     setCrumbs(crumbs);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [crumbs]);
-
-  function handleOpenSheet() {
-    const node = buttonRef.current;
-    if (!node) return;
-    const rect = node.getBoundingClientRect();
-    setAnchorPosition({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
-    setSheetVisible(true);
-  }
 
   return (
     <div className={styles.container} data-header>
@@ -74,13 +62,16 @@ export function Header({ name, photo, onBack, crumbs }: Props) {
         <div className={styles.actions} data-header-actions>
           <CoachTarget id="header-quickactions">
             <button
-              ref={buttonRef}
               type="button"
-              aria-label="Ações rápidas"
-              onClick={handleOpenSheet}
+              aria-label={mode === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
+              onClick={toggleTheme}
               className={styles.themeToggle}
             >
-              <EllipsisVertical size={18} color={colors.primary} />
+              {mode === "dark" ? (
+                <Sun size={18} color={colors.primary} />
+              ) : (
+                <Moon size={18} color={colors.primary} />
+              )}
               {todayBirthdays > 0 && (
                 <span className={styles.badge}>
                   <span className={styles.badgeText}>{todayBirthdays}</span>
@@ -90,12 +81,6 @@ export function Header({ name, photo, onBack, crumbs }: Props) {
           </CoachTarget>
         </div>
       </div>
-
-      <QuickActionsSheet
-        visible={sheetVisible}
-        onClose={() => setSheetVisible(false)}
-        anchorPosition={anchorPosition}
-      />
     </div>
   );
 }

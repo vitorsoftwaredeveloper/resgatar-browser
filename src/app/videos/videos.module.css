@@ -313,7 +313,16 @@
 
 @media (min-width: 768px) {
   .fab {
-    right: max(20px, calc((100vw - 640px) / 2 + 20px));
+    /* Acompanha a mesma curva fluida do .app-shell--wide (globals.css) —
+       o FAB é position:fixed e não herda a largura do shell, então precisa
+       repetir a fórmula pra não ficar fora do canto do conteúdo. */
+    right: max(
+      20px,
+      calc(
+        (100vw - clamp(640px, calc(640px + (100vw - 768px) * 1.25), 960px)) / 2 +
+          20px
+      )
+    );
     bottom: 40px;
   }
 }

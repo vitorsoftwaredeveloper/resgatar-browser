@@ -1,7 +1,9 @@
-@media (min-width: 768px) {
-  .tabsShell {
-    max-width: 640px;
-  }
+/* Abaixo do desktop (1024px) o shell ocupa 100% da largura — sem o teto de
+   480px do .app-shell — pra nunca sobrar calha vazia nas laterais em telas
+   médias (tablet, janela dividida). O max-width centralizado volta só a
+   partir de 1024px, junto com a sidebar. */
+.tabsShell {
+  max-width: none;
 }
 
 @media (min-width: 1024px) {

@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
 import { commitmentScheduleLabel, isCommitmentToday } from "@/utils/commitment";
 import { CalendarDays, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { NoticeBoardModal } from "./NoticeBoardModal";
 import styles from "./NoticesCard.module.css";
 
@@ -22,6 +22,17 @@ export function NoticesCard() {
   const { commitments: items, commitmentsLoading: loading } = useDashboardData();
   const loaded = !loading;
   const [modalVisible, setModalVisible] = useState(false);
+
+  // Compromissos de hoje sempre no topo (com o destaque HOJE), independente da
+  // ordem em que a API devolve. sort estável: dentro de cada grupo (hoje /
+  // não-hoje) a ordem original é preservada.
+  const sortedItems = useMemo(
+    () =>
+      [...items].sort(
+        (a, b) => Number(isCommitmentToday(b)) - Number(isCommitmentToday(a)),
+      ),
+    [items],
+  );
 
   return (
     <CoachTarget id="notices-card">
@@ -48,14 +59,14 @@ export function NoticesCard() {
           </div>
         ) : (
           <div className={styles.list}>
-            {items.map((item, i) => {
+            {sortedItems.map((item, i) => {
               const today = isCommitmentToday(item);
               return (
                 <div
                   key={item.id}
                   className={[
                     styles.row,
-                    today ? styles.rowToday : i < items.length - 1 ? styles.rowBorder : "",
+                    today ? styles.rowToday : i < sortedItems.length - 1 ? styles.rowBorder : "",
                   ]
                     .filter(Boolean)
                     .join(" ")}

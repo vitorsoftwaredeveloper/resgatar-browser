@@ -47,8 +47,9 @@
   font-size: 12px;
 }
 
-@media (min-width: 768px) {
-  .container {
-    max-width: 640px;
-  }
+/* A TabBar acompanha o shell (layout.module.css): full-width abaixo de 1024px.
+   No desktop ela nem é renderizada (dá lugar à sidebar), então não precisa de
+   teto — left:0/right:0 já a estica de ponta a ponta junto com o conteúdo. */
+.container {
+  max-width: none;
 }
