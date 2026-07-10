@@ -135,6 +135,7 @@ export default function VideosPage() {
           name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
           photo={member?.profileImage}
           onBack={() => router.back()}
+          crumbs={[{ label: "Vídeos" }]}
         />
 
       <div className={styles.content}>

@@ -8,11 +8,17 @@
   .tabsShell {
     display: flex;
     justify-content: flex-start;
-    padding-left: calc(var(--sidebar-width) + var(--spacing-xl));
-    padding-right: var(--spacing-xl);
-    padding-top: var(--spacing-xl);
+    padding-left: var(--sidebar-width);
     max-width: none;
     transition: padding-left 0.2s ease;
+  }
+
+  /* Faixa inteira ao lado da sidebar (sem max-width) — é aqui que o Topbar
+     estica de ponta a ponta; o max-width centralizado fica só em .content,
+     um nível abaixo. */
+  .main {
+    flex: 1;
+    min-width: 0;
   }
 
   /* Centralizado dentro do espaço restante ao lado da sidebar — mesmo
@@ -22,12 +28,7 @@
     width: 100%;
     max-width: 960px;
     margin-inline: auto;
-  }
-
-  /* No desktop a sidebar já traz identidade, ações rápidas (modo escuro e
-     aniversariantes) e navegação — então o Header da página é dispensável. */
-  .tabsShell [data-header] {
-    display: none;
+    padding: var(--spacing-xl) var(--spacing-xl) 0;
   }
 }
 

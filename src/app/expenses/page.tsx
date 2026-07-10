@@ -528,6 +528,10 @@ export default function ExpensesPage() {
         name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
         photo={member?.profileImage}
         onBack={() => router.back()}
+        crumbs={[
+          { label: "Administrativo", onClick: () => router.push("/settings") },
+          { label: "Despesa mensal" },
+        ]}
       />
       <ExpensesScreen />
     </div>

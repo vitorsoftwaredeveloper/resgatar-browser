@@ -31,7 +31,11 @@ export default function ProfilePage() {
 
   return (
     <div className={styles.container}>
-      <Header name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`} photo={member?.profileImage} />
+      <Header
+        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
+        photo={member?.profileImage}
+        crumbs={[{ label: "Mais" }]}
+      />
 
       <div className={styles.content}>
         <ProfileHeaderCard member={member as IMember} onPressAvatar={() => setPhotoModalVisible(true)} />

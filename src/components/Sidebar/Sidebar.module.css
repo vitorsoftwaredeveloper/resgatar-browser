@@ -100,8 +100,7 @@
 .collapsed .secLabel,
 .collapsed .navLabel,
 .collapsed .navBadge,
-.collapsed .userText,
-.collapsed .userMore {
+.collapsed .userText {
   display: none;
 }
 
@@ -200,16 +199,52 @@
   padding: 11px;
 }
 
-/* ---------------- Cartão de usuário ---------------- */
+/* ---------------- Cartão de usuário ----------------
+   Coluna: botão "Sair" em cima, avatar + nome/cargo embaixo — só uma opção
+   (sair), sem menu de mais ações; tema fica no topbar do desktop. */
 .userCard {
   display: flex;
-  align-items: center;
-  gap: 11px;
+  flex-direction: column;
+  gap: 6px;
   padding: 10px;
   border-radius: 14px;
   border: 1px solid var(--line);
   background: var(--surface);
   margin-top: 6px;
+}
+
+.logoutButton {
+  align-self: flex-end;
+  border: none;
+  background: none;
+  color: var(--ink-3);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.logoutButton:hover {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.collapsed .logoutButton {
+  align-self: center;
+}
+
+.userRow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.collapsed .userRow {
+  justify-content: center;
 }
 
 .userAvatar {
@@ -236,57 +271,4 @@
 .userRole {
   font-size: 11.5px;
   color: var(--ink-3);
-}
-
-.userMore {
-  border: none;
-  background: none;
-  color: var(--ink-3);
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 9px;
-  display: grid;
-  place-items: center;
-  flex: none;
-  position: relative;
-}
-
-.userMore:hover {
-  color: var(--ink);
-  background: var(--surface-2);
-}
-
-.collapsed .userCard {
-  justify-content: center;
-  padding: 8px;
-}
-
-/* Gatilho do menu sobreposto ao avatar quando recolhido */
-.menuTriggerOverlay {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
-  border: 2px solid var(--surface);
-  background: var(--accent);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-}
-
-.menuTriggerOverlay:hover {
-  filter: brightness(1.08);
-}
-
-.menuBadge {
-  position: absolute;
-  top: -3px;
-  right: -3px;
-  width: 8px;
-  height: 8px;
-  border-radius: 4px;
-  background: var(--gold);
-  border: 1.5px solid var(--surface);
 }

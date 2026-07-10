@@ -1,6 +1,7 @@
 "use client";
 
 import { Sidebar } from "@/components/Sidebar";
+import { Topbar } from "@/components/Topbar";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import styles from "./SidebarFrame.module.css";
 
@@ -14,7 +15,10 @@ export function SidebarFrame({ children }: { children: React.ReactNode }) {
   return (
     <>
       {isDesktop && <Sidebar />}
-      <div className={styles.frame}>{children}</div>
+      <div className={styles.main}>
+        {isDesktop && <Topbar />}
+        <div className={styles.frame}>{children}</div>
+      </div>
     </>
   );
 }

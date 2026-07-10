@@ -1,18 +1,15 @@
 "use client";
 
 import { Avatar } from "@/components/Avatar";
-import { BirthdayModal } from "@/components/BirthdayModal";
 import { CoachTarget } from "@/components/CoachTarget";
-import { QuickActionsSheet } from "@/components/QuickActionsSheet";
 import { LogoResgatar } from "@/components/Svg/Logo";
 import { useAuth } from "@/context/AuthContext";
-import { useBirthday } from "@/context/BirthdayContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import {
   BookOpen,
-  EllipsisVertical,
   FileText,
   Home,
+  LogOutIcon,
   PanelLeftClose,
   PanelLeftOpen,
   Settings,
@@ -22,7 +19,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
 import { Dialog } from "../Dialog";
 
@@ -73,16 +70,9 @@ function roleLabel(role?: string): string {
 export function Sidebar() {
   const { colors } = useAppTheme();
   const { member, logout } = useAuth();
-  const { todayBirthdays } = useBirthday();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
-  const [birthdayVisible, setBirthdayVisible] = useState(false);
   const [dialogLogoutVisible, setDialogLogoutVisible] = useState(false);
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [anchorPosition, setAnchorPosition] = useState<
-    { bottom: number; left: number } | undefined
-  >();
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     // Sincroniza o estado persistido só no cliente (após a montagem) para não
@@ -113,19 +103,6 @@ export function Sidebar() {
     await logout();
     setDialogLogoutVisible(false);
   };
-
-  function handleOpenMenu(e: MouseEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    const node = menuButtonRef.current;
-    if (!node) return;
-    const rect = node.getBoundingClientRect();
-    setAnchorPosition({
-      bottom: window.innerHeight - rect.top + 8,
-      left: rect.left,
-    });
-    setMenuVisible(true);
-  }
 
   const sections: NavSection[] = [
     { label: "Comunidade", items: COMMUNITY_NAV },
@@ -208,55 +185,30 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className={styles.userCard} title={collapsed ? fullName : undefined}>
-        <div className={styles.userAvatar}>
-          <Avatar photo={member?.profileImage} size={38} />
-          {collapsed && (
-            <button
-              type="button"
-              ref={menuButtonRef}
-              className={styles.menuTriggerOverlay}
-              onClick={handleOpenMenu}
-              aria-label="Mais opções"
-            >
-              <EllipsisVertical size={12} color={colors.white} />
-              {todayBirthdays > 0 && <span className={styles.menuBadge} />}
-            </button>
+      <div className={styles.userCard}>
+        <button
+          type="button"
+          className={styles.logoutButton}
+          onClick={() => setDialogLogoutVisible(true)}
+          aria-label="Sair"
+          title="Sair"
+        >
+          <LogOutIcon size={15} color={colors.error} style={{ transform: "rotate(180deg)" }} />
+          {!collapsed && <span>Sair</span>}
+        </button>
+
+        <div className={styles.userRow} title={collapsed ? fullName : undefined}>
+          <div className={styles.userAvatar}>
+            <Avatar photo={member?.profileImage} size={38} />
+          </div>
+          {!collapsed && (
+            <span className={styles.userText}>
+              <span className={styles.userName}>{fullName}</span>
+              <span className={styles.userRole}>{roleLabel(member?.role)}</span>
+            </span>
           )}
         </div>
-        {!collapsed && (
-          <span className={styles.userText}>
-            <span className={styles.userName}>{fullName}</span>
-            <span className={styles.userRole}>{roleLabel(member?.role)}</span>
-          </span>
-        )}
-        {!collapsed && (
-          <button
-            type="button"
-            ref={menuButtonRef}
-            className={styles.userMore}
-            onClick={handleOpenMenu}
-            aria-label="Mais opções"
-          >
-            <EllipsisVertical size={18} color={colors.muted} />
-            {todayBirthdays > 0 && <span className={styles.menuBadge} />}
-          </button>
-        )}
       </div>
-
-      <QuickActionsSheet
-        visible={menuVisible}
-        onClose={() => setMenuVisible(false)}
-        onOpenBirthdays={() => setBirthdayVisible(true)}
-        onLogout={() => setDialogLogoutVisible(true)}
-        anchorPosition={anchorPosition}
-        todayBirthdays={todayBirthdays}
-      />
-
-      <BirthdayModal
-        visible={birthdayVisible}
-        onClose={() => setBirthdayVisible(false)}
-      />
 
       <Dialog
         visible={dialogLogoutVisible}

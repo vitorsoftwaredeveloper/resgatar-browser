@@ -3,6 +3,7 @@
 import { AuthGuard } from "@/components/AuthGuard";
 import { Sidebar } from "@/components/Sidebar";
 import { TabBar } from "@/components/TabBar";
+import { Topbar } from "@/components/Topbar";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import styles from "./layout.module.css";
 
@@ -19,7 +20,10 @@ export default function TabsLayout({ children }: { children: React.ReactNode }) 
     <AuthGuard>
       <div className={`app-shell ${styles.tabsShell}`} style={{ paddingBottom: isDesktop ? 0 : 72 }}>
         {isDesktop && <Sidebar />}
-        <div className={styles.content}>{children}</div>
+        <div className={styles.main}>
+          {isDesktop && <Topbar />}
+          <div className={styles.content}>{children}</div>
+        </div>
         {!isDesktop && <TabBar />}
       </div>
     </AuthGuard>

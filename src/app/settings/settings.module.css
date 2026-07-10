@@ -42,16 +42,11 @@
   box-shadow: var(--shadow-card);
 }
 
-/* Área de detalhe (desktop): breadcrumb + tela-alvo renderizada no lugar dos
-   itens. A própria tela embutida traz seu painel (fundo/cantos), então aqui só
-   posicionamos o breadcrumb acima dela. */
+/* Área de detalhe (desktop): breadcrumb (no topbar do Header) + tela-alvo
+   renderizada no lugar dos itens. */
 .detail {
   display: flex;
   flex-direction: column;
-}
-
-.crumb {
-  padding: var(--spacing-md) var(--spacing-lg) var(--spacing-sm);
 }
 
 @media (min-width: 1024px) {

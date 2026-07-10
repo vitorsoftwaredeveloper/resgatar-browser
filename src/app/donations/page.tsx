@@ -298,6 +298,10 @@ export default function DonationsPage() {
         name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
         photo={member?.profileImage}
         onBack={() => router.back()}
+        crumbs={[
+          { label: "Administrativo", onClick: () => router.push("/settings") },
+          { label: "Listagem de doações" },
+        ]}
       />
       <DonationsScreen />
     </div>

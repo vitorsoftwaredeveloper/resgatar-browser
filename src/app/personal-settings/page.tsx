@@ -62,6 +62,7 @@ export default function PersonalSettingsPage() {
           name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
           photo={member?.profileImage}
           onBack={() => router.back()}
+          crumbs={[{ label: "Configurações pessoais" }]}
         />
 
       {isDesktop ? (

@@ -43,7 +43,8 @@ export function BirthdayProvider({ children }: { children: React.ReactNode }) {
     }
 
     // Busca única no login: a lista alimenta tanto o badge (aniversariantes de
-    // hoje) quanto o BirthdayModal (aniversariantes do mês), sem refetch ao abrir.
+    // hoje) quanto o BirthdayBanner da Dashboard (aniversariantes do mês), sem
+    // refetch ao abrir.
     MemberServices.listBirthdayMembers()
       .then((data: IMember[]) => setMembers(data))
       .catch(() => {});

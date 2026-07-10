@@ -3,7 +3,7 @@
 import { CoachTarget } from "@/components/CoachTarget";
 import { useCoach } from "@/context/CoachContext";
 import { useAppTheme } from "@/context/ThemeContext";
-import { Cake, LogOutIcon, Moon, Sun } from "lucide-react";
+import { LogOutIcon, Moon, Sun } from "lucide-react";
 import { CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import styles from "./QuickActionsSheet.module.css";
@@ -17,19 +17,15 @@ import styles from "./QuickActionsSheet.module.css";
 interface Props {
   visible: boolean;
   onClose: () => void;
-  onOpenBirthdays: () => void;
   onLogout?: () => void;
   anchorPosition?: { top?: number; bottom?: number; left?: number; right?: number };
-  todayBirthdays?: number;
 }
 
 export function QuickActionsSheet({
   visible,
   onClose,
-  onOpenBirthdays,
   onLogout,
   anchorPosition,
-  todayBirthdays = 0,
 }: Props) {
   const { mode, toggleTheme, colors } = useAppTheme();
   const { active: tutorialActive } = useCoach();
@@ -37,11 +33,6 @@ export function QuickActionsSheet({
   function handleTheme() {
     toggleTheme();
     onClose();
-  }
-
-  function handleBirthdays() {
-    onClose();
-    onOpenBirthdays();
   }
 
   function handleLogout() {
@@ -67,22 +58,6 @@ export function QuickActionsSheet({
               {mode === "dark" ? <Sun size={16} color={colors.primary} /> : <Moon size={16} color={colors.primary} />}
             </span>
             <span className={styles.itemLabel}>{mode === "dark" ? "Modo claro" : "Modo escuro"}</span>
-          </button>
-        </CoachTarget>
-
-        <div className={styles.divider} />
-
-        <CoachTarget id="quick-birthdays">
-          <button type="button" className={styles.item} onClick={handleBirthdays}>
-            <span className={styles.itemIcon}>
-              <Cake size={16} color={colors.primary} />
-            </span>
-            <span className={styles.itemLabel}>Aniversariantes</span>
-            {todayBirthdays > 0 && (
-              <span className={styles.badge}>
-                <span className={styles.badgeText}>{todayBirthdays}</span>
-              </span>
-            )}
           </button>
         </CoachTarget>
 

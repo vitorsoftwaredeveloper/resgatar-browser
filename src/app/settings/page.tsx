@@ -5,7 +5,6 @@ import { BalancoAnualScreen } from "@/app/balanco-anual/page";
 import { DonationsScreen } from "@/app/donations/page";
 import { ExpensesScreen } from "@/app/expenses/page";
 import { MemberActionsScreen } from "@/app/member-actions/page";
-import { Breadcrumb } from "@/components/Breadcrumb";
 import { Header } from "@/components/Header";
 import { ItemActionList } from "@/components/ItemActionList";
 import { ModalSendNotification } from "@/components/ModalSendNotification";
@@ -261,21 +260,18 @@ function SettingsPageContent() {
           name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
           photo={member?.profileImage}
           onBack={() => router.back()}
+          crumbs={
+            activeItem
+              ? [
+                  { label: "Administrativo", onClick: () => setActiveKey(null) },
+                  { label: activeItem.title },
+                ]
+              : [{ label: "Administrativo" }]
+          }
         />
 
         {isDesktop && activeItem ? (
           <div className={styles.detail}>
-            <div className={styles.crumb}>
-              <Breadcrumb
-                items={[
-                  {
-                    label: "Administrativo",
-                    onClick: () => setActiveKey(null),
-                  },
-                  { label: activeItem.title },
-                ]}
-              />
-            </div>
             {activeItem.render()}
           </div>
         ) : (

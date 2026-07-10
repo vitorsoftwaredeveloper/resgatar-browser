@@ -409,6 +409,10 @@ export default function ArrecadacaoPage() {
         name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
         photo={member?.profileImage}
         onBack={() => router.back()}
+        crumbs={[
+          { label: "Administrativo", onClick: () => router.push("/settings") },
+          { label: "Entrada mensal" },
+        ]}
       />
       <ArrecadacaoScreen />
     </div>

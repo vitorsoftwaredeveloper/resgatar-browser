@@ -298,6 +298,7 @@ export default function ReadingsPage() {
       <Header
         name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
         photo={member?.profileImage}
+        crumbs={[{ label: "Leituras" }]}
       />
 
       <div className={styles.content}>

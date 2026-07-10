@@ -197,6 +197,7 @@ export default function BillsPage() {
       <Header
         name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
         photo={member?.profileImage}
+        crumbs={[{ label: "Contribuições" }]}
       />
 
       <div className={styles.content}>

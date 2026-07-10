@@ -96,7 +96,11 @@ export default function DashboardPage() {
 
   return (
     <div className={styles.container}>
-      <Header name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`} photo={member?.profileImage} />
+      <Header
+        name={`${member?.firstName ?? ""} ${member?.lastName ?? ""}`}
+        photo={member?.profileImage}
+        crumbs={[{ label: "Início" }]}
+      />
 
       <div className={styles.content}>
         {order.map((id, index) => {
