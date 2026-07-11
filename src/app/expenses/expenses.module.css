@@ -228,11 +228,10 @@
 
 .fab {
   position: fixed;
-  /* Shell full-width abaixo de 1024px → o FAB fica colado na borda direita
-     (recuado por spacing-lg). A centralização só entra no desktop (>=1024px,
-     abaixo). */
-  right: var(--spacing-lg);
-  bottom: var(--spacing-xl);
+  /* Shell full-width abaixo de 1024px → FAB colado na borda direita (20px). A
+     centralização só entra no desktop (>=1024px, abaixo). */
+  right: 20px;
+  bottom: 20px;
   width: 56px;
   height: 56px;
   border-radius: 28px;
@@ -242,7 +241,13 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+@media (min-width: 768px) {
+  .fab {
+    bottom: 40px;
+  }
 }
 
 /* ---- Desktop: reproduz a tela "Despesa mensal" do zip (Missal), branch de
@@ -250,26 +255,21 @@
    .icon-btn/.monthnav (globals.css). Bloco mobile acima intocado. ---- */
 @media (min-width: 1024px) {
   .content {
-    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    /* Painel flexível ao conteúdo no desktop (igual ao hub Administrativo):
+       sem piso de altura cheia, então telas curtas não deixam espaço vazio. */
+    min-height: auto;
     margin-bottom: var(--spacing-xl);
     border-radius: var(--radius-xl);
     padding: var(--spacing-xl);
   }
 
-  /* Ancora o FAB 20px para dentro da borda direita real do card (app-shell--wide
-     alinhado à direita da sidebar), não de uma coluna centralizada. */
+  /* FAB dentro do container: ancorado ao canto inferior direito do próprio
+     painel (.content é position:relative), em vez de fixo na viewport — assim
+     acompanha o painel mesmo quando ele é curto. Mesmo círculo da tela de Vídeos. */
   .fab {
-    right: calc(var(--spacing-lg) + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 960px));
-    width: 58px;
-    height: 58px;
-    border-radius: 19px;
-    background: linear-gradient(150deg, var(--accent-2), var(--accent));
-    box-shadow: var(--shadow-pop);
-    transition: transform 0.16s ease;
-  }
-
-  .fab:hover {
-    transform: translateY(-2px) scale(1.03);
+    position: absolute;
+    right: var(--spacing-lg);
+    bottom: var(--spacing-lg);
   }
 
   .pageHead {
@@ -290,11 +290,5 @@
     display: flex;
     flex-direction: column;
     gap: 18px;
-  }
-}
-
-@media (min-width: 1440px) {
-  .fab {
-    right: calc(var(--spacing-lg) + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 1200px));
   }
 }

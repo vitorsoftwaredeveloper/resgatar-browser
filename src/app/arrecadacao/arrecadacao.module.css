@@ -271,7 +271,9 @@
    (isDesktop), não um retrofit de CSS em cima das classes mobile. ---- */
 @media (min-width: 1024px) {
   .content {
-    min-height: calc(100dvh - 2 * var(--spacing-xl));
+    /* Painel flexível ao conteúdo no desktop (igual ao hub Administrativo):
+       sem piso de altura cheia, então telas curtas não deixam espaço vazio. */
+    min-height: auto;
     margin-bottom: var(--spacing-xl);
     border-radius: var(--radius-xl);
     padding: var(--spacing-xl);

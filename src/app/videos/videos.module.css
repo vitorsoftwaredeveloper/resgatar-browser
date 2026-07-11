@@ -328,19 +328,19 @@
   }
 }
 
-/* No desktop o conteúdo não é uma coluna centralizada: fica encostado à direita
-   da sidebar (app-shell--wide, alinhado à esquerda). Ancoramos o FAB 20px para
-   dentro da borda direita real do card — o menor entre o limite de largura
-   (960/1200) e o gutter do frame (--spacing-xl). */
+/* No desktop o container (app-shell--wide) é CENTRALIZADO ao lado da sidebar.
+   A calha lateral de cada lado é metade do espaço que sobra além do limite de
+   largura (960/1200). Ancoramos o FAB ~20px para dentro da borda direita do
+   painel: meia-calha + padding do painel (24px) + margem (20px) = calha + 44px. */
 @media (min-width: 1024px) {
   .fab {
-    right: calc(20px + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 960px));
+    right: calc(max(0px, (100vw - var(--sidebar-width, 240px) - 960px) / 2) + 44px);
     bottom: 50px;
   }
 }
 
 @media (min-width: 1440px) {
   .fab {
-    right: calc(20px + max(var(--spacing-xl), 100vw - var(--sidebar-width, 240px) - var(--spacing-xl) - 1200px));
+    right: calc(max(0px, (100vw - var(--sidebar-width, 240px) - 1200px) / 2) + 44px);
   }
 }

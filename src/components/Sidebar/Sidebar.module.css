@@ -14,7 +14,7 @@
   flex-direction: column;
   gap: 6px;
   padding: 20px 16px;
-  background: var(--sidebar-bg);
+  background: var(--color-soft-brown);
   border-right: 1px solid var(--line);
   z-index: 500;
   transition: width 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -29,8 +29,6 @@
 }
 
 .mark {
-  /* width: 44px;
-  height: 44px; */
   flex: none;
   border-radius: 13px;
   display: grid;
@@ -215,6 +213,10 @@
   margin-top: 6px;
 }
 
+.collapsed .userCard {
+  flex-direction: column;
+}
+
 .logoutButton {
   align-self: flex-end;
   border: none;
@@ -247,6 +249,7 @@
 
 .collapsed .userRow {
   justify-content: center;
+  flex-direction: column;
 }
 
 .userAvatar {

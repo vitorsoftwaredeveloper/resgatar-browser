@@ -32,6 +32,7 @@
 
 .title {
   font-size: var(--font-large);
+  font-size: "100px";
   font-weight: 700;
   color: var(--color-primary);
   margin-bottom: var(--spacing-sm2);

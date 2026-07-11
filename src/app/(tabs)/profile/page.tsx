@@ -8,10 +8,11 @@ import { ModalEditPhoto } from "@/components/ModalEditPhoto";
 import { ProfileHeaderCard } from "@/components/ProfileHeaderCard";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
+import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { IMember } from "@/types/Member";
 import { HelpCircle, LogOut, Settings, ShieldUser, Video } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./profile.module.css";
 
 // Portado de resgatar_app/src/screens/ProfileScreen. useBottomTabBarHeight()
@@ -20,14 +21,25 @@ import styles from "./profile.module.css";
 export default function ProfilePage() {
   const { logout, member, restartOnboarding } = useAuth();
   const { colors } = useAppTheme();
+  const { isDesktop } = useBreakpoint();
   const router = useRouter();
   const [photoModalVisible, setPhotoModalVisible] = useState(false);
   const [dialogLogoutVisible, setDialogLogoutVisible] = useState(false);
+
+  // "Mais" é uma aba só do mobile (TabBar). No desktop a sidebar já expõe todos
+  // esses itens, então essa tela não tem lugar — redireciona para Configurações
+  // pessoais, o destino mais próximo do "meu perfil".
+  useEffect(() => {
+    if (isDesktop) router.replace("/personal-settings");
+  }, [isDesktop, router]);
 
   const handleLogout = async () => {
     await logout();
     setDialogLogoutVisible(false);
   };
+
+  // Evita o flash da tela mobile no desktop enquanto o replace acima acontece.
+  if (isDesktop) return null;
 
   return (
     <div className={styles.container}>

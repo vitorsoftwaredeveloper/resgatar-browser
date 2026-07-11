@@ -19,7 +19,10 @@ export function LiturgySeasonBanner({ liturgia, data, cor, tipo }: Props) {
       <div className={styles.header}>
         <span className={styles.label}>LITURGIA DO DIA</span>
         {tipo ? (
-          <span className={styles.badge} style={{ borderColor: accent, color: accent }}>
+          <span
+            className={styles.badge}
+            style={{ borderColor: accent, color: accent }}
+          >
             {tipo.toUpperCase()}
           </span>
         ) : null}

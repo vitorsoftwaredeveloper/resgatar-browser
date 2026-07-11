@@ -297,7 +297,7 @@ export function ExpensesScreen({ embedded = false }: { embedded?: boolean }) {
           )}
 
           <button type="button" className={styles.fab} onClick={openCreate} aria-label="Nova despesa">
-            <Plus size={24} />
+            <Plus size={28} color={colors.white} strokeWidth={2.5} />
           </button>
         </div>
 
@@ -490,7 +490,7 @@ export function ExpensesScreen({ embedded = false }: { embedded?: boolean }) {
         )}
 
         <button type="button" className={styles.fab} onClick={openCreate} aria-label="Nova despesa">
-          <Plus size={24} color={colors.white} />
+          <Plus size={28} color={colors.white} strokeWidth={2.5} />
         </button>
       </div>
 
