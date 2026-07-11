@@ -1,16 +1,14 @@
 "use client";
 
 import { useAppTheme } from "@/context/ThemeContext";
-import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { TRANSACTION_STATUS } from "@/types/Charge";
 import { Eye, QrCode } from "lucide-react";
 import { Button } from "../Button";
 import styles from "./ContributionItem.module.css";
 
-// Portado de resgatar_app/src/components/ContributionItem. No desktop
-// (>=1024px) o card ganha um layout próprio, fiel ao redesenho editorial
-// "Missal" (pílula de status ao lado do mês, valor em linha própria, ação no
-// rodapé) — o mobile mantém exatamente o card compacto original.
+// Portado de resgatar_app/src/components/ContributionItem. O mesmo card compacto
+// é usado no mobile e no desktop — no desktop ele entra no grid de meses da tela
+// Contribuições, preenchendo a altura da célula (ver .card em >=1024px no CSS).
 
 interface Contribution {
   id: string;
@@ -28,7 +26,6 @@ interface Props {
 
 export function ContributionItem({ data, onPay, onShare }: Props) {
   const { colors, mode } = useAppTheme();
-  const { isDesktop } = useBreakpoint();
   const isPending = data.status === TRANSACTION_STATUS.PENDING;
 
   const actionButton = isPending ? (
@@ -37,7 +34,7 @@ export function ContributionItem({ data, onPay, onShare }: Props) {
       onPress={async () => {
         await onPay();
       }}
-      style={{ marginTop: isDesktop ? 0 : 16 }}
+      style={{ marginTop: 16 }}
       leftIcon={
         <QrCode
           size={20}
@@ -49,36 +46,11 @@ export function ContributionItem({ data, onPay, onShare }: Props) {
     <Button
       title="Comprovante"
       onPress={onShare}
-      style={{ marginTop: isDesktop ? 0 : 16 }}
+      style={{ marginTop: 16 }}
       leftIcon={<Eye size={20} color={colors.primary} />}
       variant="secondary"
     />
   );
-
-  if (isDesktop) {
-    return (
-      <div className={styles.cardDesktop}>
-        <div className={styles.bodyDesktop}>
-          <div className={styles.headRowDesktop}>
-            <div>
-              <p className={styles.monthDesktop}>{data.month}</p>
-              <p className={styles.descriptionDesktop}>{data.description}</p>
-            </div>
-            <span
-              className={[
-                styles.pillDesktop,
-                isPending ? styles.pillWaitDesktop : styles.pillOkDesktop,
-              ].join(" ")}
-            >
-              {isPending ? "Pendente" : "Pago"}
-            </span>
-          </div>
-          <p className={styles.valueDesktop}>{data.value}</p>
-        </div>
-        <div className={styles.footerDesktop}>{actionButton}</div>
-      </div>
-    );
-  }
 
   return (
     <div className={styles.card}>

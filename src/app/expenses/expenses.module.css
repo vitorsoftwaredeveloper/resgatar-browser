@@ -20,23 +20,6 @@
   }
 }
 
-.screenTitle {
-  font-size: var(--font-small);
-  color: var(--color-text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  padding-inline: var(--spacing-md);
-  padding-top: var(--spacing-md);
-}
-
-.list {
-  padding: var(--spacing-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm2);
-}
-
 .centered {
   padding-block: var(--spacing-xxl);
   display: flex;
@@ -52,100 +35,8 @@
   text-align: center;
 }
 
-.monthSelector {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding-inline: var(--spacing-md);
-  padding-block: var(--spacing-sm2);
-}
-
-.monthLabel {
-  font-size: var(--font-subtitle);
-  color: var(--color-text);
-  font-weight: 600;
-}
-
-.navButton {
-  padding: 2px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-}
-
-.navButtonDisabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.card {
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.metaLabel {
-  font-size: var(--font-body);
-  color: var(--color-text-muted);
-}
-
-.totalValue {
-  font-size: var(--font-hero);
-  color: var(--color-text-strong);
-  font-weight: 700;
-}
-
-.breakdown {
-  margin-top: var(--spacing-sm);
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--spacing-sm);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.breakdownRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.breakdownLabel {
-  font-size: var(--font-body);
-  color: var(--color-text);
-}
-
-.breakdownValue {
-  font-size: var(--font-body);
-  color: var(--color-text-strong);
-  font-weight: 600;
-}
-
-.expenseCard {
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding-inline: var(--spacing-md);
-  padding-block: var(--spacing-sm2);
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-}
-
-.expenseRow {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm2);
-}
-
+/* Detalhes expandidos de uma despesa (linha clicável abre Referência/Observação
+   /Comprovante) — reusados dentro da .lrow do render editorial. */
 .expenseDetails {
   margin-top: var(--spacing-sm);
   padding-top: var(--spacing-sm);
@@ -175,57 +66,6 @@
   text-align: right;
 }
 
-.expenseInfo {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.expenseName {
-  font-size: var(--font-body);
-  color: var(--color-text);
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.expenseNameExpanded {
-  white-space: normal;
-}
-
-.expenseMeta {
-  font-size: var(--font-small);
-  color: var(--color-text-muted);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.expenseValue {
-  font-size: var(--font-body);
-  color: var(--color-text-strong);
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.expenseActions {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  flex-shrink: 0;
-}
-
-.rowAction {
-  padding: var(--spacing-xs);
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-}
-
 .fab {
   position: fixed;
   /* Shell full-width abaixo de 1024px → FAB colado na borda direita (20px). A
@@ -250,9 +90,31 @@
   }
 }
 
-/* ---- Desktop: reproduz a tela "Despesa mensal" do zip (Missal), branch de
-   render separado (isDesktop) usando as primitivas globais .card/.lrow/
-   .icon-btn/.monthnav (globals.css). Bloco mobile acima intocado. ---- */
+/* ---- Estilo único (editorial "Missal"): cabeçalho + lista mobile-first,
+   usando as primitivas globais .card/.lrow/.icon-btn/.monthnav (globals.css),
+   com reflow no desktop. As regras base ficam ANTES do @media. ---- */
+.pageHead {
+  padding: var(--spacing-md);
+  padding-bottom: 0;
+}
+
+.pageTitle {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  font-size: 28px;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 6px 0 0;
+}
+
+.desktopList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: var(--spacing-md);
+}
+
 @media (min-width: 1024px) {
   .content {
     /* Painel flexível ao conteúdo no desktop (igual ao hub Administrativo):
@@ -273,22 +135,18 @@
   }
 
   .pageHead {
+    padding: 0;
     margin-bottom: 26px;
   }
 
   .pageTitle {
-    font-family: var(--font-display), Georgia, serif;
-    font-weight: 600;
     font-size: 40px;
-    letter-spacing: -0.015em;
     line-height: 1.08;
-    color: var(--ink);
     margin: 8px 0 0;
   }
 
   .desktopList {
-    display: flex;
-    flex-direction: column;
     gap: 18px;
+    padding: 0;
   }
 }

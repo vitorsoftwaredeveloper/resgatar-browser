@@ -235,9 +235,10 @@ body {
 
 /* ---------------------------------------------------------------------------
    Utilitários editoriais compartilhados pelo redesenho "Missal".
-   .serif  → face de exibição (Cormorant) para títulos, valores e leituras.
+   .serif  → face de exibição (Cormorant) só para títulos e leituras (LETRAS).
    .eyebrow/.cap → rótulos em versalete com tracking largo.
-   .money  → numerais tabulares na face de exibição.
+   .money  → NÚMEROS: face de interface (Hanken) com figuras tabulares alinhadas.
+             Números nunca usam a serif — ficam firmes e alinham em colunas.
    --------------------------------------------------------------------------- */
 .serif {
   font-family: var(--font-display), Georgia, serif;
@@ -262,10 +263,9 @@ body {
 }
 
 .money {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  font-variant-numeric: lining-nums;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 /* ---------------------------------------------------------------------------
@@ -359,12 +359,12 @@ body {
 }
 
 .tile .t-val {
-  font-family: var(--font-display), Georgia, serif;
-  font-weight: 600;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-weight: 700;
   font-size: 30px;
   letter-spacing: -0.01em;
   line-height: 1;
-  font-variant-numeric: lining-nums;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .tile .t-sub {

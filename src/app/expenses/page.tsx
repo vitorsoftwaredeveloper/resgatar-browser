@@ -6,7 +6,6 @@ import { ModalExpenseForm } from "@/components/ModalExpenseForm";
 import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
-import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useAdminHubRedirect } from "@/hooks/useAdminHubRedirect";
 import { ExpenseServices } from "@/services/ExpenseService";
 import { EXPENSE_CATEGORY_LABELS, ExpenseCategory, IExpense, IExpensesSummary } from "@/types/Expense";
@@ -16,7 +15,8 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import styles from "./expenses.module.css";
 
-// Portado de resgatar_app/src/screens/ExpensesScreen.
+// Portado de resgatar_app/src/screens/ExpensesScreen. Estilo único (editorial
+// "Missal") em mobile e desktop — o layout é mobile-first e reflow via @media.
 
 const MONTH_LABELS = [
   "Janeiro",
@@ -35,7 +35,6 @@ const MONTH_LABELS = [
 
 export function ExpensesScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors } = useAppTheme();
-  const { isDesktop } = useBreakpoint();
 
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
@@ -129,207 +128,13 @@ export function ExpensesScreen({ embedded = false }: { embedded?: boolean }) {
   const categoryEntries = summary ? Object.entries(summary.byCategory).sort((a, b) => b[1] - a[1]) : [];
   const sortedExpenses = summary ? [...summary.expenses].sort((a, b) => b.date - a.date) : [];
 
-  if (isDesktop) {
-    return (
-      <>
-        <div className={styles.content}>
-          <div className={styles.pageHead}>
-            <p className="eyebrow">Administrativo</p>
-            <h1 className={styles.pageTitle}>Despesa mensal</h1>
-          </div>
-
-          {loading ? (
-            <div className={styles.centered}>
-              <Loader2 size={28} color={colors.primary} className="spin" />
-            </div>
-          ) : !summary ? (
-            <div className={styles.centered}>
-              <p className={styles.emptyText}>Não foi possível carregar as despesas.</p>
-            </div>
-          ) : (
-            <div className={styles.desktopList}>
-              <div className="monthnav">
-                <button type="button" className="nav-arrow" onClick={goToPreviousMonth} aria-label="Mês anterior">
-                  <ChevronLeft size={18} />
-                </button>
-                <span className="mn-lbl">
-                  {MONTH_LABELS[month]} {year}
-                </span>
-                <button
-                  type="button"
-                  className="nav-arrow"
-                  onClick={goToNextMonth}
-                  disabled={isCurrentMonth}
-                  aria-label="Próximo mês"
-                >
-                  <ChevronRight size={18} />
-                </button>
-              </div>
-
-              <div className="card card-pad">
-                <span className="cap">Total de despesas no mês</span>
-                <div className="money" style={{ fontSize: 34, margin: "8px 0 4px", color: "var(--danger)" }}>
-                  {formatMoneyBRL(summary.total)}
-                </div>
-                <div style={{ color: "var(--ink-3)", fontSize: 13, marginBottom: categoryEntries.length > 0 ? 18 : 0 }}>
-                  {summary.count} {summary.count === 1 ? "lançamento" : "lançamentos"}
-                </div>
-                {categoryEntries.length > 0 && (
-                  <>
-                    <hr className="hairline" style={{ margin: "0 0 12px" }} />
-                    {categoryEntries.map(([cat, value]) => (
-                      <div key={cat} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0" }}>
-                        <span style={{ fontWeight: 600 }}>{EXPENSE_CATEGORY_LABELS[cat as ExpenseCategory] ?? cat}</span>
-                        <b className="money">{formatMoneyBRL(value)}</b>
-                      </div>
-                    ))}
-                  </>
-                )}
-              </div>
-
-              <div className="card">
-                {sortedExpenses.length === 0 ? (
-                  <div className="empty">
-                    <div className="e-ic">
-                      <Receipt size={28} />
-                    </div>
-                    <p>Nenhuma despesa lançada neste mês.</p>
-                  </div>
-                ) : (
-                  sortedExpenses.map((item) => {
-                    const isExpanded = expandedId === item._id;
-                    const categoryLabel = EXPENSE_CATEGORY_LABELS[item.category] ?? item.category;
-
-                    return (
-                      <div
-                        key={item._id}
-                        className="lrow"
-                        style={{ flexWrap: "wrap", cursor: "pointer" }}
-                        onClick={() => toggleExpanded(item._id)}
-                      >
-                        <div className="la" style={{ background: "var(--danger-soft)", color: "var(--danger)" }}>
-                          <Receipt size={20} />
-                        </div>
-                        <div className="lt">
-                          <b>{item.description}</b>
-                          <small>
-                            {categoryLabel} · {formatDateFromTimestamp(item.date)}
-                          </small>
-                        </div>
-                        <b className="money" style={{ marginRight: 6 }}>
-                          {formatMoneyBRL(item.amount)}
-                        </b>
-                        <button
-                          type="button"
-                          className="icon-btn"
-                          style={{ width: 36, height: 36 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openEdit(item);
-                          }}
-                          aria-label="Editar despesa"
-                        >
-                          <Pencil size={16} />
-                        </button>
-                        {item.receiptKey && (
-                          <button
-                            type="button"
-                            className="icon-btn"
-                            style={{ width: 36, height: 36 }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (loadingReceiptId !== item._id) handleViewReceipt(item);
-                            }}
-                            aria-label="Ver comprovante"
-                          >
-                            {loadingReceiptId === item._id ? <Loader2 size={16} className="spin" /> : <Receipt size={16} />}
-                          </button>
-                        )}
-                        <button
-                          type="button"
-                          className="icon-btn"
-                          style={{ width: 36, height: 36, color: "var(--danger)" }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setDeleteTarget(item);
-                          }}
-                          aria-label="Remover item"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-
-                        {isExpanded && (
-                          <div className={styles.expenseDetails} style={{ flexBasis: "100%" }}>
-                            <div className={styles.detailRow}>
-                              <span className={styles.detailLabel}>Categoria</span>
-                              <span className={styles.detailValue}>{categoryLabel}</span>
-                            </div>
-                            <div className={styles.detailRow}>
-                              <span className={styles.detailLabel}>Data</span>
-                              <span className={styles.detailValue}>{formatDateFromTimestamp(item.date)}</span>
-                            </div>
-                            <div className={styles.detailRow}>
-                              <span className={styles.detailLabel}>Valor</span>
-                              <span className={styles.detailValue}>{formatMoneyBRL(item.amount)}</span>
-                            </div>
-                            <div className={styles.detailRow}>
-                              <span className={styles.detailLabel}>Referência</span>
-                              <span className={styles.detailValue}>
-                                {MONTH_LABELS[item.referenceMonth]} {item.referenceYear}
-                              </span>
-                            </div>
-                            <div className={styles.detailRow}>
-                              <span className={styles.detailLabel}>Observação</span>
-                              <span className={styles.detailValue}>{item.note || "—"}</span>
-                            </div>
-                            <div className={styles.detailRow}>
-                              <span className={styles.detailLabel}>Comprovante</span>
-                              <span className={styles.detailValue}>{item.receiptKey ? "Anexado" : "Nenhum"}</span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            </div>
-          )}
-
-          <button type="button" className={styles.fab} onClick={openCreate} aria-label="Nova despesa">
-            <Plus size={28} color={colors.white} strokeWidth={2.5} />
-          </button>
-        </div>
-
-        {modalVisible && (
-          <ModalExpenseForm
-            visible={modalVisible}
-            onClose={() => setModalVisible(false)}
-            onSaved={load}
-            referenceMonth={month}
-            referenceYear={year}
-            expense={editing}
-          />
-        )}
-
-        <Dialog
-          visible={Boolean(deleteTarget)}
-          title="Remover despesa"
-          description={deleteTarget ? `Deseja remover "${deleteTarget.description}"? Essa ação não pode ser desfeita.` : ""}
-          onClose={() => setDeleteTarget(null)}
-          actions={[
-            { label: "cancelar", onPress: () => setDeleteTarget(null), variant: "secondary" },
-            { label: "remover", onPress: handleDelete, variant: "primary" },
-          ]}
-        />
-      </>
-    );
-  }
-
   return (
     <>
       <div className={styles.content}>
-        {!embedded && <p className={styles.screenTitle}>Despesa mensal</p>}
+        <div className={styles.pageHead}>
+          {!embedded && <p className="eyebrow">Administrativo</p>}
+          <h1 className={styles.pageTitle}>Despesa mensal</h1>
+        </div>
 
         {loading ? (
           <div className={styles.centered}>
@@ -340,152 +145,152 @@ export function ExpensesScreen({ embedded = false }: { embedded?: boolean }) {
             <p className={styles.emptyText}>Não foi possível carregar as despesas.</p>
           </div>
         ) : (
-          <div className={styles.list}>
-            <div className={styles.monthSelector}>
-              <button type="button" className={styles.navButton} onClick={goToPreviousMonth} aria-label="Mês anterior">
-                <ChevronLeft size={22} color={colors.primary} />
+          <div className={styles.desktopList}>
+            <div className="monthnav">
+              <button type="button" className="nav-arrow" onClick={goToPreviousMonth} aria-label="Mês anterior">
+                <ChevronLeft size={18} />
               </button>
-              <p className={styles.monthLabel}>
+              <span className="mn-lbl">
                 {MONTH_LABELS[month]} {year}
-              </p>
+              </span>
               <button
                 type="button"
-                className={[styles.navButton, isCurrentMonth && styles.navButtonDisabled].filter(Boolean).join(" ")}
+                className="nav-arrow"
                 onClick={goToNextMonth}
                 disabled={isCurrentMonth}
                 aria-label="Próximo mês"
               >
-                <ChevronRight size={22} color={colors.primary} />
+                <ChevronRight size={18} />
               </button>
             </div>
 
-            <div className={styles.card}>
-              <p className={styles.metaLabel}>Total de despesas no mês</p>
-              <p className={styles.totalValue}>{formatMoneyBRL(summary.total)}</p>
-              <p className={styles.metaLabel}>
+            <div className="card card-pad">
+              <span className="cap">Total de despesas no mês</span>
+              <div className="money" style={{ fontSize: 34, margin: "8px 0 4px", color: "var(--danger)" }}>
+                {formatMoneyBRL(summary.total)}
+              </div>
+              <div style={{ color: "var(--ink-3)", fontSize: 13, marginBottom: categoryEntries.length > 0 ? 18 : 0 }}>
                 {summary.count} {summary.count === 1 ? "lançamento" : "lançamentos"}
-              </p>
-
+              </div>
               {categoryEntries.length > 0 && (
-                <div className={styles.breakdown}>
+                <>
+                  <hr className="hairline" style={{ margin: "0 0 12px" }} />
                   {categoryEntries.map(([cat, value]) => (
-                    <div key={cat} className={styles.breakdownRow}>
-                      <span className={styles.breakdownLabel}>{EXPENSE_CATEGORY_LABELS[cat as ExpenseCategory] ?? cat}</span>
-                      <span className={styles.breakdownValue}>{formatMoneyBRL(value)}</span>
+                    <div key={cat} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0" }}>
+                      <span style={{ fontWeight: 600 }}>{EXPENSE_CATEGORY_LABELS[cat as ExpenseCategory] ?? cat}</span>
+                      <b className="money">{formatMoneyBRL(value)}</b>
                     </div>
                   ))}
-                </div>
+                </>
               )}
             </div>
 
-            {sortedExpenses.length === 0 ? (
-              <div className={styles.centered}>
-                <Receipt size={32} color={colors.textMuted} />
-                <p className={styles.emptyText}>Nenhuma despesa lançada neste mês.</p>
-              </div>
-            ) : (
-              sortedExpenses.map((item) => {
-                const isExpanded = expandedId === item._id;
-                const categoryLabel = EXPENSE_CATEGORY_LABELS[item.category] ?? item.category;
+            <div className="card">
+              {sortedExpenses.length === 0 ? (
+                <div className="empty">
+                  <div className="e-ic">
+                    <Receipt size={28} />
+                  </div>
+                  <p>Nenhuma despesa lançada neste mês.</p>
+                </div>
+              ) : (
+                sortedExpenses.map((item) => {
+                  const isExpanded = expandedId === item._id;
+                  const categoryLabel = EXPENSE_CATEGORY_LABELS[item.category] ?? item.category;
 
-                return (
-                  <button
-                    key={item._id}
-                    type="button"
-                    className={styles.expenseCard}
-                    onClick={() => toggleExpanded(item._id)}
-                    aria-label={isExpanded ? "Recolher despesa" : "Expandir despesa"}
-                  >
-                    <div className={styles.expenseRow}>
-                      <div className={styles.expenseInfo}>
-                        <p className={[styles.expenseName, isExpanded && styles.expenseNameExpanded].filter(Boolean).join(" ")}>
-                          {item.description}
-                        </p>
-                        <p className={styles.expenseMeta}>
+                  return (
+                    <div
+                      key={item._id}
+                      className="lrow"
+                      style={{ flexWrap: "wrap", cursor: "pointer" }}
+                      onClick={() => toggleExpanded(item._id)}
+                    >
+                      <div className="la" style={{ background: "var(--danger-soft)", color: "var(--danger)" }}>
+                        <Receipt size={20} />
+                      </div>
+                      <div className="lt">
+                        <b>{item.description}</b>
+                        <small>
                           {categoryLabel} · {formatDateFromTimestamp(item.date)}
-                        </p>
+                        </small>
                       </div>
-                      <span className={styles.expenseValue}>{formatMoneyBRL(item.amount)}</span>
-                      <div className={styles.expenseActions}>
-                        <span
-                          role="button"
-                          tabIndex={0}
-                          className={styles.rowAction}
+                      <b className="money" style={{ marginRight: 6 }}>
+                        {formatMoneyBRL(item.amount)}
+                      </b>
+                      <button
+                        type="button"
+                        className="icon-btn"
+                        style={{ width: 36, height: 36 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openEdit(item);
+                        }}
+                        aria-label="Editar despesa"
+                      >
+                        <Pencil size={16} />
+                      </button>
+                      {item.receiptKey && (
+                        <button
+                          type="button"
+                          className="icon-btn"
+                          style={{ width: 36, height: 36 }}
                           onClick={(e) => {
                             e.stopPropagation();
-                            openEdit(item);
+                            if (loadingReceiptId !== item._id) handleViewReceipt(item);
                           }}
-                          aria-label="Editar despesa"
+                          aria-label="Ver comprovante"
                         >
-                          <Pencil size={18} color={colors.primary} />
-                        </span>
-                        {item.receiptKey ? (
-                          <span
-                            role="button"
-                            tabIndex={0}
-                            className={styles.rowAction}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (loadingReceiptId !== item._id) handleViewReceipt(item);
-                            }}
-                            aria-label="Ver comprovante"
-                          >
-                            {loadingReceiptId === item._id ? (
-                              <Loader2 size={18} color={colors.textMuted} className="spin" />
-                            ) : (
-                              <Receipt size={18} color={colors.textMuted} />
-                            )}
-                          </span>
-                        ) : null}
-                        <span
-                          role="button"
-                          tabIndex={0}
-                          className={styles.rowAction}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setDeleteTarget(item);
-                          }}
-                          aria-label="Remover item"
-                        >
-                          <Trash2 size={18} color={colors.error} />
-                        </span>
-                      </div>
-                    </div>
+                          {loadingReceiptId === item._id ? <Loader2 size={16} className="spin" /> : <Receipt size={16} />}
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        className="icon-btn"
+                        style={{ width: 36, height: 36, color: "var(--danger)" }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeleteTarget(item);
+                        }}
+                        aria-label="Remover item"
+                      >
+                        <Trash2 size={16} />
+                      </button>
 
-                    {isExpanded && (
-                      <div className={styles.expenseDetails}>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Categoria</span>
-                          <span className={styles.detailValue}>{categoryLabel}</span>
+                      {isExpanded && (
+                        <div className={styles.expenseDetails} style={{ flexBasis: "100%" }}>
+                          <div className={styles.detailRow}>
+                            <span className={styles.detailLabel}>Categoria</span>
+                            <span className={styles.detailValue}>{categoryLabel}</span>
+                          </div>
+                          <div className={styles.detailRow}>
+                            <span className={styles.detailLabel}>Data</span>
+                            <span className={styles.detailValue}>{formatDateFromTimestamp(item.date)}</span>
+                          </div>
+                          <div className={styles.detailRow}>
+                            <span className={styles.detailLabel}>Valor</span>
+                            <span className={styles.detailValue}>{formatMoneyBRL(item.amount)}</span>
+                          </div>
+                          <div className={styles.detailRow}>
+                            <span className={styles.detailLabel}>Referência</span>
+                            <span className={styles.detailValue}>
+                              {MONTH_LABELS[item.referenceMonth]} {item.referenceYear}
+                            </span>
+                          </div>
+                          <div className={styles.detailRow}>
+                            <span className={styles.detailLabel}>Observação</span>
+                            <span className={styles.detailValue}>{item.note || "—"}</span>
+                          </div>
+                          <div className={styles.detailRow}>
+                            <span className={styles.detailLabel}>Comprovante</span>
+                            <span className={styles.detailValue}>{item.receiptKey ? "Anexado" : "Nenhum"}</span>
+                          </div>
                         </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Data</span>
-                          <span className={styles.detailValue}>{formatDateFromTimestamp(item.date)}</span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Valor</span>
-                          <span className={styles.detailValue}>{formatMoneyBRL(item.amount)}</span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Referência</span>
-                          <span className={styles.detailValue}>
-                            {MONTH_LABELS[item.referenceMonth]} {item.referenceYear}
-                          </span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Observação</span>
-                          <span className={styles.detailValue}>{item.note || "—"}</span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Comprovante</span>
-                          <span className={styles.detailValue}>{item.receiptKey ? "Anexado" : "Nenhum"}</span>
-                        </div>
-                      </div>
-                    )}
-                  </button>
-                );
-              })
-            )}
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
         )}
 

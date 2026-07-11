@@ -39,6 +39,7 @@
   font-size: var(--font-hero);
   color: var(--color-success);
   font-weight: 700;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .caption {

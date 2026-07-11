@@ -108,4 +108,5 @@
   font-size: var(--font-title);
   font-weight: 700;
   color: var(--color-success);
+  font-variant-numeric: tabular-nums lining-nums;
 }

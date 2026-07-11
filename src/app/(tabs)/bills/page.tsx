@@ -289,18 +289,13 @@ export default function BillsPage() {
             className={styles.donateBanner}
           >
             <span className={styles.donateIcon}>
-              {isDesktop ? (
-                <Gift size={28} />
-              ) : (
-                <HandHeart color={colors.white} size={28} />
-              )}
+              <HandHeart color={colors.white} size={28} />
             </span>
             <div className={styles.donateText}>
               <p className={styles.donateTitle}>Fazer uma doação</p>
               <p className={styles.donateSubtitle}>
-                {isDesktop
-                  ? "Contribua com um valor extra, além do dízimo, via PIX ou dinheiro."
-                  : "Contribua com um valor extra via PIX ou dinheiro"}
+                Contribua com um valor extra, além do dízimo, via PIX ou
+                dinheiro.
               </p>
             </div>
             {isDesktop && <span className={styles.donateCta}>Doar agora</span>}

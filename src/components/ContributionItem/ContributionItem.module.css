@@ -58,6 +58,7 @@
   font-weight: 600;
   color: var(--color-text-strong);
   white-space: nowrap;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .badge {
@@ -91,87 +92,4 @@
 .divider {
   border-bottom: 1px solid var(--color-background);
   margin-block: var(--spacing-md);
-}
-
-/* ---------------------------------------------------------------------------
-   Variante desktop (>=1024px) — "card de mês" fiel ao redesenho editorial:
-   pílula de status ao lado do nome do mês, valor em linha própria abaixo,
-   ação no rodapé após um fio divisório. Classes exclusivas, não tocam nas
-   regras acima usadas pelo card mobile.
-   --------------------------------------------------------------------------- */
-.cardDesktop {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.bodyDesktop {
-  padding: 20px 20px 16px;
-  flex: 1;
-}
-
-.headRowDesktop {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.monthDesktop {
-  font-family: var(--font-display), Georgia, serif;
-  font-weight: 600;
-  font-size: 20px;
-  color: var(--ink);
-}
-
-.descriptionDesktop {
-  font-size: 12.5px;
-  color: var(--ink-3);
-  margin-top: 3px;
-}
-
-.pillDesktop {
-  flex: none;
-  font-size: 12px;
-  font-weight: 700;
-  border-radius: 999px;
-  padding: 5px 11px;
-  white-space: nowrap;
-}
-
-.pillOkDesktop {
-  background: var(--ok-soft);
-  color: var(--ok);
-}
-
-.pillWaitDesktop {
-  background: var(--warn-soft);
-  color: var(--warn);
-}
-
-.valueDesktop {
-  font-family: var(--font-display), Georgia, serif;
-  font-weight: 600;
-  font-size: 20px;
-  color: var(--ink);
-  margin-top: 16px;
-  font-variant-numeric: lining-nums;
-}
-
-.footerDesktop {
-  border-top: 1px solid var(--line);
-  padding: 14px;
-}
-
-/* Sobrescreve só o tamanho/raio do Button compartilhado dentro do rodapé do
-   card — seletor com elemento+classe garante prioridade sobre .button sem
-   precisar mexer no componente global. */
-.footerDesktop button {
-  min-height: 40px;
-  border-radius: 999px;
-  padding-inline: 16px;
 }

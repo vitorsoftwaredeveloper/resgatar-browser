@@ -118,8 +118,7 @@
   }
 
   .progressNumber {
-    font-family: var(--font-display), Georgia, serif;
-    font-variant-numeric: lining-nums;
+    font-variant-numeric: tabular-nums lining-nums;
     font-size: 30px;
   }
 
@@ -150,7 +149,6 @@
   }
 
   .donateTitle {
-    font-family: var(--font-display), Georgia, serif;
     font-weight: 600;
     font-size: 22px;
     color: var(--accent-ink);
