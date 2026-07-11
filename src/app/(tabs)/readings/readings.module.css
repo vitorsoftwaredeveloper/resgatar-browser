@@ -98,9 +98,8 @@
 }
 
 /* =============================================================
-   Cabeçalho editorial do desktop — substitui o Header (oculto) e o
-   LiturgySeasonBanner (mobile) por um título serifado + pílula de cor
-   litúrgica, no espírito do redesenho "Missal".
+   Cabeçalho editorial do desktop — substitui o Header (oculto) por um título
+   serifado + pílula de cor litúrgica, no espírito do redesenho "Missal".
    ============================================================= */
 .pageHead {
   margin-bottom: 26px;
