@@ -7,14 +7,13 @@
     transition: padding-left 0.2s ease;
   }
 
-  .frame {
-    padding-right: var(--spacing-xl);
-  }
-
-  /* Centraliza no espaço restante ao lado da sidebar (mesmo tratamento do
-     .content em (tabs)/layout.module.css) e dá o respiro de topo (24px). */
+  /* Centraliza no espaço restante ao lado da sidebar e dá o MESMO respiro das
+     abas (.tabsShell → .content em (tabs)/layout.module.css): 24px em cima e
+     nas duas laterais. O padding simétrico entra no box de 960px/1200px
+     (box-sizing: border-box), então o painel nunca encosta nas bordas e o
+     conteúdo fica sempre centralizado — igual a Início/Contribuições. */
   .frame > :global(.app-shell) {
     margin-inline: auto;
-    padding-top: var(--spacing-xl);
+    padding: var(--spacing-xl) var(--spacing-xl) 0;
   }
 }

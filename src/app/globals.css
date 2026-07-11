@@ -21,11 +21,11 @@
      ===================================================================== */
 
   /* Superfícies e fundo */
-  --bg: #f1eadb;
+  --bg: #F6F1EB;
   --bg-2: #ebe2d1;
   --surface: #fcf9f1;
   --surface-2: #f6f0e3;
-  --surface-3: #f0e8d8;
+  --surface-3: #EDE6DE;
 
   /* Tinta (texto) */
   --ink: #2c2015;
@@ -153,11 +153,11 @@
 [data-theme="dark"] {
   /* Só os tokens crus mudam; os apelidos --color-* declarados em :root
      resolvem var(--accent) etc. no ponto de uso e já seguem estes valores. */
-  --bg: #140e08;
+  --bg: #1A1812;
   --bg-2: #1a130b;
   --surface: #1f1810;
   --surface-2: #271e13;
-  --surface-3: #2e2416;
+  --surface-3: #2E2A1C;
 
   --ink: #f1e7d5;
   --ink-2: #c1af98;
