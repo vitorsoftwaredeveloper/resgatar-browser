@@ -9,6 +9,16 @@
   min-height: 100dvh;
 }
 
+/* Divisória header ↔ painel (mobile). Aqui o painel arredondado que encosta no
+   header é o .scroll (não o .content, que fica DENTRO dele) — a sombra vai no
+   .scroll pra não ser recortada pelo overflow:hidden dele. Header estático →
+   o .scroll pinta por cima pela ordem do DOM, sem z-index. */
+@media (max-width: 1023px) {
+  .scroll {
+    box-shadow: var(--header-divider);
+  }
+}
+
 .content {
   padding-inline: var(--spacing-lg);
   padding-top: var(--spacing-lg);

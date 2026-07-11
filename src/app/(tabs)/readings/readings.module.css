@@ -21,6 +21,11 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
+    /* Sombra da divisória no TOPO do painel, acompanhando os cantos
+       arredondados. Como o Header é estático, o painel (irmão seguinte) já
+       pinta por cima dele — a sombra aparece sem z-index. Ela não intercepta
+       cliques, então os botões do header seguem acessíveis. */
+    box-shadow: var(--header-divider);
   }
 
   /* O gap acima já separa o título do próximo bloco; sem zerar isto o

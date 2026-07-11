@@ -6,6 +6,7 @@ import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useAdminHubRedirect } from "@/hooks/useAdminHubRedirect";
 import { BalanceServices } from "@/services/BalanceService";
 import { ChargeServices } from "@/services/ChargeService";
 import { IAnnualBalance, IAnnualBalanceMonth } from "@/types/Balance";
@@ -718,6 +719,8 @@ export function BalancoAnualScreen({ embedded = false }: { embedded?: boolean })
 export default function BalancoAnualPage() {
   const { member } = useAuth();
   const router = useRouter();
+  // No desktop esta tela vive inline no hub /settings — redireciona pra lá.
+  if (useAdminHubRedirect("balanco-anual")) return null;
 
   return (
     <div className={`app-shell app-shell--wide ${styles.container}`}>

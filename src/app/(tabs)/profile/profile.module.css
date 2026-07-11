@@ -14,6 +14,14 @@
   gap: var(--spacing-lg);
 }
 
+/* Divisória header ↔ conteúdo (mobile), acompanhando os cantos arredondados.
+   Header estático → o painel pinta por cima pela ordem do DOM (sem z-index). */
+@media (max-width: 1023px) {
+  .content {
+    box-shadow: var(--header-divider);
+  }
+}
+
 .menuCard {
   background: var(--color-card);
   border-radius: var(--radius-md);

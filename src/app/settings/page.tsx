@@ -218,9 +218,18 @@ function SettingsPageContent() {
   // tem o master-detail. Só faz sentido no desktop, onde o master-detail existe.
   const openParam = searchParams.get("open");
   useEffect(() => {
-    if (!isDesktop || !openParam) return;
-    if (items.some((i) => i.key === openParam && i.kind === "screen")) {
+    if (!openParam) return;
+    const item = items.find(
+      (i): i is AdminScreenItem => i.key === openParam && i.kind === "screen",
+    );
+    if (!item) return;
+    if (isDesktop) {
+      // Desktop: abre a tela inline no master-detail.
       setActiveKey(openParam);
+    } else {
+      // Mobile: o master-detail não existe — manda pra rota standalone
+      // equivalente (inverso do redirect feito por useAdminHubRedirect).
+      router.replace(item.route);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDesktop, openParam]);

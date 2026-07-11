@@ -9,6 +9,7 @@ import { ModalRemoveMember } from "@/components/ModalRemoveMember";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useAdminHubRedirect } from "@/hooks/useAdminHubRedirect";
 import { HandCoins, ShieldCheck, UserRoundMinus, UserRoundPen } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -102,6 +103,8 @@ export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }
 export default function MemberActionsPage() {
   const { member } = useAuth();
   const router = useRouter();
+  // No desktop esta tela vive inline no hub /settings — redireciona pra lá.
+  if (useAdminHubRedirect("member-actions")) return null;
 
   return (
     <div className={`app-shell app-shell--wide ${styles.container}`}>

@@ -6,6 +6,7 @@ import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useAdminHubRedirect } from "@/hooks/useAdminHubRedirect";
 import { ChargeServices } from "@/services/ChargeService";
 import { IChargeSummary, IChargeSummaryMember } from "@/types/Charge";
 import { formatDateFromTimestamp, formatMoneyBRL } from "@/utils/helper";
@@ -402,6 +403,9 @@ export function ArrecadacaoScreen({ embedded = false }: { embedded?: boolean }) 
 export default function ArrecadacaoPage() {
   const { member } = useAuth();
   const router = useRouter();
+  // No desktop esta tela vive inline no hub /settings — a rota standalone
+  // redireciona pra lá.
+  if (useAdminHubRedirect("arrecadacao")) return null;
 
   return (
     <div className={`app-shell app-shell--wide ${styles.container}`}>

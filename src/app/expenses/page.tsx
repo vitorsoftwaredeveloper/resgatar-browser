@@ -7,6 +7,7 @@ import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useAdminHubRedirect } from "@/hooks/useAdminHubRedirect";
 import { ExpenseServices } from "@/services/ExpenseService";
 import { EXPENSE_CATEGORY_LABELS, ExpenseCategory, IExpense, IExpensesSummary } from "@/types/Expense";
 import { formatDateFromTimestamp, formatMoneyBRL } from "@/utils/helper";
@@ -521,6 +522,8 @@ export function ExpensesScreen({ embedded = false }: { embedded?: boolean }) {
 export default function ExpensesPage() {
   const { member } = useAuth();
   const router = useRouter();
+  // No desktop esta tela vive inline no hub /settings — redireciona pra lá.
+  if (useAdminHubRedirect("expenses")) return null;
 
   return (
     <div className={`app-shell app-shell--wide ${styles.container}`}>

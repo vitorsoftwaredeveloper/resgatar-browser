@@ -10,6 +10,15 @@
   min-height: 100dvh;
 }
 
+/* Divisória header ↔ conteúdo (mobile) — Header estático, painel pinta por
+   cima pela ordem do DOM; a sombra acompanha os cantos arredondados.
+   overflow:hidden não recorta box-shadow externo. */
+@media (max-width: 1023px) {
+  .content {
+    box-shadow: var(--header-divider);
+  }
+}
+
 @media (min-width: 1024px) {
   .content {
     min-height: calc(100dvh - 2 * var(--spacing-xl));

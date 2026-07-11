@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppTheme } from "@/context/ThemeContext";
-import { Pause, Play } from "lucide-react";
+import { ChevronDown, Pause, Play } from "lucide-react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import styles from "./DesktopLiturgyReader.module.css";
 
@@ -40,7 +40,10 @@ interface Props {
 }
 
 function formatVerseText(text: string, verseClass: string) {
-  const parts = text.split(/(\d+)(?=[A-Za-zÀ-ÿ])/);
+  // Número de versículo = dígitos seguidos da 1ª letra OU de uma aspa de
+  // abertura (muitos versículos começam com fala: 2"Volta..., 16"Eis...).
+  // Sem incluir as aspas no lookahead, esses números ficavam sem marcação.
+  const parts = text.split(/(\d+)(?=[A-Za-zÀ-ÿ"'“”‘’«»])/);
   return parts.map((part, i) =>
     /^\d+$/.test(part) ? (
       <span key={i} className={verseClass}>
@@ -60,12 +63,13 @@ export function DesktopLiturgyReader({
 }: Props) {
   const { colors } = useAppTheme();
 
-  // Detecta quando as abas quebram em mais de uma linha. A pílula (fundo +
-  // borda em volta do grupo) só fica boa quando os itens cabem numa linha só;
-  // quebrada, ela vira uma moldura torta. Nesse caso o grupo é "desmoldurado"
-  // (ver .tabsUnboxed) e cada aba vira um chip independente.
+  // Detecta quando as abas não cabem numa linha só. Cabendo, mostra as abas
+  // (segmented control); não cabendo, colapsa num dropdown ("escolher leitura").
+  // As abas continuam no DOM (escondidas via max-height:0, ver .tabsCollapsed)
+  // pra que o offsetTop siga medindo e o dropdown volte a virar abas ao alargar.
   const tabsRef = useRef<HTMLDivElement>(null);
   const [tabsWrapped, setTabsWrapped] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const el = tabsRef.current;
@@ -74,7 +78,10 @@ export function DesktopLiturgyReader({
       const items = Array.from(el.children) as HTMLElement[];
       if (items.length === 0) return;
       const firstTop = items[0].offsetTop;
-      setTabsWrapped(items.some((it) => it.offsetTop !== firstTop));
+      const wrapped = items.some((it) => it.offsetTop !== firstTop);
+      setTabsWrapped(wrapped);
+      // Voltou a caber → o dropdown some, então garante o menu fechado.
+      if (!wrapped) setMenuOpen(false);
     };
     check();
     const ro = new ResizeObserver(check);
@@ -94,10 +101,11 @@ export function DesktopLiturgyReader({
       <div className={styles.tabsWrap}>
         <div
           ref={tabsRef}
-          className={[styles.tabs, tabsWrapped && styles.tabsUnboxed]
+          className={[styles.tabs, tabsWrapped && styles.tabsCollapsed]
             .filter(Boolean)
             .join(" ")}
           role="tablist"
+          aria-hidden={tabsWrapped || undefined}
         >
           {sections.map((section) => {
             const selected = section.id === active.id;
@@ -107,6 +115,7 @@ export function DesktopLiturgyReader({
                 type="button"
                 role="tab"
                 aria-selected={selected}
+                tabIndex={tabsWrapped ? -1 : undefined}
                 className={[styles.tab, selected && styles.tabActive]
                   .filter(Boolean)
                   .join(" ")}
@@ -117,6 +126,60 @@ export function DesktopLiturgyReader({
             );
           })}
         </div>
+
+        {tabsWrapped && (
+          <div className={styles.select}>
+            <button
+              type="button"
+              className={styles.selectTrigger}
+              aria-haspopup="listbox"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((o) => !o)}
+            >
+              <span className={styles.selectLabel}>{active.label}</span>
+              <ChevronDown
+                size={18}
+                color={colors.primary}
+                className={[styles.selectChevron, menuOpen && styles.selectChevronOpen]
+                  .filter(Boolean)
+                  .join(" ")}
+              />
+            </button>
+
+            {menuOpen && (
+              <>
+                <div
+                  className={styles.selectBackdrop}
+                  onClick={() => setMenuOpen(false)}
+                />
+                <ul className={styles.selectList} role="listbox">
+                  {sections.map((section) => {
+                    const selected = section.id === active.id;
+                    return (
+                      <li key={section.id} role="option" aria-selected={selected}>
+                        <button
+                          type="button"
+                          className={[
+                            styles.selectOption,
+                            selected && styles.selectOptionActive,
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                          onClick={() => {
+                            onSelectSection(section.id);
+                            setMenuOpen(false);
+                          }}
+                        >
+                          {section.label}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       <article className={styles.reading}>

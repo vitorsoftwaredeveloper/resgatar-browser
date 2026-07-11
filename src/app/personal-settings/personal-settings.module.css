@@ -10,6 +10,14 @@
   min-height: 100dvh;
 }
 
+/* Divisória header ↔ conteúdo (mobile) — Header estático, painel pinta por
+   cima pela ordem do DOM; a sombra acompanha os cantos arredondados. */
+@media (max-width: 1023px) {
+  .content {
+    box-shadow: var(--header-divider);
+  }
+}
+
 .sectionGroup {
   display: flex;
   flex-direction: column;

@@ -12,6 +12,16 @@
   min-height: 80dvh;
 }
 
+/* Sombra da divisória header ↔ conteúdo (mobile/tablet), acompanhando os
+   cantos arredondados do painel. O Header é estático, então o painel pinta por
+   cima dele pela ordem do DOM — a sombra aparece sem z-index. Só <1024px,
+   onde o Header mobile existe. */
+@media (max-width: 1023px) {
+  .content {
+    box-shadow: var(--header-divider);
+  }
+}
+
 .cardWrapper {
   cursor: grab;
   min-width: 0;

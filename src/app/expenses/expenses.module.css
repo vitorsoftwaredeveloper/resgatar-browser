@@ -11,6 +11,15 @@
   position: relative;
 }
 
+/* Divisória header ↔ conteúdo (mobile) — Header estático, painel pinta por
+   cima pela ordem do DOM; a sombra acompanha os cantos arredondados. O FAB
+   vem depois do content no DOM, então segue por cima. */
+@media (max-width: 1023px) {
+  .content {
+    box-shadow: var(--header-divider);
+  }
+}
+
 .screenTitle {
   font-size: var(--font-small);
   color: var(--color-text-muted);
@@ -219,7 +228,10 @@
 
 .fab {
   position: fixed;
-  right: max(var(--spacing-lg), calc((100vw - var(--app-max-width)) / 2 + var(--spacing-lg)));
+  /* Shell full-width abaixo de 1024px → o FAB fica colado na borda direita
+     (recuado por spacing-lg). A centralização só entra no desktop (>=1024px,
+     abaixo). */
+  right: var(--spacing-lg);
   bottom: var(--spacing-xl);
   width: 56px;
   height: 56px;
@@ -231,21 +243,6 @@
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-}
-
-@media (min-width: 768px) {
-  .fab {
-    /* Acompanha a mesma curva fluida do .app-shell--wide (globals.css) —
-       o FAB é position:fixed e não herda a largura do shell, então precisa
-       repetir a fórmula pra não ficar fora do canto do conteúdo. */
-    right: max(
-      var(--spacing-lg),
-      calc(
-        (100vw - clamp(640px, calc(640px + (100vw - 768px) * 1.25), 960px)) / 2 +
-          var(--spacing-lg)
-      )
-    );
-  }
 }
 
 /* ---- Desktop: reproduz a tela "Despesa mensal" do zip (Missal), branch de

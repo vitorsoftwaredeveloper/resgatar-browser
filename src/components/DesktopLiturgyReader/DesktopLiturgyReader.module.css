@@ -51,31 +51,100 @@
   box-shadow: var(--shadow-card);
 }
 
-/* Grupo de abas quebrado em mais de uma linha (detectado em JS via
-   tabsWrapped): tira a moldura de pílula do container — que fica torta quando
-   os itens não cabem numa linha — e transforma cada aba num chip autônomo, de
-   largura natural e alinhado à esquerda, em vez de esticar o item sozinho da
-   última linha. */
-.tabsUnboxed {
-  background: none;
-  border-color: transparent;
-  padding: 0;
-  gap: 8px;
+/* Abas colapsadas: quando não cabem numa linha, somem visualmente mas seguem
+   no DOM (max-height:0 preserva o layout/offsetTop dos filhos pra medição
+   contínua). No lugar delas aparece o dropdown .select abaixo. */
+.tabsCollapsed {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
-.tabsUnboxed .tab {
-  flex: 0 1 auto;
-  border: 1px solid var(--line);
-  background: var(--surface);
+/* ---------------------------------------------------------------------------
+   Dropdown "escolher leitura" — substitui as abas quando elas não cabem.
+   --------------------------------------------------------------------------- */
+.select {
+  position: relative;
 }
 
-.tabsUnboxed .tab:hover {
+.selectTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
   background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill, 999px);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.tabsUnboxed .tabActive,
-.tabsUnboxed .tabActive:hover {
-  border-color: transparent;
+.selectTrigger:hover {
+  border-color: var(--accent);
+}
+
+.selectLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.selectChevron {
+  flex: none;
+  transition: transform 0.2s ease;
+}
+
+.selectChevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Fecha ao clicar fora (fixed escapa do overflow:hidden do painel). */
+.selectBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+}
+
+.selectList {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-pop);
+}
+
+.selectOption {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 11px 14px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.selectOption:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.selectOptionActive,
+.selectOptionActive:hover {
   background: var(--accent);
   color: var(--accent-ink);
 }

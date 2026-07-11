@@ -11,6 +11,14 @@
   background: var(--color-soft-brown);
 }
 
+/* Divisória header ↔ conteúdo (mobile), acompanhando os cantos arredondados.
+   Header estático → o painel pinta por cima pela ordem do DOM (sem z-index). */
+@media (max-width: 1023px) {
+  .content {
+    box-shadow: var(--header-divider);
+  }
+}
+
 .donateBanner {
   width: 100%;
   background: var(--color-primary);

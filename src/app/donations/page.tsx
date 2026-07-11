@@ -5,6 +5,7 @@ import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useAdminHubRedirect } from "@/hooks/useAdminHubRedirect";
 import { DonationServices } from "@/services/DonationService";
 import { TRANSACTION_STATUS, isReturnedTransaction } from "@/types/Charge";
 import { IDonation } from "@/types/Donation";
@@ -291,6 +292,8 @@ export function DonationsScreen({ embedded = false }: { embedded?: boolean }) {
 export default function DonationsPage() {
   const { member } = useAuth();
   const router = useRouter();
+  // No desktop esta tela vive inline no hub /settings — redireciona pra lá.
+  if (useAdminHubRedirect("donations")) return null;
 
   return (
     <div className={`app-shell app-shell--wide ${styles.container}`}>

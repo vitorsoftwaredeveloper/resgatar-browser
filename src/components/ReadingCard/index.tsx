@@ -27,7 +27,9 @@ interface Props {
 }
 
 function formatVerseText(text: string, textClass: string, verseClass: string) {
-  const parts = text.split(/(\d+)(?=[A-Za-zÀ-ÿ])/);
+  // Ver nota em DesktopLiturgyReader: inclui aspas de abertura no lookahead
+  // pra marcar versículos que começam com fala (2"Volta..., 16"Eis...).
+  const parts = text.split(/(\d+)(?=[A-Za-zÀ-ÿ"'“”‘’«»])/);
   return parts.map((part, i) =>
     /^\d+$/.test(part) ? (
       <span key={i} className={verseClass}>

@@ -13,6 +13,15 @@
   position: relative;
 }
 
+/* Divisória header ↔ conteúdo (mobile) — Header estático, painel pinta por
+   cima pela ordem do DOM; a sombra acompanha os cantos arredondados. O FAB
+   vem depois do content no DOM (e tem z-index próprio), então segue por cima. */
+@media (max-width: 1023px) {
+  .content {
+    box-shadow: var(--header-divider);
+  }
+}
+
 .searchBar {
   padding-inline: var(--spacing-md);
   padding-top: var(--spacing-md);
@@ -297,7 +306,9 @@
 
 .fab {
   position: fixed;
-  right: max(20px, calc((100vw - var(--app-max-width)) / 2 + 20px));
+  /* Shell full-width abaixo de 1024px → FAB colado na borda direita (20px). A
+     centralização só entra no desktop (>=1024px, abaixo). */
+  right: 20px;
   bottom: 20px;
   width: 56px;
   height: 56px;
@@ -313,16 +324,6 @@
 
 @media (min-width: 768px) {
   .fab {
-    /* Acompanha a mesma curva fluida do .app-shell--wide (globals.css) —
-       o FAB é position:fixed e não herda a largura do shell, então precisa
-       repetir a fórmula pra não ficar fora do canto do conteúdo. */
-    right: max(
-      20px,
-      calc(
-        (100vw - clamp(640px, calc(640px + (100vw - 768px) * 1.25), 960px)) / 2 +
-          20px
-      )
-    );
     bottom: 40px;
   }
 }
