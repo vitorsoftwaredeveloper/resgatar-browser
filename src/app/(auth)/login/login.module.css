@@ -249,6 +249,14 @@
 
 /* ---------------- Responsivo ---------------- */
 @media (max-width: 1080px) {
+  .h{
+    text-align: center;
+  }
+
+  .sub{
+    text-align: center;
+  }
+  
   .wrap {
     grid-template-columns: 1fr;
   }
@@ -267,7 +275,6 @@
     align-items: center;
     text-align: center;
     gap: 6px;
-    margin-bottom: 22px;
   }
 
   .cardBrand .h,

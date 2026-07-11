@@ -273,7 +273,7 @@ export default function RegisterPage() {
       <div className={styles.panel}>
         <div className={styles.card}>
           <div className={styles.cardBrand}>
-            <LogoResgatar size={64} color="var(--accent)" />
+            <LogoResgatar size={200} color="var(--accent)" />
           </div>
 
           <h1 className={styles.h}>Criar conta</h1>

@@ -87,10 +87,10 @@ export default function LoginPage() {
       <div className={styles.panel}>
         <div className={styles.card}>
           <div className={styles.cardBrand}>
-            <LogoResgatar size={72} color="var(--accent)" />
+            <LogoResgatar size={200} color="var(--accent)" />
           </div>
 
-          <h1 className={styles.h}>Bem-vindo de volta</h1>
+          <h1 className={styles.h}>Bem-vindo!</h1>
           <p className={styles.sub}>
             Entre para acompanhar leituras, contribuições e a vida da
             comunidade.

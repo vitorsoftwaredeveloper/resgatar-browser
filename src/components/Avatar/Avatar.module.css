@@ -3,6 +3,8 @@
   border: none;
   padding: 0;
   cursor: pointer;
+  border: 5px solid var(--color-border);
+  border-radius: 999px;
 }
 
 .circle {

@@ -168,6 +168,14 @@
 
 /* ---------------- Responsivo ---------------- */
 @media (max-width: 1080px) {
+  .h{
+    text-align: center;
+  }
+
+  .sub{
+    text-align: center;
+  }
+
   .wrap {
     grid-template-columns: 1fr;
   }
@@ -183,7 +191,6 @@
   .cardBrand {
     display: flex;
     justify-content: center;
-    margin-bottom: 14px;
   }
 
   .grid2 {
