@@ -5,7 +5,7 @@ import { CommunityGoalCardSkeleton } from "@/components/Skeleton/CommunityGoalCa
 import { useAppTheme } from "@/context/ThemeContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
 import { formatMoneyBRL } from "@/utils/helper";
-import { CircleCheck, Target, UsersRound } from "lucide-react";
+import { CircleCheck, HandCoins, Receipt, Target, Wallet } from "lucide-react";
 import styles from "./CommunityGoalCard.module.css";
 
 // Portado de resgatar_app/src/components/CommunityGoalCard. useFocusEffect
@@ -119,6 +119,44 @@ export function CommunityGoalCard() {
             className={styles.fill}
             style={{ width: `${percent}%`, backgroundColor: accent }}
           />
+        </div>
+
+        <div className={styles.breakdown}>
+          <div className={styles.breakdownItem}>
+            <div className={styles.breakdownLabel}>
+              <Wallet size={13} color="var(--color-text-muted)" />
+              <span>Mensalidades</span>
+            </div>
+            <span className={styles.breakdownValue}>
+              {formatMoneyBRL(progress.dues)}
+            </span>
+          </div>
+
+          <div className={styles.breakdownItem}>
+            <div className={styles.breakdownLabel}>
+              <HandCoins size={13} color={colors.success} />
+              <span>Doações</span>
+            </div>
+            <span
+              className={styles.breakdownValue}
+              style={{ color: colors.success }}
+            >
+              +{formatMoneyBRL(progress.donations)}
+            </span>
+          </div>
+
+          <div className={styles.breakdownItem}>
+            <div className={styles.breakdownLabel}>
+              <Receipt size={13} color={colors.error} />
+              <span>Despesas</span>
+            </div>
+            <span
+              className={styles.breakdownValue}
+              style={{ color: colors.error }}
+            >
+              −{formatMoneyBRL(progress.expenses)}
+            </span>
+          </div>
         </div>
 
         <div

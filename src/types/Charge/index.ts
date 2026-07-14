@@ -53,13 +53,39 @@ interface IChargeSummary {
   members: IChargeSummaryMember[];
 }
 
+interface IGoalDonationItem {
+  transactionId: string;
+  donorName: string;
+  amount: number;
+  paymentMethodId: string;
+  dateApproved: string;
+}
+
+interface IGoalExpenseItem {
+  _id: string;
+  description: string;
+  amount: number;
+  category: string;
+  referenceMonth: number;
+  referenceYear: number;
+  date: string;
+  note?: string;
+  receiptKey?: string;
+  adminId: string;
+}
+
 interface IGoalProgress {
   year: number;
   month: number;
-  goal: number;
+  goal: number; // dues + donations − expenses
+  dues: number;
   collected: number;
+  donations: number; // total
+  expenses: number; // total
   remaining: number;
   percent: number;
+  donationItems: IGoalDonationItem[];
+  expenseItems: IGoalExpenseItem[];
 }
 
 interface IAnnualMethodSplit {
@@ -137,6 +163,8 @@ export type {
   IChargeSummary,
   IChargeSummaryMember,
   IGoalProgress,
+  IGoalDonationItem,
+  IGoalExpenseItem,
   IAnnualSummary,
   IAnnualByMonth,
   IAnnualByMember,

@@ -61,6 +61,39 @@
   transition: width 0.3s ease;
 }
 
+.breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs);
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.breakdownItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xs);
+}
+
+.breakdownLabel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-xxs);
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+}
+
+.breakdownValue {
+  font-size: var(--font-small);
+  font-weight: 600;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
 .highlightBox {
   border-radius: var(--radius-sm);
   padding: var(--spacing-sm) var(--spacing-sm2);

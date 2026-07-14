@@ -9,8 +9,7 @@
   /* Estático de propósito: assim o painel de conteúdo (irmão seguinte no DOM)
      pinta por cima do header pela ordem natural, deixando a sombra da
      divisória (--header-divider, no topo do painel) visível sobre o header —
-     sem precisar de z-index no conteúdo (que esconderia FABs). O badge se
-     ancora no .themeToggle, não aqui, então não depende de position:relative. */
+     sem precisar de z-index no conteúdo (que esconderia FABs). */
 }
 
 @media (min-width: 1024px) {
@@ -86,27 +85,5 @@
   align-items: center;
   justify-content: center;
   margin-left: 8px;
-  position: relative;
   flex-shrink: 0;
-}
-
-.badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  min-width: 16px;
-  height: 16px;
-  border-radius: 8px;
-  background: #e53935;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-inline: 3px;
-}
-
-.badgeText {
-  color: #fff;
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 12px;
 }

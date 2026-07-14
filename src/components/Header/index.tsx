@@ -5,7 +5,6 @@ import { type BreadcrumbItem } from "@/components/Breadcrumb";
 import { CoachTarget } from "@/components/CoachTarget";
 import { LogoResgatar } from "@/components/Svg/Logo";
 import { useAppTheme } from "@/context/ThemeContext";
-import { useBirthday } from "@/context/BirthdayContext";
 import { useTopbar } from "@/context/TopbarContext";
 import { resolveAvatarUri } from "@/utils/image";
 import { ChevronLeft, Moon, Sun } from "lucide-react";
@@ -33,7 +32,6 @@ interface Props {
 
 export function Header({ name, photo, onBack, crumbs }: Props) {
   const { colors, mode, toggleTheme } = useAppTheme();
-  const { todayBirthdays } = useBirthday();
   const { setCrumbs } = useTopbar();
 
   const avatarUri = resolveAvatarUri(photo);
@@ -71,11 +69,6 @@ export function Header({ name, photo, onBack, crumbs }: Props) {
                 <Sun size={18} color={colors.primary} />
               ) : (
                 <Moon size={18} color={colors.primary} />
-              )}
-              {todayBirthdays > 0 && (
-                <span className={styles.badge}>
-                  <span className={styles.badgeText}>{todayBirthdays}</span>
-                </span>
               )}
             </button>
           </CoachTarget>
