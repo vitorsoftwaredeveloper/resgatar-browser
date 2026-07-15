@@ -201,7 +201,7 @@ export function ExpensesScreen({ embedded = false }: { embedded?: boolean }) {
                   return (
                     <div
                       key={item._id}
-                      className="lrow"
+                      className={`lrow ${styles.expenseRow}`}
                       style={{ flexWrap: "wrap", cursor: "pointer" }}
                       onClick={() => toggleExpanded(item._id)}
                     >
@@ -214,47 +214,47 @@ export function ExpensesScreen({ embedded = false }: { embedded?: boolean }) {
                           {categoryLabel} · {formatDateFromTimestamp(item.date)}
                         </small>
                       </div>
-                      <b className="money" style={{ marginRight: 6 }}>
-                        {formatMoneyBRL(item.amount)}
-                      </b>
-                      <button
-                        type="button"
-                        className="icon-btn"
-                        style={{ width: 36, height: 36 }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openEdit(item);
-                        }}
-                        aria-label="Editar despesa"
-                      >
-                        <Pencil size={16} />
-                      </button>
-                      {item.receiptKey && (
+                      <b className="money">{formatMoneyBRL(item.amount)}</b>
+                      <div className={styles.actions}>
                         <button
                           type="button"
                           className="icon-btn"
                           style={{ width: 36, height: 36 }}
                           onClick={(e) => {
                             e.stopPropagation();
-                            if (loadingReceiptId !== item._id) handleViewReceipt(item);
+                            openEdit(item);
                           }}
-                          aria-label="Ver comprovante"
+                          aria-label="Editar despesa"
                         >
-                          {loadingReceiptId === item._id ? <Loader2 size={16} className="spin" /> : <Receipt size={16} />}
+                          <Pencil size={16} />
                         </button>
-                      )}
-                      <button
-                        type="button"
-                        className="icon-btn"
-                        style={{ width: 36, height: 36, color: "var(--danger)" }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setDeleteTarget(item);
-                        }}
-                        aria-label="Remover item"
-                      >
-                        <Trash2 size={16} />
-                      </button>
+                        {item.receiptKey && (
+                          <button
+                            type="button"
+                            className="icon-btn"
+                            style={{ width: 36, height: 36 }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (loadingReceiptId !== item._id) handleViewReceipt(item);
+                            }}
+                            aria-label="Ver comprovante"
+                          >
+                            {loadingReceiptId === item._id ? <Loader2 size={16} className="spin" /> : <Receipt size={16} />}
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          className="icon-btn"
+                          style={{ width: 36, height: 36, color: "var(--danger)" }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDeleteTarget(item);
+                          }}
+                          aria-label="Remover item"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
 
                       {isExpanded && (
                         <div className={styles.expenseDetails} style={{ flexBasis: "100%" }}>

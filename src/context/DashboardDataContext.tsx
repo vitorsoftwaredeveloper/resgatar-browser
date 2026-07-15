@@ -39,6 +39,7 @@ interface DashboardDataContextValue {
   refetchBanners: () => Promise<void>;
   refetchCommitments: () => Promise<void>;
   refetchVideos: () => Promise<void>;
+  refetchGoalProgress: () => Promise<void>;
 }
 
 const DashboardDataContext = createContext<DashboardDataContextValue>({
@@ -55,6 +56,7 @@ const DashboardDataContext = createContext<DashboardDataContextValue>({
   refetchBanners: async () => {},
   refetchCommitments: async () => {},
   refetchVideos: async () => {},
+  refetchGoalProgress: async () => {},
 });
 
 export function DashboardDataProvider({ children }: { children: React.ReactNode }) {
@@ -139,6 +141,14 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
     }
   }
 
+  async function refetchGoalProgress() {
+    try {
+      setGoalProgress(await ChargeServices.getGoalProgress());
+    } catch {
+      setGoalProgress(null);
+    }
+  }
+
   return (
     <DashboardDataContext.Provider
       value={{
@@ -155,6 +165,7 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
         refetchBanners,
         refetchCommitments,
         refetchVideos,
+        refetchGoalProgress,
       }}
     >
       {children}

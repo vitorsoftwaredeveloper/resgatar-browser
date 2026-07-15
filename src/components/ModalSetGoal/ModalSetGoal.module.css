@@ -1,0 +1,26 @@
+.overlay {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+}
+
+/* Quem rola é o .body do ModalBase — evita segunda barra de rolagem. */
+.scroll {
+  display: flex;
+  flex-direction: column;
+}
+
+.hint {
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin: 0 0 var(--spacing-sm);
+}
+
+.footer {
+  position: sticky;
+  bottom: 0;
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background);
+}

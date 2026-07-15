@@ -73,6 +73,20 @@ export const ChargeServices = {
       throw error;
     }
   },
+  // Grava/atualiza a meta do mês (admin). `amount` no formato "xx,xx";
+  // `month` é 1-12 (mesma convenção do `getGoalProgress`).
+  setMonthlyGoal: async (
+    year: number,
+    month: number,
+    amount: string,
+  ): Promise<void> => {
+    try {
+      await api.put("/charges/monthly-goal", { year, month, amount });
+    } catch (error) {
+      console.error("Error setting monthly goal", error);
+      throw error;
+    }
+  },
   consultCharge: async (transactionId: string) => {
     try {
       const response = await api.get(`/charges/${transactionId}`);

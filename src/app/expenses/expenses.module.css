@@ -115,6 +115,29 @@
   padding: var(--spacing-md);
 }
 
+/* Linha de despesa: ícone · descrição/meta · valor · ações. O valor não deve
+   encolher nem quebrar (senão sobrepõe o texto quando a linha aperta). */
+.expenseRow :global(.money) {
+  flex: none;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Mobile: ícone + descrição + valor + 3 botões não cabem numa linha só no
+   celular e o valor acaba sobrepondo o texto. Mantemos o valor ao lado da
+   descrição na 1ª linha e quebramos as ações para uma 2ª linha à direita. */
+@media (max-width: 1023px) {
+  .actions {
+    flex-basis: 100%;
+    justify-content: flex-end;
+  }
+}
+
 @media (min-width: 1024px) {
   .content {
     /* Painel flexível ao conteúdo no desktop (igual ao hub Administrativo):

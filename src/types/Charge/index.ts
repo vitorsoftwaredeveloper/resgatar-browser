@@ -76,14 +76,16 @@ interface IGoalExpenseItem {
 
 interface IGoalProgress {
   year: number;
-  month: number;
-  goal: number; // dues + donations − expenses
+  month: number; // 1-12
+  targetGoal: number; // meta do admin, ou DEFAULT_MONTHLY_GOAL (2000) como fallback
+  achieved: number; // collected + donations — o que conta pra bater a meta
+  goalReached: boolean; // achieved >= targetGoal
+  achievedPercent: number; // achieved / targetGoal * 100
   dues: number;
   collected: number;
   donations: number; // total
-  expenses: number; // total
-  remaining: number;
-  percent: number;
+  expenses: number; // total — informativo, fora do cálculo da meta
+  remaining: number; // max(targetGoal − achieved, 0)
   donationItems: IGoalDonationItem[];
   expenseItems: IGoalExpenseItem[];
 }

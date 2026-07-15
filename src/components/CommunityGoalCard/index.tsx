@@ -1,11 +1,14 @@
 "use client";
 
 import { CoachTarget } from "@/components/CoachTarget";
+import { ModalSetGoal } from "@/components/ModalSetGoal";
 import { CommunityGoalCardSkeleton } from "@/components/Skeleton/CommunityGoalCardSkeleton";
 import { useAppTheme } from "@/context/ThemeContext";
+import { useAuth } from "@/context/AuthContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
 import { formatMoneyBRL } from "@/utils/helper";
-import { CircleCheck, HandCoins, Receipt, Target, Wallet } from "lucide-react";
+import { CircleCheck, HandCoins, Pencil, Receipt, Target, Wallet } from "lucide-react";
+import { useState } from "react";
 import styles from "./CommunityGoalCard.module.css";
 
 // Portado de resgatar_app/src/components/CommunityGoalCard. useFocusEffect
@@ -30,11 +33,16 @@ const MONTH_LABELS = [
 
 export function CommunityGoalCard() {
   const { colors } = useAppTheme();
-  const { goalProgress: progress, goalLoading: loading } = useDashboardData();
+  const { member } = useAuth();
+  const { goalProgress: progress, goalLoading: loading, refetchGoalProgress } =
+    useDashboardData();
+  const [editing, setEditing] = useState(false);
+
+  const isAdmin = member?.role === "admin";
 
   if (loading && !progress) return <CommunityGoalCardSkeleton />;
 
-  if (!progress || !Number.isFinite(progress.percent)) {
+  if (!progress || !Number.isFinite(progress.achievedPercent)) {
     return (
       <CoachTarget id="community-goal-card">
         <div className={styles.card}>
@@ -51,8 +59,8 @@ export function CommunityGoalCard() {
     );
   }
 
-  const percent = Math.max(0, Math.min(100, Math.round(progress.percent)));
-  const reached = percent >= 100;
+  const percent = Math.max(0, Math.min(100, Math.round(progress.achievedPercent)));
+  const reached = progress.goalReached;
   const monthLabel = MONTH_LABELS[progress.month - 1] ?? "";
 
   // Uma faixa só (reached/high/mid/low) alimenta cor, legenda, destaque e
@@ -105,6 +113,16 @@ export function CommunityGoalCard() {
           <span className={styles.title}>
             Meta da comunidade · {monthLabel}
           </span>
+          {isAdmin && (
+            <button
+              type="button"
+              className={styles.editButton}
+              onClick={() => setEditing(true)}
+              aria-label="Editar meta do mês"
+            >
+              <Pencil size={14} color="var(--color-text-muted)" />
+            </button>
+          )}
         </div>
 
         <div className={styles.valueRow}>
@@ -128,7 +146,7 @@ export function CommunityGoalCard() {
               <span>Mensalidades</span>
             </div>
             <span className={styles.breakdownValue}>
-              {formatMoneyBRL(progress.dues)}
+              {formatMoneyBRL(progress.collected)}
             </span>
           </div>
 
@@ -145,6 +163,8 @@ export function CommunityGoalCard() {
             </span>
           </div>
 
+          {/* Despesas são informativas — não entram no cálculo da meta, então
+              sem o "−" que sugeria subtração, mas em vermelho como valor de saída. */}
           <div className={styles.breakdownItem}>
             <div className={styles.breakdownLabel}>
               <Receipt size={13} color={colors.error} />
@@ -154,7 +174,7 @@ export function CommunityGoalCard() {
               className={styles.breakdownValue}
               style={{ color: colors.error }}
             >
-              −{formatMoneyBRL(progress.expenses)}
+              {formatMoneyBRL(progress.expenses)}
             </span>
           </div>
         </div>
@@ -176,7 +196,7 @@ export function CommunityGoalCard() {
                 <>
                   Faltam{" "}
                   <span className={styles.remainingStrong}>
-                    {formatMoneyBRL(progress.remaining)}
+                    {100 - percent}%
                   </span>{" "}
                   para a meta
                 </>
@@ -186,6 +206,18 @@ export function CommunityGoalCard() {
           <p className={styles.highlightMessage}>{message}</p>
         </div>
       </div>
+
+      {isAdmin && (
+        <ModalSetGoal
+          visible={editing}
+          onClose={() => setEditing(false)}
+          onSaved={refetchGoalProgress}
+          year={progress.year}
+          month={progress.month}
+          monthLabel={monthLabel}
+          currentGoal={progress.targetGoal}
+        />
+      )}
     </CoachTarget>
   );
 }

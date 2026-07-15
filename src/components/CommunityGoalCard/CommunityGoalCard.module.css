@@ -27,6 +27,23 @@
   text-transform: uppercase;
 }
 
+.editButton {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xxs);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.editButton:hover {
+  background: var(--color-soft-brown);
+}
+
 .valueRow {
   display: flex;
   flex-direction: row;
