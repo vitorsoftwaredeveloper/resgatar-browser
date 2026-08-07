@@ -12,24 +12,19 @@ import { useAppTheme } from "@/context/ThemeContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useAdminHubRedirect } from "@/hooks/useAdminHubRedirect";
 import { Eye, HandCoins, ShieldCheck, UserRoundMinus, UserRoundPen } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
 import styles from "./member-actions.module.css";
 
 export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors } = useAppTheme();
   const { isDesktop } = useBreakpoint();
-  const searchParams = useSearchParams();
 
   const [openRemoveMember, setOpenRemoveMember] = useState(false);
   const [openEditMemberData, setOpenEditMemberData] = useState(false);
   const [openCashPayment, setOpenCashPayment] = useState(false);
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const [openDashboardVisibility, setOpenDashboardVisibility] = useState(false);
-
-  useEffect(() => {
-    if (searchParams.get("focus") === "guests") setOpenEditMemberData(true);
-  }, [searchParams]);
 
   const actions = (
     <>
@@ -102,7 +97,6 @@ export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }
         <ModalEditMemberData
           visible={openEditMemberData}
           onClose={() => setOpenEditMemberData(false)}
-          initialFilter={searchParams.get("focus") === "guests" ? "guest" : "all"}
         />
       )}
 
