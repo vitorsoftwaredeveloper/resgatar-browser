@@ -50,7 +50,7 @@ export function GuestHomeCard() {
             <UserRoundCheck size={20} color="var(--color-primary)" />
             <p className={styles.text}>
               Para acessar contribuições e a vida interna da comunidade, fale
-              com um coordenador.
+              com um administrador.
             </p>
           </div>
 

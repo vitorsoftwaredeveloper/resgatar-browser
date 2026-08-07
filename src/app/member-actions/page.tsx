@@ -3,6 +3,7 @@
 import { Header } from "@/components/Header";
 import { ItemActionList } from "@/components/ItemActionList";
 import { ModalChangePasswordMember } from "@/components/ModalChangePasswordMember";
+import { ModalDashboardVisibility } from "@/components/ModalDashboardVisibility";
 import { ModalEditMemberData } from "@/components/ModalEditMemberData";
 import { ModalRegisterCashPayment } from "@/components/ModalRegisterCashPayment";
 import { ModalRemoveMember } from "@/components/ModalRemoveMember";
@@ -10,7 +11,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useAdminHubRedirect } from "@/hooks/useAdminHubRedirect";
-import { HandCoins, ShieldCheck, UserRoundMinus, UserRoundPen } from "lucide-react";
+import { Eye, HandCoins, ShieldCheck, UserRoundMinus, UserRoundPen } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import styles from "./member-actions.module.css";
@@ -24,6 +25,7 @@ export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }
   const [openEditMemberData, setOpenEditMemberData] = useState(false);
   const [openCashPayment, setOpenCashPayment] = useState(false);
   const [openChangePassword, setOpenChangePassword] = useState(false);
+  const [openDashboardVisibility, setOpenDashboardVisibility] = useState(false);
 
   useEffect(() => {
     if (searchParams.get("focus") === "guests") setOpenEditMemberData(true);
@@ -42,7 +44,7 @@ export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }
       <ItemActionList
         variant="card"
         title="Níveis de acesso"
-        description="Gerencie quem é convidado, membro ou coordenador."
+        description="Gerencie quem é convidado, membro ou administrador."
         onPress={() => setOpenEditMemberData(true)}
         icon={<ShieldCheck color={colors.primary} />}
       />
@@ -61,6 +63,14 @@ export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }
         description="Atualize a senha de acesso de um membro ao aplicativo."
         onPress={() => setOpenChangePassword(true)}
         icon={<UserRoundPen color={colors.primary} />}
+      />
+
+      <ItemActionList
+        variant="card"
+        title="Visibilidade do convidado"
+        description="Escolha o que um convidado pode ver na tela de Início."
+        onPress={() => setOpenDashboardVisibility(true)}
+        icon={<Eye color={colors.primary} />}
         isLast
       />
     </>
@@ -102,6 +112,13 @@ export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }
 
       {openChangePassword && (
         <ModalChangePasswordMember visible={openChangePassword} onClose={() => setOpenChangePassword(false)} />
+      )}
+
+      {openDashboardVisibility && (
+        <ModalDashboardVisibility
+          visible={openDashboardVisibility}
+          onClose={() => setOpenDashboardVisibility(false)}
+        />
       )}
     </>
   );

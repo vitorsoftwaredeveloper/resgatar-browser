@@ -7,6 +7,7 @@ import { RemoveMemberSkeleton } from "@/components/Skeleton/RemoveMemberSkeleton
 import { SelectField } from "@/components/SelectField";
 import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
+import { usePermissions } from "@/hooks/usePermissions";
 import { MemberServices } from "@/services/MemberService";
 import { IMember, MemberRole } from "@/types/Member";
 import { getApiErrorMessage } from "@/utils/apiError";
@@ -26,14 +27,14 @@ const SKELETON_COUNT = 4;
 const ROLE_OPTIONS: { label: string; value: MemberRole }[] = [
   { label: "Convidado", value: "guest" },
   { label: "Membro", value: "user" },
-  { label: "Coordenador", value: "admin" },
+  { label: "Administrador", value: "admin" },
 ];
 
 const ROLE_FILTERS: { label: string; value: RoleFilter }[] = [
   { label: "Todos", value: "all" },
   { label: "Convidados", value: "guest" },
   { label: "Membros", value: "user" },
-  { label: "Coordenadores", value: "admin" },
+  { label: "Administradores", value: "admin" },
 ];
 
 export function ModalEditMemberData({
@@ -50,6 +51,7 @@ export function ModalEditMemberData({
     nextRole: MemberRole;
   } | null>(null);
   const { listMembers, member: loggedMember, reloadMemberData } = useAuth();
+  const { isAdmin } = usePermissions();
   const listMembersRef = useRef(listMembers);
 
   useEffect(() => {
@@ -104,80 +106,90 @@ export function ModalEditMemberData({
 
   return (
     <ModalBase onClose={onClose} visible={visible} title="Níveis de acesso">
-      <div className={styles.filters}>
-        {ROLE_FILTERS.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            onClick={() => setFilter(option.value)}
-            className={[
-              styles.filterItem,
-              filter === option.value && styles.filterItemActive,
-            ]
-              .filter(Boolean)
-              .join(" ")}
-          >
-            <span
+      <div className={styles.content}>
+        <div className={styles.filters}>
+          {ROLE_FILTERS.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => setFilter(option.value)}
               className={[
-                styles.filterText,
-                filter === option.value && styles.filterTextActive,
+                styles.filterItem,
+                filter === option.value && styles.filterItemActive,
               ]
                 .filter(Boolean)
                 .join(" ")}
             >
-              {option.label}
-            </span>
-          </button>
-        ))}
-      </div>
+              <span
+                className={[
+                  styles.filterText,
+                  filter === option.value && styles.filterTextActive,
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                {option.label}
+              </span>
+            </button>
+          ))}
+        </div>
 
-      <div className={styles.list}>
-        {loading
-          ? Array.from({ length: SKELETON_COUNT }).map((_, index) => (
-              <RemoveMemberSkeleton key={`skeleton-${index}`} />
-            ))
-          : filteredMembers.map((item) => {
-              const isSelf = item._id === loggedMember?._id;
-              return (
-                <div key={item._id} className={styles.card}>
-                  <div className={styles.userInfo}>
-                    <Avatar photo={item.profileImage} size={40} />
-                    <div>
-                      <p className={styles.userName}>{item.firstName}</p>
-                      <p className={styles.userEmail}>{item.email}</p>
+        {!isAdmin && (
+          <p className={styles.noticeText}>
+            Somente administradores podem alterar o nível de acesso de outro
+            usuário.
+          </p>
+        )}
+
+        <div className={styles.list}>
+          {loading
+            ? Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+                <RemoveMemberSkeleton key={`skeleton-${index}`} />
+              ))
+            : filteredMembers.map((item) => {
+                const isSelf = item._id === loggedMember?._id;
+                const canChangeRole = isAdmin && !isSelf;
+                return (
+                  <div key={item._id} className={styles.card}>
+                    <div className={styles.userInfo}>
+                      <Avatar photo={item.profileImage} size={40} />
+                      <div className={styles.userTexts}>
+                        <p className={styles.userName}>{item.firstName}</p>
+                        <p className={styles.userEmail}>{item.email}</p>
+                      </div>
+                    </div>
+
+                    <div className={styles.action}>
+                      {updating === item._id ? (
+                        <span className={styles.spinner} />
+                      ) : (
+                        <SelectField
+                          value={item.role ?? "guest"}
+                          options={ROLE_OPTIONS}
+                          className={[
+                            styles.selectWrapper,
+                            !canChangeRole && styles.selectWrapperDisabled,
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                          onSelect={(value) => {
+                            if (!canChangeRole) return;
+                            setPendingChange({
+                              member: item,
+                              nextRole: value as MemberRole,
+                            });
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
+                );
+              })}
 
-                  <div className={styles.action}>
-                    {updating === item._id ? (
-                      <span className={styles.spinner} />
-                    ) : (
-                      <SelectField
-                        value={item.role ?? "guest"}
-                        options={ROLE_OPTIONS}
-                        className={[
-                          styles.selectWrapper,
-                          isSelf && styles.selectWrapperDisabled,
-                        ]
-                          .filter(Boolean)
-                          .join(" ")}
-                        onSelect={(value) => {
-                          if (isSelf) return;
-                          setPendingChange({
-                            member: item,
-                            nextRole: value as MemberRole,
-                          });
-                        }}
-                      />
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-
-        {!loading && filteredMembers.length === 0 && (
-          <p className={styles.emptyText}>Nenhum membro nesse nível.</p>
-        )}
+          {!loading && filteredMembers.length === 0 && (
+            <p className={styles.emptyText}>Nenhum membro nesse nível.</p>
+          )}
+        </div>
       </div>
 
       <Dialog

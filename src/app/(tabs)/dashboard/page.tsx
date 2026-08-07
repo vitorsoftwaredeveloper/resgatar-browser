@@ -10,6 +10,8 @@ import { RecentDonationsCard } from "@/components/RecentDonationsCard";
 import { RecentVideosCard } from "@/components/RecentVideosCard";
 import { StreakCard } from "@/components/StreakCard";
 import { useAuth } from "@/context/AuthContext";
+import { useDashboardVisibility } from "@/context/DashboardVisibilityContext";
+import { IDashboardVisibilitySettings } from "@/types/DashboardVisibility";
 import { usePermissions } from "@/hooks/usePermissions";
 import { getDashboardOrder, setDashboardOrder } from "@/storage/localStorage";
 import { ComponentType, DragEvent, useEffect, useMemo, useRef, useState } from "react";
@@ -41,12 +43,15 @@ const CARD_REGISTRY: Record<CardId, ComponentType> = {
   guestHome: GuestHomeCard,
 };
 
-const INTERNAL_ONLY_CARDS: CardId[] = [
-  "birthdays",
-  "communityGoal",
-  "notices",
-  "recentDonations",
-];
+const INTERNAL_ONLY_CARDS: CardId[] = ["recentDonations"];
+
+const GUEST_CONFIGURABLE_CARDS: Partial<Record<CardId, keyof IDashboardVisibilitySettings>> = {
+  banners: "banners",
+  notices: "notices",
+  communityGoal: "communityGoal",
+  birthdays: "birthdays",
+  recentVideos: "videos",
+};
 
 // Os dois cards de largura cheia (banners, notices) ficam adjacentes no topo
 // — assim o grid desktop (2 colunas) não precisa contar só com
@@ -66,6 +71,7 @@ const DEFAULT_ORDER: CardId[] = [
 export default function DashboardPage() {
   const { member } = useAuth();
   const { isInternal } = usePermissions();
+  const { settings: guestVisibility } = useDashboardVisibility();
   const [order, setOrder] = useState<CardId[]>(DEFAULT_ORDER);
   const dragIndex = useRef<number | null>(null);
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
@@ -89,9 +95,11 @@ export default function DashboardPage() {
         .filter(({ id }) => {
           if (id === "guestHome") return !isInternal;
           if (INTERNAL_ONLY_CARDS.includes(id)) return isInternal;
+          const settingKey = GUEST_CONFIGURABLE_CARDS[id];
+          if (settingKey) return isInternal || guestVisibility?.[settingKey] === true;
           return true;
         }),
-    [order, isInternal],
+    [order, isInternal, guestVisibility],
   );
 
   function reorder(from: number, to: number) {

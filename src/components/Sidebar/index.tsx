@@ -66,7 +66,7 @@ const SIDEBAR_WIDTH = "268px";
 const SIDEBAR_WIDTH_COLLAPSED = "82px";
 
 const ROLE_LABEL: Record<MemberRole, string> = {
-  admin: "Coordenador",
+  admin: "Administrador",
   user: "Membro",
   guest: "Convidado",
 };
