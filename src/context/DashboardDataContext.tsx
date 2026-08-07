@@ -60,7 +60,8 @@ const DashboardDataContext = createContext<DashboardDataContextValue>({
 });
 
 export function DashboardDataProvider({ children }: { children: React.ReactNode }) {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, member } = useContext(AuthContext);
+  const isInternal = member?.role === "admin" || member?.role === "user";
   const [banners, setBanners] = useState<IBanner[]>([]);
   const [bannersLoading, setBannersLoading] = useState(true);
   const [goalProgress, setGoalProgress] = useState<IGoalProgress | null>(null);
@@ -92,6 +93,21 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       .catch(() => setBanners([]))
       .finally(() => setBannersLoading(false));
 
+    VideoService.listAllVideos(1, RECENT_VIDEOS_LIMIT)
+      .then((data) => setVideos(data.items))
+      .catch(() => setVideos([]))
+      .finally(() => setVideosLoading(false));
+
+    if (!isInternal) {
+      setGoalProgress(null);
+      setGoalLoading(false);
+      setCommitments([]);
+      setCommitmentsLoading(false);
+      setDonations([]);
+      setDonationsLoading(false);
+      return;
+    }
+
     ChargeServices.getGoalProgress()
       .then(setGoalProgress)
       .catch(() => setGoalProgress(null))
@@ -102,11 +118,6 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       .catch(() => setCommitments([]))
       .finally(() => setCommitmentsLoading(false));
 
-    VideoService.listAllVideos(1, RECENT_VIDEOS_LIMIT)
-      .then((data) => setVideos(data.items))
-      .catch(() => setVideos([]))
-      .finally(() => setVideosLoading(false));
-
     const now = new Date();
     DonationServices.list(now.getFullYear())
       .then((data) =>
@@ -114,7 +125,7 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       )
       .catch(() => setDonations([]))
       .finally(() => setDonationsLoading(false));
-  }, [isLoggedIn]);
+  }, [isLoggedIn, isInternal]);
 
   async function refetchBanners() {
     try {

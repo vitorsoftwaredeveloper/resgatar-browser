@@ -41,7 +41,12 @@ const CARD_REGISTRY: Record<CardId, ComponentType> = {
   guestHome: GuestHomeCard,
 };
 
-const INTERNAL_ONLY_CARDS: CardId[] = ["birthdays", "communityGoal"];
+const INTERNAL_ONLY_CARDS: CardId[] = [
+  "birthdays",
+  "communityGoal",
+  "notices",
+  "recentDonations",
+];
 
 // Os dois cards de largura cheia (banners, notices) ficam adjacentes no topo
 // — assim o grid desktop (2 colunas) não precisa contar só com

@@ -9,6 +9,7 @@ import { SidebarFrame } from "@/components/SidebarFrame";
 import { VideoCardSkeleton } from "@/components/Skeleton/VideoCardSkeleton";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
+import { usePermissions } from "@/hooks/usePermissions";
 import { VideoService } from "@/services/VideoService";
 import { IVideoFeedItem } from "@/types/Video";
 import { ChevronLeft, ChevronRight, Clapperboard, Play, Plus, Search } from "lucide-react";
@@ -30,6 +31,7 @@ type MemberOption = {
 export default function VideosPage() {
   const { member } = useAuth();
   const { colors } = useAppTheme();
+  const { isInternal } = usePermissions();
   const router = useRouter();
 
   const [items, setItems] = useState<IVideoFeedItem[]>([]);
@@ -274,9 +276,11 @@ export default function VideosPage() {
           )}
         </div>
 
-        <button type="button" className={styles.fab} onClick={() => setAddVideoVisible(true)} aria-label="Cadastrar vídeo">
-          <Plus size={28} color={colors.white} strokeWidth={2.5} />
-        </button>
+        {isInternal && (
+          <button type="button" className={styles.fab} onClick={() => setAddVideoVisible(true)} aria-label="Cadastrar vídeo">
+            <Plus size={28} color={colors.white} strokeWidth={2.5} />
+          </button>
+        )}
       </div>
 
       {addVideoVisible && (
