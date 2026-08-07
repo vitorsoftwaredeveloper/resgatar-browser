@@ -1,6 +1,5 @@
 "use client";
 
-import { CoachTarget } from "@/components/CoachTarget";
 import { useAppTheme } from "@/context/ThemeContext";
 import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import styles from "./DateNavigator.module.css";
@@ -53,11 +52,11 @@ export function DateNavigator({ selectedDate, onPrev, onNext, onOpenCalendar, on
           <ChevronLeft size={20} color={colors.text} />
         </button>
 
-        <CoachTarget id="dashboard-date" className={styles.centerTarget}>
+        <div className={styles.centerTarget}>
           <button type="button" className={styles.centerBtn} onClick={onOpenCalendar}>
             <span className={styles.centerText}>{formatCenterLabel(selectedDate)}</span>
           </button>
-        </CoachTarget>
+        </div>
 
         <button type="button" className={styles.arrowBtn} onClick={onNext}>
           <ChevronRight size={20} color={colors.text} />

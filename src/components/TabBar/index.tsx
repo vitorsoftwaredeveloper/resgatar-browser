@@ -1,6 +1,5 @@
 "use client";
 
-import { CoachTarget } from "@/components/CoachTarget";
 import { useAppTheme } from "@/context/ThemeContext";
 import Link from "next/link";
 import { useActiveTabIndex, useTabs } from "./tabs";
@@ -32,12 +31,12 @@ export function TabBar() {
 
           return (
             <Link key={tab.name} href={tab.path} className={styles.tab} style={{ width: `${tabWidth}%` }}>
-              <CoachTarget id={`tab-${tab.name.toLowerCase()}`} className={styles.tabInner}>
+              <div className={styles.tabInner}>
                 <tab.Icon size={24} color={iconColor} />
                 <span className={styles.label} style={{ color: iconColor }}>
                   {tab.label}
                 </span>
-              </CoachTarget>
+              </div>
             </Link>
           );
         })}

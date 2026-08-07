@@ -2,7 +2,6 @@
 
 import { Avatar } from "@/components/Avatar";
 import { type BreadcrumbItem } from "@/components/Breadcrumb";
-import { CoachTarget } from "@/components/CoachTarget";
 import { LogoResgatar } from "@/components/Svg/Logo";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useTopbar } from "@/context/TopbarContext";
@@ -58,20 +57,18 @@ export function Header({ name, photo, onBack, crumbs }: Props) {
           <p className={styles.name}>{name}</p>
         </div>
         <div className={styles.actions} data-header-actions>
-          <CoachTarget id="header-quickactions">
-            <button
-              type="button"
-              aria-label={mode === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
-              onClick={toggleTheme}
-              className={styles.themeToggle}
-            >
-              {mode === "dark" ? (
-                <Sun size={18} color={colors.primary} />
-              ) : (
-                <Moon size={18} color={colors.primary} />
-              )}
-            </button>
-          </CoachTarget>
+          <button
+            type="button"
+            aria-label={mode === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
+            onClick={toggleTheme}
+            className={styles.themeToggle}
+          >
+            {mode === "dark" ? (
+              <Sun size={18} color={colors.primary} />
+            ) : (
+              <Moon size={18} color={colors.primary} />
+            )}
+          </button>
         </div>
       </div>
     </div>

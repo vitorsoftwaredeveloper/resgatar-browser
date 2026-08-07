@@ -1,6 +1,5 @@
 "use client";
 
-import { CoachTarget } from "@/components/CoachTarget";
 import { useDashboardData } from "@/context/DashboardDataContext";
 import { usePermissions } from "@/hooks/usePermissions";
 import { BANNER_SCREEN_PATHS, BannerScreen, IBanner } from "@/types/Banner";
@@ -135,7 +134,7 @@ export function BannerCarousel() {
   }
 
   return (
-    <CoachTarget id="banner-carousel" className={styles.wrapper}>
+    <div className={styles.wrapper}>
       <div className={styles.scroll}>
         <div className={styles.track} ref={trackRef} onScroll={handleScroll}>
           {banners.map((banner) => (
@@ -165,6 +164,6 @@ export function BannerCarousel() {
       )}
 
       <ModalBannerManager visible={managerVisible} onClose={() => setManagerVisible(false)} />
-    </CoachTarget>
+    </div>
   );
 }

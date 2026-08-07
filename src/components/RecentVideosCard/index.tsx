@@ -1,7 +1,6 @@
 "use client";
 
 import { Avatar } from "@/components/Avatar";
-import { CoachTarget } from "@/components/CoachTarget";
 import { ModalVideoFeed } from "@/components/ModalVideoFeed";
 import { VideoCardSkeleton } from "@/components/Skeleton/VideoCardSkeleton";
 import { useAuth } from "@/context/AuthContext";
@@ -23,7 +22,7 @@ export function RecentVideosCard() {
   const [playerStartIndex, setPlayerStartIndex] = useState<number | null>(null);
 
   return (
-    <CoachTarget id="recent-videos-card">
+    <>
       <div className={styles.container}>
         <button
           type="button"
@@ -87,6 +86,6 @@ export function RecentVideosCard() {
           onVideoRemoved={() => refetchVideos()}
         />
       )}
-    </CoachTarget>
+    </>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { CoachTarget } from "@/components/CoachTarget";
 import { NoticesCardSkeleton } from "@/components/Skeleton/NoticesCardSkeleton";
 import { useDashboardData } from "@/context/DashboardDataContext";
 import { usePermissions } from "@/hooks/usePermissions";
@@ -34,7 +33,7 @@ export function NoticesCard() {
   );
 
   return (
-    <CoachTarget id="notices-card">
+    <>
       <div className={styles.container}>
         <button
           type="button"
@@ -94,6 +93,6 @@ export function NoticesCard() {
       </div>
 
       <NoticeBoardModal visible={modalVisible} onClose={() => setModalVisible(false)} />
-    </CoachTarget>
+    </>
   );
 }
