@@ -1,6 +1,5 @@
 "use client";
 
-import { CoachTarget } from "@/components/CoachTarget";
 import { ContributionItem } from "@/components/ContributionItem";
 import { Header } from "@/components/Header";
 import { ModalComprovante } from "@/components/ModalComprovante";
@@ -284,25 +283,23 @@ export default function BillsPage() {
           </div>
         )}
 
-        <CoachTarget id="bills-donation">
-          <button
-            type="button"
-            onClick={() => setDonateModalVisible(true)}
-            className={styles.donateBanner}
-          >
-            <span className={styles.donateIcon}>
-              <HandHeart color={colors.white} size={28} />
-            </span>
-            <div className={styles.donateText}>
-              <p className={styles.donateTitle}>Fazer uma doação</p>
-              <p className={styles.donateSubtitle}>
-                Contribua com um valor extra, além do dízimo, via PIX ou
-                dinheiro.
-              </p>
-            </div>
-            {isDesktop && <span className={styles.donateCta}>Doar agora</span>}
-          </button>
-        </CoachTarget>
+        <button
+          type="button"
+          onClick={() => setDonateModalVisible(true)}
+          className={styles.donateBanner}
+        >
+          <span className={styles.donateIcon}>
+            <HandHeart color={colors.white} size={28} />
+          </span>
+          <div className={styles.donateText}>
+            <p className={styles.donateTitle}>Fazer uma doação</p>
+            <p className={styles.donateSubtitle}>
+              Contribua com um valor extra, além do dízimo, via PIX ou
+              dinheiro.
+            </p>
+          </div>
+          {isDesktop && <span className={styles.donateCta}>Doar agora</span>}
+        </button>
 
         {isDesktop && (
           <div className={styles.sectionHead}>

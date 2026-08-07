@@ -1,7 +1,6 @@
 "use client";
 
 import { Avatar } from "@/components/Avatar";
-import { CoachTarget } from "@/components/CoachTarget";
 import { LogoResgatar } from "@/components/Svg/Logo";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
@@ -177,12 +176,9 @@ export function Sidebar() {
                     .filter(Boolean)
                     .join(" ")}
                 >
-                  <CoachTarget
-                    id={`tab-${item.name.toLowerCase()}`}
-                    className={styles.navIcon}
-                  >
+                  <div className={styles.navIcon}>
                     <item.Icon size={21} strokeWidth={1.7} />
-                  </CoachTarget>
+                  </div>
                   {!collapsed && (
                     <>
                       <span className={styles.navLabel}>{item.label}</span>

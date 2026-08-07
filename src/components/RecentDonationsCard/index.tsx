@@ -1,6 +1,5 @@
 "use client";
 
-import { CoachTarget } from "@/components/CoachTarget";
 import { NoticesCardSkeleton } from "@/components/Skeleton/NoticesCardSkeleton";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
@@ -22,8 +21,7 @@ export function RecentDonationsCard() {
   const loaded = !loading;
 
   return (
-    <CoachTarget id="recent-donations-card">
-      <div className={styles.container}>
+    <div className={styles.container}>
         <div className={styles.header}>
           <span className={styles.headerTitle}>Doações do mês</span>
         </div>
@@ -61,6 +59,5 @@ export function RecentDonationsCard() {
           })
         )}
       </div>
-    </CoachTarget>
   );
 }

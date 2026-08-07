@@ -1,7 +1,6 @@
 "use client";
 
 import { Avatar } from "@/components/Avatar";
-import { CoachTarget } from "@/components/CoachTarget";
 import { useBirthday } from "@/context/BirthdayContext";
 import { IMember } from "@/types/Member";
 import { PartyPopper } from "lucide-react";
@@ -62,8 +61,7 @@ export function BirthdayBanner() {
   );
 
   return (
-    <CoachTarget id="birthdays-card">
-      <div className={styles.container}>
+    <div className={styles.container}>
         <div className={styles.header}>
           <span className={styles.label}>ANIVERSARIANTES DO MÊS</span>
         </div>
@@ -107,6 +105,5 @@ export function BirthdayBanner() {
           </div>
         )}
       </div>
-    </CoachTarget>
   );
 }

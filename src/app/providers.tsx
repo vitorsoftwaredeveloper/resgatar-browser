@@ -6,11 +6,9 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { BirthdayProvider } from "@/context/BirthdayContext";
 import { ChargeProvider } from "@/context/ChargeContext";
-import { CoachProvider } from "@/context/CoachContext";
 import { DashboardDataProvider } from "@/context/DashboardDataContext";
 import { DashboardVisibilityProvider } from "@/context/DashboardVisibilityContext";
 import { TopbarProvider } from "@/context/TopbarContext";
-import { CoachOverlay } from "@/components/CoachOverlay";
 import { ToastHost } from "@/components/Toast/ToastHost";
 
 // Providers globais da aplicação. Configura o Amplify no cliente antes de
@@ -31,11 +29,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <BirthdayProvider>
               <DashboardDataProvider>
                 <TopbarProvider>
-                  <CoachProvider>
-                    {children}
-                    <CoachOverlay />
-                    <ToastHost />
-                  </CoachProvider>
+                  {children}
+                  <ToastHost />
                 </TopbarProvider>
               </DashboardDataProvider>
             </BirthdayProvider>

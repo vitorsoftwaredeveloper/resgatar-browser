@@ -1,6 +1,5 @@
 "use client";
 
-import { CoachTarget } from "@/components/CoachTarget";
 import { useAuth } from "@/context/AuthContext";
 import { IMember } from "@/types/Member";
 import { Flame } from "lucide-react";
@@ -79,49 +78,47 @@ export function StreakCard() {
   })();
 
   return (
-    <CoachTarget id="streak-card">
-      <div className={styles.container}>
-        <span className={styles.label}>OFENSIVA DE LEITURAS</span>
+    <div className={styles.container}>
+      <span className={styles.label}>OFENSIVA DE LEITURAS</span>
 
-        <div className={styles.row}>
-          <div className={styles.left}>
-            <div
-              className={[styles.flameWrap, !active && styles.flameWrapDim]
-                .filter(Boolean)
-                .join(" ")}
-            >
-              <Flame
-                size={22}
-                color={active ? STREAK_ACCENT : STREAK_ACCENT_DIM}
-                fill={active ? STREAK_ACCENT : "transparent"}
-              />
-            </div>
-            <div className={styles.texts}>
-              <p className={styles.headline}>{headline}</p>
-              <p className={styles.subtitle}>{recordText}</p>
-            </div>
+      <div className={styles.row}>
+        <div className={styles.left}>
+          <div
+            className={[styles.flameWrap, !active && styles.flameWrapDim]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            <Flame
+              size={22}
+              color={active ? STREAK_ACCENT : STREAK_ACCENT_DIM}
+              fill={active ? STREAK_ACCENT : "transparent"}
+            />
           </div>
+          <div className={styles.texts}>
+            <p className={styles.headline}>{headline}</p>
+            <p className={styles.subtitle}>{recordText}</p>
+          </div>
+        </div>
 
-          <div className={styles.right}>
-            <div className={styles.week}>
-              {week.map((cell, i) => (
-                <div key={i} className={styles.dayCol}>
-                  <span className={styles.dayInitial}>{cell.initial}</span>
-                  <div
-                    className={[
-                      styles.dot,
-                      cell.read && styles.dotRead,
-                      cell.isToday && !cell.read && styles.dotToday,
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
-                  />
-                </div>
-              ))}
-            </div>
+        <div className={styles.right}>
+          <div className={styles.week}>
+            {week.map((cell, i) => (
+              <div key={i} className={styles.dayCol}>
+                <span className={styles.dayInitial}>{cell.initial}</span>
+                <div
+                  className={[
+                    styles.dot,
+                    cell.read && styles.dotRead,
+                    cell.isToday && !cell.read && styles.dotToday,
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    </CoachTarget>
+    </div>
   );
 }

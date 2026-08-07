@@ -1,6 +1,5 @@
 "use client";
 
-import { CoachTarget } from "@/components/CoachTarget";
 import { Dialog } from "@/components/Dialog";
 import { Header } from "@/components/Header";
 import { ItemActionList } from "@/components/ItemActionList";
@@ -64,23 +63,19 @@ export default function ProfilePage() {
             />
           )}
 
-          <CoachTarget id="profile-personal-settings">
-            <ItemActionList
-              title="Configurações pessoais"
-              description="Dados, senha e encerramento de conta"
-              onPress={() => router.push("/personal-settings")}
-              icon={<Settings color={colors.primary} />}
-            />
-          </CoachTarget>
+          <ItemActionList
+            title="Configurações pessoais"
+            description="Dados, senha e encerramento de conta"
+            onPress={() => router.push("/personal-settings")}
+            icon={<Settings color={colors.primary} />}
+          />
 
-          <CoachTarget id="profile-videos">
-            <ItemActionList
-              title="Vídeos"
-              description="Veja os vídeos publicados pelos membros"
-              onPress={() => router.push("/videos")}
-              icon={<Video color={colors.primary} />}
-            />
-          </CoachTarget>
+          <ItemActionList
+            title="Vídeos"
+            description="Veja os vídeos publicados pelos membros"
+            onPress={() => router.push("/videos")}
+            icon={<Video color={colors.primary} />}
+          />
 
           <ItemActionList
             title="Rever tutorial"

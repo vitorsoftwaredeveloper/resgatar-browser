@@ -1,5 +1,4 @@
 import { Avatar } from "@/components/Avatar";
-import { CoachTarget } from "@/components/CoachTarget";
 import { IMember } from "@/types/Member";
 import { maskCPFOrCNPJ } from "@/utils/mask";
 import styles from "./ProfileHeaderCard.module.css";
@@ -14,9 +13,9 @@ interface Props {
 export function ProfileHeaderCard({ member, onPressAvatar }: Props) {
   return (
     <div className={styles.card}>
-      <CoachTarget id="profile-photo" className={styles.avatarWrapper}>
+      <div className={styles.avatarWrapper}>
         <Avatar photo={member.profileImage} size={56} onPress={onPressAvatar} editable={!!onPressAvatar} />
-      </CoachTarget>
+      </div>
 
       <div className={styles.info}>
         <p className={styles.name}>

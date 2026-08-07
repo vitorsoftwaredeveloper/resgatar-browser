@@ -1,6 +1,5 @@
 "use client";
 
-import { CoachTarget } from "@/components/CoachTarget";
 import { ModalSetGoal } from "@/components/ModalSetGoal";
 import { CommunityGoalCardSkeleton } from "@/components/Skeleton/CommunityGoalCardSkeleton";
 import { useAppTheme } from "@/context/ThemeContext";
@@ -42,18 +41,16 @@ export function CommunityGoalCard() {
 
   if (!progress || !Number.isFinite(progress.achievedPercent)) {
     return (
-      <CoachTarget id="community-goal-card">
-        <div className={styles.card}>
-          <div className={styles.header}>
-            <span className={styles.title}>Meta da comunidade</span>
-          </div>
-
-          <div className={styles.emptyState}>
-            <Target size={22} color="var(--color-text-muted)" />
-            <p className={styles.emptyText}>Nenhuma meta definida para este mês</p>
-          </div>
+      <div className={styles.card}>
+        <div className={styles.header}>
+          <span className={styles.title}>Meta da comunidade</span>
         </div>
-      </CoachTarget>
+
+        <div className={styles.emptyState}>
+          <Target size={22} color="var(--color-text-muted)" />
+          <p className={styles.emptyText}>Nenhuma meta definida para este mês</p>
+        </div>
+      </div>
     );
   }
 
@@ -105,7 +102,7 @@ export function CommunityGoalCard() {
   }[tier];
 
   return (
-    <CoachTarget id="community-goal-card">
+    <>
       <div className={styles.card}>
         <div className={styles.header}>
           <span className={styles.title}>
@@ -216,6 +213,6 @@ export function CommunityGoalCard() {
           currentGoal={progress.targetGoal}
         />
       )}
-    </CoachTarget>
+    </>
   );
 }
