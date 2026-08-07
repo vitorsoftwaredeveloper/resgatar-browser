@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+}
+
+.statusRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.iconGranted {
+  flex-shrink: 0;
+  color: var(--color-success);
+}
+
+.iconDenied {
+  flex-shrink: 0;
+  color: var(--color-error);
+}
+
+.iconDefault {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.statusLabel {
+  font-size: var(--font-large);
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+}
+
+.statusGranted {
+  color: var(--color-success);
+}
+
+.statusDenied {
+  color: var(--color-error);
+}
+
+.statusDefault {
+  color: var(--color-text);
+}
+
+.statusDescription {
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+  line-height: 20px;
+}
+
+.benefitItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.benefitItem:last-child {
+  margin-bottom: 0;
+}
+
+.bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-primary);
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+
+.benefitText {
+  flex: 1;
+  font-size: var(--font-body);
+  color: var(--color-text-muted);
+  line-height: 20px;
+}
+
+.footer {
+  padding: var(--spacing-lg);
+  background: var(--color-background);
+}
