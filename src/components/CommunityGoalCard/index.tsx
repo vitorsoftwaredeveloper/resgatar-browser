@@ -4,8 +4,8 @@ import { CoachTarget } from "@/components/CoachTarget";
 import { ModalSetGoal } from "@/components/ModalSetGoal";
 import { CommunityGoalCardSkeleton } from "@/components/Skeleton/CommunityGoalCardSkeleton";
 import { useAppTheme } from "@/context/ThemeContext";
-import { useAuth } from "@/context/AuthContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
+import { usePermissions } from "@/hooks/usePermissions";
 import { formatMoneyBRL } from "@/utils/helper";
 import { CircleCheck, HandCoins, Pencil, Receipt, Target, Wallet } from "lucide-react";
 import { useState } from "react";
@@ -33,12 +33,10 @@ const MONTH_LABELS = [
 
 export function CommunityGoalCard() {
   const { colors } = useAppTheme();
-  const { member } = useAuth();
+  const { isAdmin } = usePermissions();
   const { goalProgress: progress, goalLoading: loading, refetchGoalProgress } =
     useDashboardData();
   const [editing, setEditing] = useState(false);
-
-  const isAdmin = member?.role === "admin";
 
   if (loading && !progress) return <CommunityGoalCardSkeleton />;
 

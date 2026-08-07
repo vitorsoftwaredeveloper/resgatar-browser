@@ -21,6 +21,7 @@ interface Props {
   options: SelectOption[];
   onSelect: (value: string | number) => void;
   error?: string | false;
+  className?: string;
 }
 
 const LIST_MAX_HEIGHT = 240;
@@ -40,6 +41,7 @@ export function SelectField({
   options,
   onSelect,
   error,
+  className,
 }: Props) {
   const { colors } = useAppTheme();
   const [open, setOpen] = useState(false);
@@ -78,7 +80,7 @@ export function SelectField({
   }, [rect]);
 
   return (
-    <div className={styles.wrapper}>
+    <div className={[styles.wrapper, className].filter(Boolean).join(" ")}>
       {label ? <label className={styles.label}>{label}</label> : null}
 
       <button

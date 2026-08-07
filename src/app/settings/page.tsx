@@ -24,6 +24,7 @@ import {
   PiggyBank,
   Receipt,
   Target,
+  UserRoundPlus,
   UsersRound,
   Wallet,
 } from "lucide-react";
@@ -53,6 +54,7 @@ interface AdminKpis {
   metaGoal: number;
   inadimplentes: number;
   membrosAtivos: number;
+  convidadosAguardando: number;
 }
 
 // Portado de resgatar_app/src/screens/SettingsScreen (área administrativa).
@@ -129,7 +131,15 @@ function SettingsPageContent() {
           monthR.status === "fulfilled" ? monthR.value.counts.pending : 0,
         membrosAtivos:
           membersR.status === "fulfilled"
-            ? (membersR.value as unknown as IMember[]).length
+            ? (membersR.value as unknown as IMember[]).filter(
+                (m) => m.role === "admin" || m.role === "user",
+              ).length
+            : 0,
+        convidadosAguardando:
+          membersR.status === "fulfilled"
+            ? (membersR.value as unknown as IMember[]).filter(
+                (m) => (m.role ?? "guest") === "guest",
+              ).length
             : 0,
       });
     });
@@ -363,6 +373,32 @@ function SettingsPageContent() {
                       </div>
                       <div className="t-sub">na comunidade</div>
                     </div>
+
+                    <button
+                      type="button"
+                      className="tile"
+                      onClick={() =>
+                        router.push("/settings?open=member-actions&focus=guests")
+                      }
+                      style={{
+                        textAlign: "left",
+                        cursor: "pointer",
+                        width: "100%",
+                        fontFamily: "inherit",
+                        margin: 0,
+                      }}
+                    >
+                      <div className="t-top">
+                        <span className="t-ic">
+                          <UserRoundPlus size={17} />
+                        </span>
+                        Convidados aguardando
+                      </div>
+                      <div className="t-val money">
+                        {kpis ? kpis.convidadosAguardando : "—"}
+                      </div>
+                      <div className="t-sub">clique para revisar</div>
+                    </button>
                   </div>
 
                   <div className={styles.toolsSectionHead}>

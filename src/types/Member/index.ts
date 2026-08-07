@@ -1,5 +1,7 @@
 // Portado de resgatar_app/src/types/Member/index.ts (idêntico ao app).
 
+export type MemberRole = "admin" | "user" | "guest";
+
 export interface IMemberState {
   email: string;
   phoneNumber: string;
@@ -44,7 +46,7 @@ export interface IMember {
     type: "CPF" | "CNPJ";
     numberType: string;
   };
-  role?: "admin" | "user";
+  role?: MemberRole;
   readingStreak?: {
     currentStreak: number;
     longestStreak: number;

@@ -2,8 +2,8 @@
 
 import { CoachTarget } from "@/components/CoachTarget";
 import { NoticesCardSkeleton } from "@/components/Skeleton/NoticesCardSkeleton";
-import { useAuth } from "@/context/AuthContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
+import { usePermissions } from "@/hooks/usePermissions";
 import { commitmentScheduleLabel, isCommitmentToday } from "@/utils/commitment";
 import { CalendarDays, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -17,8 +17,7 @@ import styles from "./NoticesCard.module.css";
 // (portado de src/screens/NoticeBoardScreen).
 
 export function NoticesCard() {
-  const { member } = useAuth();
-  const isAdmin = member?.role === "admin";
+  const { isAdmin } = usePermissions();
   const { commitments: items, commitmentsLoading: loading } = useDashboardData();
   const loaded = !loading;
   const [modalVisible, setModalVisible] = useState(false);

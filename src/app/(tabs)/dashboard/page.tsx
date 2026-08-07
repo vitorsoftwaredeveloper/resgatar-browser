@@ -3,14 +3,16 @@
 import { BannerCarousel } from "@/components/BannerCarousel";
 import { BirthdayBanner } from "@/components/BirthdayBanner";
 import { CommunityGoalCard } from "@/components/CommunityGoalCard";
+import { GuestHomeCard } from "@/components/GuestHomeCard";
 import { Header } from "@/components/Header";
 import { NoticesCard } from "@/components/NoticesCard";
 import { RecentDonationsCard } from "@/components/RecentDonationsCard";
 import { RecentVideosCard } from "@/components/RecentVideosCard";
 import { StreakCard } from "@/components/StreakCard";
 import { useAuth } from "@/context/AuthContext";
+import { usePermissions } from "@/hooks/usePermissions";
 import { getDashboardOrder, setDashboardOrder } from "@/storage/localStorage";
-import { ComponentType, DragEvent, useEffect, useRef, useState } from "react";
+import { ComponentType, DragEvent, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./dashboard.module.css";
 
 // Portado de resgatar_app/src/screens/DashboardScreen. O drag-to-reorder da
@@ -18,7 +20,15 @@ import styles from "./dashboard.module.css";
 // + dragstart/dragover/drop) — dispensa biblioteca extra e funciona com mouse
 // e touch nos browsers mobile modernos.
 
-type CardId = "banners" | "birthdays" | "streak" | "communityGoal" | "notices" | "recentVideos" | "recentDonations";
+type CardId =
+  | "banners"
+  | "birthdays"
+  | "streak"
+  | "communityGoal"
+  | "notices"
+  | "recentVideos"
+  | "recentDonations"
+  | "guestHome";
 
 const CARD_REGISTRY: Record<CardId, ComponentType> = {
   banners: BannerCarousel,
@@ -28,13 +38,17 @@ const CARD_REGISTRY: Record<CardId, ComponentType> = {
   notices: NoticesCard,
   recentVideos: RecentVideosCard,
   recentDonations: RecentDonationsCard,
+  guestHome: GuestHomeCard,
 };
+
+const INTERNAL_ONLY_CARDS: CardId[] = ["birthdays", "communityGoal"];
 
 // Os dois cards de largura cheia (banners, notices) ficam adjacentes no topo
 // — assim o grid desktop (2 colunas) não precisa contar só com
 // grid-auto-flow: dense pra evitar buraco quando um card de coluna única é
 // seguido por um de span completo.
 const DEFAULT_ORDER: CardId[] = [
+  "guestHome",
   "banners",
   "notices",
   "birthdays",
@@ -46,6 +60,7 @@ const DEFAULT_ORDER: CardId[] = [
 
 export default function DashboardPage() {
   const { member } = useAuth();
+  const { isInternal } = usePermissions();
   const [order, setOrder] = useState<CardId[]>(DEFAULT_ORDER);
   const dragIndex = useRef<number | null>(null);
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
@@ -61,6 +76,18 @@ export default function DashboardPage() {
       setOrder(merged);
     });
   }, [member?._id]);
+
+  const visibleEntries = useMemo(
+    () =>
+      order
+        .map((id, index) => ({ id, index }))
+        .filter(({ id }) => {
+          if (id === "guestHome") return !isInternal;
+          if (INTERNAL_ONLY_CARDS.includes(id)) return isInternal;
+          return true;
+        }),
+    [order, isInternal],
+  );
 
   function reorder(from: number, to: number) {
     setOrder((prev) => {
@@ -103,7 +130,7 @@ export default function DashboardPage() {
       />
 
       <div className={styles.content}>
-        {order.map((id, index) => {
+        {visibleEntries.map(({ id, index }) => {
           const Component = CARD_REGISTRY[id];
           return (
             <div

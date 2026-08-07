@@ -1,37 +1,65 @@
 "use client";
 
 import { Avatar } from "@/components/Avatar";
+import { Dialog } from "@/components/Dialog";
 import { ModalBase } from "@/components/ModalBase";
 import { RemoveMemberSkeleton } from "@/components/Skeleton/RemoveMemberSkeleton";
+import { SelectField } from "@/components/SelectField";
 import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
-import { useAppTheme } from "@/context/ThemeContext";
 import { MemberServices } from "@/services/MemberService";
-import { IMember } from "@/types/Member";
-import { useEffect, useState } from "react";
+import { IMember, MemberRole } from "@/types/Member";
+import { getApiErrorMessage } from "@/utils/apiError";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./ModalEditMemberData.module.css";
-
-// Portado de resgatar_app/src/screens/SettingsScreen/ModalEditMemberData. O
-// Switch nativo vira um checkbox estilizado como toggle.
 
 type Props = {
   visible: boolean;
   onClose: () => void;
+  initialFilter?: RoleFilter;
 };
+
+type RoleFilter = "all" | MemberRole;
 
 const SKELETON_COUNT = 4;
 
-export function ModalEditMemberData({ visible, onClose }: Props) {
+const ROLE_OPTIONS: { label: string; value: MemberRole }[] = [
+  { label: "Convidado", value: "guest" },
+  { label: "Membro", value: "user" },
+  { label: "Coordenador", value: "admin" },
+];
+
+const ROLE_FILTERS: { label: string; value: RoleFilter }[] = [
+  { label: "Todos", value: "all" },
+  { label: "Convidados", value: "guest" },
+  { label: "Membros", value: "user" },
+  { label: "Coordenadores", value: "admin" },
+];
+
+export function ModalEditMemberData({
+  visible,
+  onClose,
+  initialFilter = "all",
+}: Props) {
   const [members, setMembers] = useState<IMember[]>([]);
   const [loading, setLoading] = useState(false);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [filter, setFilter] = useState<RoleFilter>(initialFilter);
+  const [pendingChange, setPendingChange] = useState<{
+    member: IMember;
+    nextRole: MemberRole;
+  } | null>(null);
   const { listMembers, member: loggedMember, reloadMemberData } = useAuth();
-  const { colors } = useAppTheme();
+  const listMembersRef = useRef(listMembers);
+
+  useEffect(() => {
+    listMembersRef.current = listMembers;
+  });
 
   async function loadMembers() {
     setLoading(true);
     try {
-      const response = await listMembers();
+      const response = await listMembersRef.current();
       setMembers(response as unknown as IMember[]);
     } finally {
       setLoading(false);
@@ -39,91 +67,149 @@ export function ModalEditMemberData({ visible, onClose }: Props) {
   }
 
   useEffect(() => {
-    if (!visible) return;
-    loadMembers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (visible) loadMembers();
   }, [visible]);
 
-  async function handleToggleRole(member: IMember, value: boolean) {
-    const newRole = value ? "admin" : "user";
+  const filteredMembers = useMemo(
+    () =>
+      filter === "all"
+        ? members
+        : members.filter((m) => (m.role ?? "guest") === filter),
+    [members, filter],
+  );
+
+  async function applyRoleChange(member: IMember, nextRole: MemberRole) {
     setUpdating(member._id);
     try {
-      // Envia só os campos aceitos pelo editMemberSchema (additionalProperties:
-      // false) — espalhar o IMember inteiro incluía readingStreak e quebrava
-      // com 500.
       await MemberServices.editMember({
         _id: member._id,
-        email: member.email,
-        phoneNumber: member.phoneNumber,
-        firstName: member.firstName,
-        lastName: member.lastName,
-        bio: member.bio,
-        profileImage: member.profileImage,
-        dateOfBirth: Number(member.dateOfBirth),
-        address: member.address,
-        paymentInfo: member.paymentInfo,
-        identification: member.identification,
-        role: newRole,
-      });
+        role: nextRole,
+      } as IMember);
       setMembers((prev) =>
-        prev.map((m) => (m._id === member._id ? { ...m, role: newRole } : m)),
+        prev.map((m) => (m._id === member._id ? { ...m, role: nextRole } : m)),
       );
       if (member._id === loggedMember?._id) {
         await reloadMemberData();
       }
-    } catch {
-      ToastMessage.error("Erro", "Falha ao atualizar permissão.");
+      ToastMessage.success("Nível de acesso atualizado");
+    } catch (error) {
+      ToastMessage.error(
+        "Erro",
+        getApiErrorMessage(error, "Falha ao atualizar nível de acesso."),
+      );
     } finally {
       setUpdating(null);
     }
   }
 
   return (
-    <ModalBase
-      onClose={onClose}
-      visible={visible}
-      title="Permissões de membros"
-    >
+    <ModalBase onClose={onClose} visible={visible} title="Níveis de acesso">
+      <div className={styles.filters}>
+        {ROLE_FILTERS.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            onClick={() => setFilter(option.value)}
+            className={[
+              styles.filterItem,
+              filter === option.value && styles.filterItemActive,
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            <span
+              className={[
+                styles.filterText,
+                filter === option.value && styles.filterTextActive,
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              {option.label}
+            </span>
+          </button>
+        ))}
+      </div>
+
       <div className={styles.list}>
         {loading
           ? Array.from({ length: SKELETON_COUNT }).map((_, index) => (
               <RemoveMemberSkeleton key={`skeleton-${index}`} />
             ))
-          : members.map((item) => (
-              <div key={item._id} className={styles.card}>
-                <div className={styles.userInfo}>
-                  <Avatar photo={item.profileImage} size={40} />
-                  <div>
-                    <p className={styles.userName}>{item.firstName}</p>
-                    <p className={styles.userEmail}>{item.email}</p>
+          : filteredMembers.map((item) => {
+              const isSelf = item._id === loggedMember?._id;
+              return (
+                <div key={item._id} className={styles.card}>
+                  <div className={styles.userInfo}>
+                    <Avatar photo={item.profileImage} size={40} />
+                    <div>
+                      <p className={styles.userName}>{item.firstName}</p>
+                      <p className={styles.userEmail}>{item.email}</p>
+                    </div>
+                  </div>
+
+                  <div className={styles.action}>
+                    {updating === item._id ? (
+                      <span className={styles.spinner} />
+                    ) : (
+                      <SelectField
+                        value={item.role ?? "guest"}
+                        options={ROLE_OPTIONS}
+                        className={[
+                          styles.selectWrapper,
+                          isSelf && styles.selectWrapperDisabled,
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                        onSelect={(value) => {
+                          if (isSelf) return;
+                          setPendingChange({
+                            member: item,
+                            nextRole: value as MemberRole,
+                          });
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
+              );
+            })}
 
-                <div className={styles.action}>
-                  {updating === item._id ? (
-                    <span
-                      className={styles.spinner}
-                      style={{ borderTopColor: colors.primary }}
-                    />
-                  ) : (
-                    <label className={styles.switch}>
-                      <input
-                        type="checkbox"
-                        checked={item.role === "admin"}
-                        onChange={(e) =>
-                          handleToggleRole(item, e.target.checked)
-                        }
-                        className={styles.switchInput}
-                      />
-                      <span className={styles.switchTrack}>
-                        <span className={styles.switchThumb} />
-                      </span>
-                    </label>
-                  )}
-                </div>
-              </div>
-            ))}
+        {!loading && filteredMembers.length === 0 && (
+          <p className={styles.emptyText}>Nenhum membro nesse nível.</p>
+        )}
       </div>
+
+      <Dialog
+        visible={!!pendingChange}
+        title="Alterar nível de acesso?"
+        description={
+          pendingChange
+            ? `${pendingChange.member.firstName} passará a ser "${
+                ROLE_OPTIONS.find((o) => o.value === pendingChange.nextRole)
+                  ?.label
+              }".`
+            : undefined
+        }
+        onClose={() => setPendingChange(null)}
+        actions={[
+          {
+            label: "cancelar",
+            onPress: () => setPendingChange(null),
+            variant: "secondary",
+          },
+          {
+            label: "confirmar",
+            onPress: () => {
+              if (!pendingChange) return;
+              const { member, nextRole } = pendingChange;
+              setPendingChange(null);
+              applyRoleChange(member, nextRole);
+            },
+            variant: "primary",
+          },
+        ]}
+      />
     </ModalBase>
   );
 }

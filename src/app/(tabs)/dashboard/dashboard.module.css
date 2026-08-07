@@ -111,7 +111,8 @@
     border-radius: var(--radius-xl);
   }
 
-  .content [data-card="banners"] {
+  .content [data-card="banners"],
+  .content [data-card="guestHome"] {
     grid-column: 1 / -1;
   }
 

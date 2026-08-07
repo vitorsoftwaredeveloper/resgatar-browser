@@ -2,9 +2,9 @@
 
 import { ModalBase } from "@/components/ModalBase";
 import { ToastMessage } from "@/components/Toast";
-import { useAuth } from "@/context/AuthContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
 import { useDragReorder } from "@/hooks/useDragReorder";
+import { usePermissions } from "@/hooks/usePermissions";
 import { CommitmentService } from "@/services/CommitmentService";
 import { ICommitment } from "@/types/Commitment";
 import { commitmentScheduleLabel, isCommitmentToday } from "@/utils/commitment";
@@ -26,8 +26,7 @@ interface Props {
 }
 
 export function NoticeBoardModal({ visible, onClose }: Props) {
-  const { member } = useAuth();
-  const isAdmin = member?.role === "admin";
+  const { isAdmin } = usePermissions();
   const { commitments, commitmentsLoading: loading, refetchCommitments } = useDashboardData();
 
   const [items, setItems] = useState<ICommitment[]>(commitments);

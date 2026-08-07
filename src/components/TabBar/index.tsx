@@ -3,7 +3,7 @@
 import { CoachTarget } from "@/components/CoachTarget";
 import { useAppTheme } from "@/context/ThemeContext";
 import Link from "next/link";
-import { TABS, useActiveTabIndex } from "./tabs";
+import { useActiveTabIndex, useTabs } from "./tabs";
 import styles from "./TabBar.module.css";
 
 // Portado de resgatar_app/src/components/TabBar. O tabBar customizado do
@@ -13,9 +13,10 @@ import styles from "./TabBar.module.css";
 
 export function TabBar() {
   const { colors } = useAppTheme();
-  const activeIndex = useActiveTabIndex();
+  const tabs = useTabs();
+  const activeIndex = useActiveTabIndex(tabs);
 
-  const tabWidth = 100 / TABS.length;
+  const tabWidth = 100 / tabs.length;
 
   return (
     <div className={styles.container}>
@@ -25,7 +26,7 @@ export function TabBar() {
       />
 
       <div className={styles.row}>
-        {TABS.map((tab, index) => {
+        {tabs.map((tab, index) => {
           const focused = index === activeIndex;
           const iconColor = focused ? colors.primary : colors.textMuted;
 

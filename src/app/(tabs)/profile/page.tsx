@@ -9,6 +9,7 @@ import { ProfileHeaderCard } from "@/components/ProfileHeaderCard";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { usePermissions } from "@/hooks/usePermissions";
 import { IMember } from "@/types/Member";
 import { HelpCircle, LogOut, Settings, ShieldUser, Video } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -20,6 +21,7 @@ import styles from "./profile.module.css";
 
 export default function ProfilePage() {
   const { logout, member, restartOnboarding } = useAuth();
+  const { isAdmin } = usePermissions();
   const { colors } = useAppTheme();
   const { isDesktop } = useBreakpoint();
   const router = useRouter();
@@ -53,7 +55,7 @@ export default function ProfilePage() {
         <ProfileHeaderCard member={member as IMember} onPressAvatar={() => setPhotoModalVisible(true)} />
 
         <div className={styles.menuCard}>
-          {member?.role === "admin" && (
+          {isAdmin && (
             <ItemActionList
               title="Administrativo"
               description="Financeiro, membros e notificações da comunidade"

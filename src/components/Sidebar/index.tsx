@@ -5,6 +5,8 @@ import { CoachTarget } from "@/components/CoachTarget";
 import { LogoResgatar } from "@/components/Svg/Logo";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
+import { usePermissions } from "@/hooks/usePermissions";
+import { MemberRole } from "@/types/Member";
 import {
   BookOpen,
   FileText,
@@ -63,13 +65,20 @@ const STORAGE_KEY = "sidebar:collapsed";
 const SIDEBAR_WIDTH = "268px";
 const SIDEBAR_WIDTH_COLLAPSED = "82px";
 
-function roleLabel(role?: string): string {
-  return role === "admin" ? "Coordenador" : "Membro";
+const ROLE_LABEL: Record<MemberRole, string> = {
+  admin: "Coordenador",
+  user: "Membro",
+  guest: "Convidado",
+};
+
+function roleLabel(role: MemberRole): string {
+  return ROLE_LABEL[role];
 }
 
 export function Sidebar() {
   const { colors } = useAppTheme();
   const { member, logout } = useAuth();
+  const { role, isAdmin, isInternal } = usePermissions();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [dialogLogoutVisible, setDialogLogoutVisible] = useState(false);
@@ -104,11 +113,15 @@ export function Sidebar() {
     setDialogLogoutVisible(false);
   };
 
+  const communityNav = COMMUNITY_NAV.filter(
+    (item) => item.name !== "Bills" || isInternal,
+  );
+
   const sections: NavSection[] = [
-    { label: "Comunidade", items: COMMUNITY_NAV },
+    { label: "Comunidade", items: communityNav },
     {
       label: "Gestão",
-      items: [...(member?.role === "admin" ? [ADMIN_ITEM] : []), ACCOUNT_ITEM],
+      items: [...(isAdmin ? [ADMIN_ITEM] : []), ACCOUNT_ITEM],
     },
   ];
 
@@ -210,7 +223,7 @@ export function Sidebar() {
           {!collapsed && (
             <span className={styles.userText}>
               <span className={styles.userName}>{fullName}</span>
-              <span className={styles.userRole}>{roleLabel(member?.role)}</span>
+              <span className={styles.userRole}>{roleLabel(role)}</span>
             </span>
           )}
         </div>
