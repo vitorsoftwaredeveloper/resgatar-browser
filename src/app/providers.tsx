@@ -10,6 +10,7 @@ import { DashboardDataProvider } from "@/context/DashboardDataContext";
 import { DashboardVisibilityProvider } from "@/context/DashboardVisibilityContext";
 import { TopbarProvider } from "@/context/TopbarContext";
 import { ToastHost } from "@/components/Toast/ToastHost";
+import { PwaBanners } from "@/components/PwaBanners";
 
 // Providers globais da aplicação. Configura o Amplify no cliente antes de
 // qualquer chamada de auth e disponibiliza Theme + Auth para toda a árvore.
@@ -31,6 +32,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 <TopbarProvider>
                   {children}
                   <ToastHost />
+                  <PwaBanners />
                 </TopbarProvider>
               </DashboardDataProvider>
             </BirthdayProvider>

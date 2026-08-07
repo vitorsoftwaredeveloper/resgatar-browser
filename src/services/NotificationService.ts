@@ -38,4 +38,12 @@ export const NotificationServices = {
       throw error;
     }
   },
+  removeFCMToken: async (token: string): Promise<void> => {
+    try {
+      await api.delete("/members/push-token", { data: { pushToken: token } });
+    } catch (error) {
+      console.error("Error removing FCM token", error);
+      throw error;
+    }
+  },
 };
