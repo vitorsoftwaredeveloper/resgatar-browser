@@ -12,6 +12,7 @@ export interface IDonation {
   status: string;
   referenceMonth: number; // 0-indexado
   referenceYear: number;
+  createdAt?: string;
   transactionData?: {
     qrCode?: string;
     qrCodeBase64?: string;

@@ -8,6 +8,7 @@ import { ModalDonate } from "@/components/ModalDonate";
 import { PixPaymentModal } from "@/components/PixPaymentModal";
 import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
+import { usePermissions } from "@/hooks/usePermissions";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useCharge } from "@/context/ChargeContext";
 import { useAppTheme } from "@/context/ThemeContext";
@@ -67,6 +68,7 @@ interface Contribution {
 export default function BillsPage() {
   const { charge, createCharge, consultCharge } = useCharge();
   const { member, reloadMemberData } = useAuth();
+  const { isAdmin } = usePermissions();
   const { colors } = useAppTheme();
   const { isDesktop } = useBreakpoint();
   const [donateModalVisible, setDonateModalVisible] = useState(false);
@@ -374,7 +376,7 @@ export default function BillsPage() {
         <ModalDonate
           visible={donateModalVisible}
           onClose={() => setDonateModalVisible(false)}
-          isAdmin={member?.role === "admin"}
+          isAdmin={isAdmin}
         />
       )}
     </div>

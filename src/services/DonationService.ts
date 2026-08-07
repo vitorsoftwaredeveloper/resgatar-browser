@@ -57,4 +57,14 @@ export const DonationServices = {
       throw error;
     }
   },
+
+  listMine: async (): Promise<IDonation[]> => {
+    try {
+      const response = await api.get("/donations/mine");
+      return response.data.data;
+    } catch (error) {
+      console.error("Erro ao listar próprias doações", error);
+      throw error;
+    }
+  },
 };

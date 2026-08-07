@@ -11,6 +11,7 @@ import { ICommitment } from "@/types/Commitment";
 import { IDonation } from "@/types/Donation";
 import { IVideoFeedItem } from "@/types/Video";
 import { AuthContext } from "@/context/AuthContext";
+import { useDashboardVisibility } from "@/context/DashboardVisibilityContext";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 // Dados dos cards da Dashboard (banners, meta da comunidade, compromissos,
@@ -60,7 +61,13 @@ const DashboardDataContext = createContext<DashboardDataContextValue>({
 });
 
 export function DashboardDataProvider({ children }: { children: React.ReactNode }) {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, member } = useContext(AuthContext);
+  const isInternal = member?.role === "admin" || member?.role === "user";
+  const { settings: guestVisibility, loading: guestVisibilityLoading } = useDashboardVisibility();
+  const canSeeBanners = isInternal || guestVisibility?.banners === true;
+  const canSeeVideos = isInternal || guestVisibility?.videos === true;
+  const canSeeCommunityGoal = isInternal || guestVisibility?.communityGoal === true;
+  const canSeeNotices = isInternal || guestVisibility?.notices === true;
   const [banners, setBanners] = useState<IBanner[]>([]);
   const [bannersLoading, setBannersLoading] = useState(true);
   const [goalProgress, setGoalProgress] = useState<IGoalProgress | null>(null);
@@ -87,25 +94,53 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       return;
     }
 
-    BannerService.list()
-      .then(setBanners)
-      .catch(() => setBanners([]))
-      .finally(() => setBannersLoading(false));
+    if (!isInternal && guestVisibilityLoading) return;
 
-    ChargeServices.getGoalProgress()
-      .then(setGoalProgress)
-      .catch(() => setGoalProgress(null))
-      .finally(() => setGoalLoading(false));
+    if (canSeeBanners) {
+      BannerService.list()
+        .then(setBanners)
+        .catch(() => setBanners([]))
+        .finally(() => setBannersLoading(false));
+    } else {
+      setBanners([]);
+      setBannersLoading(false);
+    }
 
-    CommitmentService.list()
-      .then(setCommitments)
-      .catch(() => setCommitments([]))
-      .finally(() => setCommitmentsLoading(false));
+    if (canSeeVideos) {
+      VideoService.listAllVideos(1, RECENT_VIDEOS_LIMIT)
+        .then((data) => setVideos(data.items))
+        .catch(() => setVideos([]))
+        .finally(() => setVideosLoading(false));
+    } else {
+      setVideos([]);
+      setVideosLoading(false);
+    }
 
-    VideoService.listAllVideos(1, RECENT_VIDEOS_LIMIT)
-      .then((data) => setVideos(data.items))
-      .catch(() => setVideos([]))
-      .finally(() => setVideosLoading(false));
+    if (canSeeCommunityGoal) {
+      ChargeServices.getGoalProgress()
+        .then(setGoalProgress)
+        .catch(() => setGoalProgress(null))
+        .finally(() => setGoalLoading(false));
+    } else {
+      setGoalProgress(null);
+      setGoalLoading(false);
+    }
+
+    if (canSeeNotices) {
+      CommitmentService.list()
+        .then(setCommitments)
+        .catch(() => setCommitments([]))
+        .finally(() => setCommitmentsLoading(false));
+    } else {
+      setCommitments([]);
+      setCommitmentsLoading(false);
+    }
+
+    if (!isInternal) {
+      setDonations([]);
+      setDonationsLoading(false);
+      return;
+    }
 
     const now = new Date();
     DonationServices.list(now.getFullYear())
@@ -114,7 +149,15 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       )
       .catch(() => setDonations([]))
       .finally(() => setDonationsLoading(false));
-  }, [isLoggedIn]);
+  }, [
+    isLoggedIn,
+    isInternal,
+    guestVisibilityLoading,
+    canSeeBanners,
+    canSeeVideos,
+    canSeeCommunityGoal,
+    canSeeNotices,
+  ]);
 
   async function refetchBanners() {
     try {

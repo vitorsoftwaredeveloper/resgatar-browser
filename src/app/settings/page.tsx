@@ -129,7 +129,9 @@ function SettingsPageContent() {
           monthR.status === "fulfilled" ? monthR.value.counts.pending : 0,
         membrosAtivos:
           membersR.status === "fulfilled"
-            ? (membersR.value as unknown as IMember[]).length
+            ? (membersR.value as unknown as IMember[]).filter(
+                (m) => m.role === "admin" || m.role === "user",
+              ).length
             : 0,
       });
     });

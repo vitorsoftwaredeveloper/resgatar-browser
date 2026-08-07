@@ -3,6 +3,7 @@
 import { Header } from "@/components/Header";
 import { ItemActionList } from "@/components/ItemActionList";
 import { ModalChangePasswordMember } from "@/components/ModalChangePasswordMember";
+import { ModalDashboardVisibility } from "@/components/ModalDashboardVisibility";
 import { ModalEditMemberData } from "@/components/ModalEditMemberData";
 import { ModalRegisterCashPayment } from "@/components/ModalRegisterCashPayment";
 import { ModalRemoveMember } from "@/components/ModalRemoveMember";
@@ -10,12 +11,10 @@ import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useAdminHubRedirect } from "@/hooks/useAdminHubRedirect";
-import { HandCoins, ShieldCheck, UserRoundMinus, UserRoundPen } from "lucide-react";
+import { Eye, HandCoins, ShieldCheck, UserRoundMinus, UserRoundPen } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import styles from "./member-actions.module.css";
-
-// Portado de resgatar_app/src/screens/MemberActionsScreen.
 
 export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors } = useAppTheme();
@@ -25,6 +24,7 @@ export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }
   const [openEditMemberData, setOpenEditMemberData] = useState(false);
   const [openCashPayment, setOpenCashPayment] = useState(false);
   const [openChangePassword, setOpenChangePassword] = useState(false);
+  const [openDashboardVisibility, setOpenDashboardVisibility] = useState(false);
 
   const actions = (
     <>
@@ -38,8 +38,8 @@ export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }
 
       <ItemActionList
         variant="card"
-        title="Permissões de membros"
-        description="Gerencie quais membros têm acesso de administrador."
+        title="Níveis de acesso"
+        description="Gerencie quem é convidado, membro ou administrador."
         onPress={() => setOpenEditMemberData(true)}
         icon={<ShieldCheck color={colors.primary} />}
       />
@@ -58,6 +58,14 @@ export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }
         description="Atualize a senha de acesso de um membro ao aplicativo."
         onPress={() => setOpenChangePassword(true)}
         icon={<UserRoundPen color={colors.primary} />}
+      />
+
+      <ItemActionList
+        variant="card"
+        title="Visibilidade do convidado"
+        description="Escolha o que um convidado pode ver na tela de Início."
+        onPress={() => setOpenDashboardVisibility(true)}
+        icon={<Eye color={colors.primary} />}
         isLast
       />
     </>
@@ -86,7 +94,10 @@ export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }
       {openRemoveMember && <ModalRemoveMember visible={openRemoveMember} onClose={() => setOpenRemoveMember(false)} />}
 
       {openEditMemberData && (
-        <ModalEditMemberData visible={openEditMemberData} onClose={() => setOpenEditMemberData(false)} />
+        <ModalEditMemberData
+          visible={openEditMemberData}
+          onClose={() => setOpenEditMemberData(false)}
+        />
       )}
 
       {openCashPayment && (
@@ -96,14 +107,28 @@ export function MemberActionsScreen({ embedded = false }: { embedded?: boolean }
       {openChangePassword && (
         <ModalChangePasswordMember visible={openChangePassword} onClose={() => setOpenChangePassword(false)} />
       )}
+
+      {openDashboardVisibility && (
+        <ModalDashboardVisibility
+          visible={openDashboardVisibility}
+          onClose={() => setOpenDashboardVisibility(false)}
+        />
+      )}
     </>
   );
 }
 
 export default function MemberActionsPage() {
+  return (
+    <Suspense fallback={null}>
+      <MemberActionsPageContent />
+    </Suspense>
+  );
+}
+
+function MemberActionsPageContent() {
   const { member } = useAuth();
   const router = useRouter();
-  // No desktop esta tela vive inline no hub /settings — redireciona pra lá.
   if (useAdminHubRedirect("member-actions")) return null;
 
   return (

@@ -5,6 +5,7 @@ import { ToastMessage } from "@/components/Toast";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useAdminHubRedirect } from "@/hooks/useAdminHubRedirect";
+import { usePermissions } from "@/hooks/usePermissions";
 import { DonationServices } from "@/services/DonationService";
 import { TRANSACTION_STATUS, isReturnedTransaction } from "@/types/Charge";
 import { IDonation } from "@/types/Donation";
@@ -43,8 +44,7 @@ function sumAmounts(donations: IDonation[]): number {
 
 export function DonationsScreen({ embedded = false }: { embedded?: boolean }) {
   const { colors } = useAppTheme();
-  const { member } = useAuth();
-  const isAdmin = member?.role === "admin";
+  const { isAdmin } = usePermissions();
 
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());

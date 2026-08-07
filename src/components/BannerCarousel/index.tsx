@@ -1,8 +1,8 @@
 "use client";
 
 import { CoachTarget } from "@/components/CoachTarget";
-import { useAuth } from "@/context/AuthContext";
 import { useDashboardData } from "@/context/DashboardDataContext";
+import { usePermissions } from "@/hooks/usePermissions";
 import { BANNER_SCREEN_PATHS, BannerScreen, IBanner } from "@/types/Banner";
 import { Settings2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -45,8 +45,7 @@ function BannerSlide({ banner }: { banner: IBanner }) {
 }
 
 export function BannerCarousel() {
-  const { member } = useAuth();
-  const isAdmin = member?.role === "admin";
+  const { isAdmin } = usePermissions();
   const { banners, bannersLoading: loading } = useDashboardData();
   const [activeIndex, setActiveIndex] = useState(0);
   const [managerVisible, setManagerVisible] = useState(false);
