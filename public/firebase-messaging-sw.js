@@ -29,27 +29,47 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-if (firebaseConfig.projectId) {
-  firebase.initializeApp(firebaseConfig);
+function showFromPayload(payload) {
+  const data = payload?.data ?? {};
+  const title = data.title ?? payload?.notification?.title ?? "Resgatar";
+  const body =
+    data.body ??
+    payload?.notification?.body ??
+    "Você tem uma nova atualização.";
 
-  const messaging = firebase.messaging();
-
-  messaging.onBackgroundMessage((payload) => {
-    const title = payload.data?.title ?? payload.notification?.title ?? "Resgatar";
-    const body =
-      payload.data?.body ??
-      payload.notification?.body ??
-      "Você tem uma nova atualização.";
-
-    self.registration.showNotification(title, {
-      body,
-      icon: "/icons/icon-192.png",
-      badge: "/icons/icon-192.png",
-      data: payload.data ?? {},
-      tag: payload.data?.url ?? `${title}|${body}`,
-    });
+  return self.registration.showNotification(title, {
+    body,
+    icon: "/icons/icon-192.png",
+    badge: "/icons/icon-192.png",
+    data,
+    tag: data.url ?? `${title}|${body}`,
   });
 }
+
+let firebaseHandlesPush = false;
+
+if (firebaseConfig.projectId) {
+  try {
+    firebase.initializeApp(firebaseConfig);
+    firebase.messaging().onBackgroundMessage(showFromPayload);
+    firebaseHandlesPush = true;
+  } catch (error) {
+    console.error("Firebase Messaging indisponível no service worker", error);
+  }
+}
+
+self.addEventListener("push", (event) => {
+  if (firebaseHandlesPush) return;
+
+  let payload = null;
+  try {
+    payload = event.data ? event.data.json() : null;
+  } catch {
+    payload = { data: { body: event.data ? event.data.text() : "" } };
+  }
+
+  event.waitUntil(showFromPayload(payload));
+});
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
