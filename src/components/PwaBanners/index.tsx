@@ -12,8 +12,7 @@ import styles from "./PwaBanners.module.css";
 
 export function PwaBanners() {
   const { isLoggedIn } = useAuth();
-  const { isStandalone, isIos, canPromptInstall, promptInstall } =
-    usePwaInstall();
+  const { installMode, promptInstall } = usePwaInstall();
   const { permission, active, requesting, requestPermission } =
     useNotifications();
 
@@ -21,7 +20,16 @@ export function PwaBanners() {
   const [notificationDismissed, setNotificationDismissed] = useState(false);
   const inAppWebview = useClientValue(isInAppWebview, false);
 
-  const showInstallBanner = !isStandalone && !installDismissed;
+  const showInstallBanner = installMode !== "unavailable" && !installDismissed;
+
+  const installSubtitle = {
+    prompt: "Acesse mais rápido direto da tela inicial do seu aparelho.",
+    "manual-ios":
+      "Toque em Compartilhar e depois em Adicionar à Tela de Início.",
+    "manual-safari":
+      "No Safari, abra o menu Compartilhar e escolha Adicionar ao Dock.",
+    unavailable: "",
+  }[installMode];
   const showWebviewBanner =
     !showInstallBanner && inAppWebview && isLoggedIn && !notificationDismissed;
   const showNotificationBanner =
@@ -41,14 +49,10 @@ export function PwaBanners() {
         </div>
         <div className={styles.text}>
           <p className={styles.title}>Instale o app Resgatar</p>
-          <p className={styles.subtitle}>
-            {isIos
-              ? "Toque em Compartilhar e depois em Adicionar à Tela de Início."
-              : "Acesse mais rápido direto da tela inicial do seu aparelho."}
-          </p>
+          <p className={styles.subtitle}>{installSubtitle}</p>
         </div>
         <div className={styles.actions}>
-          {!isIos && canPromptInstall && (
+          {installMode === "prompt" && (
             <button
               type="button"
               className={styles.primaryAction}
@@ -57,7 +61,9 @@ export function PwaBanners() {
               Instalar
             </button>
           )}
-          {isIos && <Share size={18} color="var(--color-text-muted)" />}
+          {installMode !== "prompt" && (
+            <Share size={18} color="var(--color-text-muted)" />
+          )}
           <button
             type="button"
             className={styles.dismiss}

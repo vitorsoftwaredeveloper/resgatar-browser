@@ -66,6 +66,8 @@
 
 .track {
   height: 12px;
+  min-height: 12px;
+  flex-shrink: 0;
   border-radius: 6px;
   background: var(--color-soft-brown);
   overflow: hidden;
