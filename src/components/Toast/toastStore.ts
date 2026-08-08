@@ -1,4 +1,4 @@
-export type ToastType = "success" | "error" | "warning";
+export type ToastType = "success" | "error" | "warning" | "notification";
 
 export interface ToastItem {
   id: number;
@@ -6,6 +6,7 @@ export interface ToastItem {
   title: string;
   message?: string;
   duration: number;
+  url?: string;
 }
 
 type Listener = (items: ToastItem[]) => void;
@@ -28,9 +29,15 @@ export function subscribe(listener: Listener): () => void {
   return () => listeners.delete(listener);
 }
 
-export function pushToast(type: ToastType, title: string, message: string | undefined, duration: number) {
+export function pushToast(
+  type: ToastType,
+  title: string,
+  message: string | undefined,
+  duration: number,
+  url?: string,
+) {
   const id = nextId++;
-  items = [...items, { id, type, title, message, duration }];
+  items = [...items, { id, type, title, message, duration, url }];
   emit();
   return id;
 }

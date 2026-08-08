@@ -10,7 +10,7 @@ import { SidebarFrame } from "@/components/SidebarFrame";
 import { useAuth } from "@/context/AuthContext";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { useNotificationPermission } from "@/hooks/useNotificationPermission";
+import { useNotifications } from "@/context/NotificationsContext";
 import { Bell, BellOff, BellRing, Lock, Trash2, UserRoundCog } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -23,7 +23,7 @@ export default function PersonalSettingsPage() {
   const { colors } = useAppTheme();
   const { isDesktop } = useBreakpoint();
   const router = useRouter();
-  const { permission, active } = useNotificationPermission();
+  const { permission, active } = useNotifications();
 
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);

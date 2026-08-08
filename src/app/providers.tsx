@@ -9,6 +9,7 @@ import { ChargeProvider } from "@/context/ChargeContext";
 import { DashboardDataProvider } from "@/context/DashboardDataContext";
 import { DashboardVisibilityProvider } from "@/context/DashboardVisibilityContext";
 import { TopbarProvider } from "@/context/TopbarContext";
+import { NotificationsProvider } from "@/context/NotificationsContext";
 import { ToastHost } from "@/components/Toast/ToastHost";
 import { PwaBanners } from "@/components/PwaBanners";
 
@@ -30,9 +31,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <BirthdayProvider>
               <DashboardDataProvider>
                 <TopbarProvider>
-                  {children}
-                  <ToastHost />
-                  <PwaBanners />
+                  <NotificationsProvider>
+                    {children}
+                    <ToastHost />
+                    <PwaBanners />
+                  </NotificationsProvider>
                 </TopbarProvider>
               </DashboardDataProvider>
             </BirthdayProvider>

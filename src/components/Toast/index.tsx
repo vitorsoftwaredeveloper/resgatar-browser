@@ -13,4 +13,7 @@ export const ToastMessage = {
 
   warning: (title: string, message?: string) =>
     pushToast("warning", title, message, 3500),
+
+  notification: (title: string, message?: string, url?: string) =>
+    pushToast("notification", title, message, 6000, url),
 };

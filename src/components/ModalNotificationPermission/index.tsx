@@ -3,8 +3,13 @@
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { ModalBase } from "@/components/ModalBase";
-import { useNotificationPermission } from "@/hooks/useNotificationPermission";
+import { useNotifications } from "@/context/NotificationsContext";
 import { Bell, BellOff, BellRing } from "lucide-react";
+import { useClientValue } from "@/hooks/useClientValue";
+import {
+  isPushBlockedInThisTab,
+  reEnableNotificationsInstruction,
+} from "@/utils/device";
 import styles from "./ModalNotificationPermission.module.css";
 
 interface Props {
@@ -20,9 +25,14 @@ const BENEFITS = [
 
 export function ModalNotificationPermission({ visible, onClose }: Props) {
   const { permission, active, requesting, disabling, requestPermission, disableNotifications } =
-    useNotificationPermission();
+    useNotifications();
 
-  const canActivate = permission === "default" || (permission === "granted" && !active);
+  const blockedInThisTab = useClientValue(isPushBlockedInThisTab, false);
+  const reEnableSteps = useClientValue(reEnableNotificationsInstruction, "");
+
+  const canActivate =
+    !blockedInThisTab &&
+    (permission === "default" || (permission === "granted" && !active));
 
   const status = active
     ? {
@@ -36,8 +46,7 @@ export function ModalNotificationPermission({ visible, onClose }: Props) {
           icon: <BellOff size={40} className={styles.iconDenied} />,
           label: "Bloqueado",
           statusClass: styles.statusDenied,
-          description:
-            "Você bloqueou as notificações para este site. Para reativar, abra o ícone de cadeado ao lado do endereço do site e libere as notificações.",
+          description: `Você bloqueou as notificações para este site. Para reativar, ${reEnableSteps}`,
         }
       : permission === "unsupported"
         ? {
@@ -46,12 +55,21 @@ export function ModalNotificationPermission({ visible, onClose }: Props) {
             statusClass: styles.statusDenied,
             description: "Este navegador não tem suporte a notificações web.",
           }
-        : {
-            icon: <Bell size={40} className={styles.iconDefault} />,
-            label: "Não ativado",
-            statusClass: styles.statusDefault,
-            description: "Você ainda não recebe notificações neste navegador.",
-          };
+        : blockedInThisTab
+          ? {
+              icon: <BellOff size={40} className={styles.iconDenied} />,
+              label: "Instale o app",
+              statusClass: styles.statusDefault,
+              description:
+                "No iPhone as notificações só funcionam pelo app instalado. Toque em Compartilhar e depois em Adicionar à Tela de Início.",
+            }
+          : {
+              icon: <Bell size={40} className={styles.iconDefault} />,
+              label: "Não ativado",
+              statusClass: styles.statusDefault,
+              description:
+                "Você ainda não recebe notificações neste navegador.",
+            };
 
   return (
     <ModalBase visible={visible} onClose={onClose} title="Notificações">

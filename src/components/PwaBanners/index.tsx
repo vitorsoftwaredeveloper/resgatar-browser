@@ -2,10 +2,12 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
-import { useNotificationPermission } from "@/hooks/useNotificationPermission";
+import { useNotifications } from "@/context/NotificationsContext";
 import { LogoResgatar } from "@/components/Svg/Logo";
 import { Bell, Share, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useClientValue } from "@/hooks/useClientValue";
+import { isInAppWebview } from "@/utils/device";
 import styles from "./PwaBanners.module.css";
 
 export function PwaBanners() {
@@ -13,21 +15,18 @@ export function PwaBanners() {
   const { isStandalone, isIos, canPromptInstall, promptInstall } =
     usePwaInstall();
   const { permission, active, requesting, requestPermission } =
-    useNotificationPermission();
+    useNotifications();
 
   const [installDismissed, setInstallDismissed] = useState(false);
   const [notificationDismissed, setNotificationDismissed] = useState(false);
-
-  useEffect(() => {
-    if (!("serviceWorker" in navigator)) return;
-    navigator.serviceWorker.register("/sw.js").catch((error) => {
-      console.error("Falha ao registrar service worker", error);
-    });
-  }, []);
+  const inAppWebview = useClientValue(isInAppWebview, false);
 
   const showInstallBanner = !isStandalone && !installDismissed;
+  const showWebviewBanner =
+    !showInstallBanner && inAppWebview && isLoggedIn && !notificationDismissed;
   const showNotificationBanner =
     !showInstallBanner &&
+    !showWebviewBanner &&
     isLoggedIn &&
     !active &&
     permission !== "denied" &&
@@ -64,6 +63,33 @@ export function PwaBanners() {
             className={styles.dismiss}
             onClick={() => setInstallDismissed(true)}
             aria-label="Fechar aviso de instalação"
+          >
+            <X size={16} color="var(--color-text-muted)" />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (showWebviewBanner) {
+    return (
+      <div className={styles.banner}>
+        <div className={styles.icon}>
+          <Bell size={20} color="var(--color-primary)" />
+        </div>
+        <div className={styles.text}>
+          <p className={styles.title}>Abra no navegador</p>
+          <p className={styles.subtitle}>
+            Para receber avisos da comunidade, abra este link no Safari ou no
+            Chrome — o app onde você está não permite notificações.
+          </p>
+        </div>
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className={styles.dismiss}
+            onClick={() => setNotificationDismissed(true)}
+            aria-label="Fechar aviso de notificações"
           >
             <X size={16} color="var(--color-text-muted)" />
           </button>

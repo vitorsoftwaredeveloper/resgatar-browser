@@ -30,20 +30,4 @@ export const NotificationServices = {
       throw error;
     }
   },
-  registerFCMToken: async (token: string): Promise<void> => {
-    try {
-      await api.patch("/members/push-token", { pushToken: token });
-    } catch (error) {
-      console.error("Error registering FCM token", error);
-      throw error;
-    }
-  },
-  removeFCMToken: async (token: string): Promise<void> => {
-    try {
-      await api.delete("/members/push-token", { data: { pushToken: token } });
-    } catch (error) {
-      console.error("Error removing FCM token", error);
-      throw error;
-    }
-  },
 };
