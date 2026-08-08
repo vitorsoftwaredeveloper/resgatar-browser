@@ -8,7 +8,6 @@ import { IMemberWithContribution } from "@/types/Member";
 
 const MEMBER_KEY = "@auth:member";
 const ONBOARDING_KEY_PREFIX = "@onboarding:seen:";
-const DASHBOARD_ORDER_PREFIX = "@dashboard:order:";
 const LITURGY_CACHE_PREFIX = "@liturgy:";
 
 const isBrowser = () => typeof window !== "undefined";
@@ -56,25 +55,6 @@ export async function setOnboardingSeen(memberId: string): Promise<void> {
 
 export async function clearOnboardingSeen(memberId: string): Promise<void> {
   removeItem(`${ONBOARDING_KEY_PREFIX}${memberId}`);
-}
-
-export async function getDashboardOrder(
-  memberId: string,
-): Promise<string[] | null> {
-  const raw = getItem(`${DASHBOARD_ORDER_PREFIX}${memberId}`);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw) as string[];
-  } catch {
-    return null;
-  }
-}
-
-export async function setDashboardOrder(
-  memberId: string,
-  order: string[],
-): Promise<void> {
-  setItem(`${DASHBOARD_ORDER_PREFIX}${memberId}`, JSON.stringify(order));
 }
 
 export async function getLiturgyCache<T>(dateKey: string): Promise<T | null> {

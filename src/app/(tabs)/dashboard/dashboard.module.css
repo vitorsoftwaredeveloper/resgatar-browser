@@ -12,10 +12,6 @@
   min-height: 80dvh;
 }
 
-/* Sombra da divisória header ↔ conteúdo (mobile/tablet), acompanhando os
-   cantos arredondados do painel. O Header é estático, então o painel pinta por
-   cima dele pela ordem do DOM — a sombra aparece sem z-index. Só <1024px,
-   onde o Header mobile existe. */
 @media (max-width: 1023px) {
   .content {
     box-shadow: var(--header-divider);
@@ -23,114 +19,24 @@
 }
 
 .cardWrapper {
-  cursor: grab;
   min-width: 0;
-  transition:
-    opacity 0.15s ease,
-    transform 0.15s ease;
+  break-inside: avoid;
 }
 
-/* Flex column em todo card exceto banners (o carrossel já controla a
-   própria altura) — sem min-height fixo: cada card adapta a própria altura
-   ao conteúdo (um card com 1 doação ou nenhum aniversariante fica baixo, um
-   com mais itens fica mais alto). No desktop, align-items:stretch do grid
-   (abaixo) ainda nivela os dois cards de uma mesma linha entre si, então o
-   vizinho mais curto não sobra com espaço em branco — só não existe mais um
-   piso artificial igual pra todos. */
-.cardWrapper:not([data-card="banners"]) {
-  display: flex;
-  flex-direction: column;
-}
-
-/* O filho direto do wrapper é sempre o <div> não estilizado do CoachTarget
-   (cada card embrulha o próprio conteúdo nele) — esticá-lo com flex:1 não
-   basta, porque o card real (.container de cada componente, que usa
-   height:100%) é um neto, não um filho direto. height:100% só resolve de
-   forma confiável quando a altura do wrapper é extrínseca (grid stretch no
-   desktop); no mobile (sem grid, altura vindo só de min-height) o
-   percentual falha silenciosamente e cada card encolhe pro tamanho do
-   próprio conteúdo, sobrando um vão em branco antes do próximo card.
-   flex:1 no neto contorna isso: flex-grow distribui o espaço livre do
-   flex container (o próprio <div> do CoachTarget, já esticado) sem
-   depender de percentual, então funciona em qualquer contexto. */
-.cardWrapper:not([data-card="banners"]) > * {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-}
-
-.cardWrapper:not([data-card="banners"]) > * > * {
-  flex: 1;
-  min-height: 0;
-}
-
-.cardWrapper:active {
-  cursor: grabbing;
-}
-
-.cardWrapperDragging {
-  opacity: 0.6;
-  transform: scale(1.02);
-}
-
-/* Card cujo componente renderiza null (ex.: doações pra quem não é admin) não
-   deixa um slot vazio — o :empty tira o wrapper do fluxo (inclusive do
-   grid), então o card seguinte ocupa o lugar em vez de sobrar buraco. */
 .cardWrapper:empty {
   display: none;
 }
 
-/* Grid de 2 colunas já a partir de 768px (antes só em 1024px): entre tablet e
-   desktop o shell agora é full-width, então há largura de sobra pra preencher
-   com 2 colunas de cards em vez de uma única coluna esticada. Em 1024px+ a
-   sidebar entra e o layout.module.css recentraliza o conteúdo. */
 @media (min-width: 768px) {
+  .columns {
+    column-count: 2;
+    column-gap: var(--spacing-lg);
+    orphans: 1;
+    widows: 1;
+  }
+
   .content {
-    display: grid;
-    /* minmax(0, 1fr), não só 1fr: sem o mínimo explícito em 0, a coluna não
-       pode encolher abaixo do conteúdo intrínseco de algum card (ex.: a lista
-       horizontal de miniaturas do "Vídeos recentes", que não quebra linha) —
-       aí a 1ª coluna infla pra caber esse conteúdo e espreme a 2ª a uma tira
-       de ~180px, além de estourar a largura do grid inteiro. */
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    /* dense: preenche buracos deixados pelo carrossel de banners (único card
-       de coluna cheia fixo) com os cards seguintes, em vez de deixar uma
-       célula vazia no meio do grid quando o auto-flow normal pularia ela pra
-       não sobrepor um item de span completo. */
-    grid-auto-flow: dense;
-    align-items: stretch;
-    /* start, não o "normal" (~stretch) implícito: sem isso, quando a soma das
-       alturas naturais das linhas fica abaixo do min-height abaixo, o espaço
-       sobrando é distribuído entre TODAS as linhas do grid (inflando cada
-       card), em vez de sobrar só depois da última linha. */
-    align-content: start;
-    gap: var(--spacing-lg);
-    min-height: calc(100dvh - 2 * var(--spacing-xl));
     margin-bottom: var(--spacing-xl);
     border-radius: var(--radius-xl);
-  }
-
-  .content [data-card="banners"] {
-    grid-column: 1 / -1;
-  }
-
-  /* Compromissos (notices) não é mais full-width fixo — é um card de coluna
-     única igual aos demais: divide a linha com o vizinho quando tem par, e
-     só ocupa a linha inteira sozinho pela mesma regra abaixo. */
-
-  /* Card de coluna única (não banners) que sobra sozinho na última posição de
-     uma sequência ímpar (após remover cards escondidos por :empty) ocupa a
-     linha inteira em vez de ficar pela metade com espaço em branco ao lado.
-     :nth-child(of S) conta só entre os cards que batem com o filtro S, então
-     funciona com qualquer ordem de drag-and-reorder e independe de cards
-     ocultos por permissão (ex.: meta comunitária sem progresso). */
-  .content
-    .cardWrapper:nth-child(
-      odd of .cardWrapper:not([data-card="banners"]):not(:empty)
-    ):nth-last-child(
-      1 of .cardWrapper:not([data-card="banners"]):not(:empty)
-    ) {
-    grid-column: 1 / -1;
   }
 }
