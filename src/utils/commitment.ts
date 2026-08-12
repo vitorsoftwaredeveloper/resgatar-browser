@@ -39,11 +39,26 @@ function pad2(n: number): string {
 
 type ScheduleFields = Pick<ICommitment, "repeat" | "day" | "date">;
 
+interface CalendarDay {
+  year: number;
+  month: number;
+  day: number;
+}
+
+export function commitmentCalendarDay(date: string): CalendarDay {
+  const d = new Date(date);
+  return {
+    year: d.getUTCFullYear(),
+    month: d.getUTCMonth(),
+    day: d.getUTCDate(),
+  };
+}
+
 export function commitmentScheduleLabel(c: ScheduleFields): string {
   if (c.repeat === "weekly") return `Toda ${c.day}`;
   if (!c.date) return c.day;
-  const d = new Date(c.date);
-  return `${c.day}, ${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}`;
+  const { month, day } = commitmentCalendarDay(c.date);
+  return `${c.day}, ${pad2(day)}/${pad2(month + 1)}`;
 }
 
 export function isCommitmentToday(
@@ -54,10 +69,10 @@ export function isCommitmentToday(
     return normalize(c.day) === normalize(WEEKDAY_LONG[now.getDay()]);
   }
   if (!c.date) return false;
-  const d = new Date(c.date);
+  const { year, month, day } = commitmentCalendarDay(c.date);
   return (
-    d.getFullYear() === now.getFullYear() &&
-    d.getMonth() === now.getMonth() &&
-    d.getDate() === now.getDate()
+    year === now.getFullYear() &&
+    month === now.getMonth() &&
+    day === now.getDate()
   );
 }

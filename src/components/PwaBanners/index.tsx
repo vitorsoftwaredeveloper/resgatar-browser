@@ -43,7 +43,7 @@ export function PwaBanners() {
 
   if (showInstallBanner) {
     return (
-      <div className={styles.banner}>
+      <div className={styles.banner} data-pwa-banner>
         <div className={styles.icon}>
           <LogoResgatar size={50} color="var(--color-primary)" />
         </div>
@@ -79,7 +79,7 @@ export function PwaBanners() {
 
   if (showWebviewBanner) {
     return (
-      <div className={styles.banner}>
+      <div className={styles.banner} data-pwa-banner>
         <div className={styles.icon}>
           <Bell size={20} color="var(--color-primary)" />
         </div>
@@ -106,7 +106,7 @@ export function PwaBanners() {
 
   if (showNotificationBanner) {
     return (
-      <div className={styles.banner}>
+      <div className={styles.banner} data-pwa-banner>
         <div className={styles.icon}>
           <Bell size={20} color="var(--color-primary)" />
         </div>

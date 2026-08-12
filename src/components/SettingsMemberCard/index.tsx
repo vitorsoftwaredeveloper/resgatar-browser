@@ -20,7 +20,7 @@ export function SettingsMemberCard({ member, onAction, iconAction, variant = "ed
   const { colors } = useAppTheme();
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} data-member-card={member.email}>
       <div className={styles.userInfo}>
         <Avatar photo={member.profileImage} size={40} />
 

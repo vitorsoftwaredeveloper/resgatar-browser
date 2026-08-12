@@ -1,0 +1,28 @@
+{
+  "data": {
+    "transactionId": "161662466549",
+    "memberId": "940844a8-4031-7068-d59e-d24a05a97cee",
+    "status": "approved",
+    "statusDetail": "accredited",
+    "transactionAmount": "1,00",
+    "paymentMethodId": "pix",
+    "currencyId": "BRL",
+    "dateCreated": "2026-06-04T12:52:48.078Z",
+    "dateOfExpiration": "2026-06-05T12:52:47.868Z",
+    "dateApproved": "2026-06-04T12:53:14.000Z",
+    "payer": {
+      "firstName": "E2eMembro",
+      "lastName": "Resgatar",
+      "email": "e2e.member@example.test",
+      "identification": {
+        "type": "CPF",
+        "numberType": "ENC:0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    "transactionData": {
+      "qrCode": "00020126580014br.gov.bcb.pix01364f51ffa5-d2bc-45a7-9965-ade5373ee51752040000530398654041.005802BR5914DCDFGHAEB796536009Sao Paulo62250521mpqrinter1616624665496304E38D",
+      "ticketUrl": "https://www.mercadopago.com.br/payments/161662466549/ticket?caller_id=1612677664&hash=edcf88fb-3626-49de-8fa7-b3702ad055a6"
+    },
+    "referenceMonth": 0
+  }
+}

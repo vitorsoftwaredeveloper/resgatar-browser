@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "coverage/" + "**",
+    ".claude/" + "**",
+    ...["screenshots", "videos", "downloads"].map(
+      (dir) => `cypress/${dir}/` + "**",
+    ),
   ]),
 ]);
 

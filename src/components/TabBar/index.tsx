@@ -18,7 +18,7 @@ export function TabBar() {
   const tabWidth = 100 / tabs.length;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-tabbar>
       <div
         className={styles.indicator}
         style={{ width: `${tabWidth}%`, transform: `translateX(${activeIndex * 100}%)` }}
@@ -30,7 +30,13 @@ export function TabBar() {
           const iconColor = focused ? colors.primary : colors.textMuted;
 
           return (
-            <Link key={tab.name} href={tab.path} className={styles.tab} style={{ width: `${tabWidth}%` }}>
+            <Link
+              key={tab.name}
+              href={tab.path}
+              data-tab={tab.name}
+              className={styles.tab}
+              style={{ width: `${tabWidth}%` }}
+            >
               <div className={styles.tabInner}>
                 <tab.Icon size={24} color={iconColor} />
                 <span className={styles.label} style={{ color: iconColor }}>

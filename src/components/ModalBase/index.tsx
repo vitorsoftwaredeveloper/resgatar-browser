@@ -52,7 +52,12 @@ export const ModalBase: React.FC<IModalBase> = ({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className={styles.sheet} role="dialog" aria-modal="true">
+      <div
+        className={styles.sheet}
+        role="dialog"
+        aria-modal="true"
+        data-modal={title}
+      >
         {title && (
           <div className={styles.header}>
             <div className={styles.handle} />

@@ -112,6 +112,7 @@ export function ModalEditMemberData({
             <button
               key={option.value}
               type="button"
+              data-role-filter={option.value}
               onClick={() => setFilter(option.value)}
               className={[
                 styles.filterItem,
@@ -150,7 +151,12 @@ export function ModalEditMemberData({
                 const isSelf = item._id === loggedMember?._id;
                 const canChangeRole = isAdmin && !isSelf;
                 return (
-                  <div key={item._id} className={styles.card}>
+                  <div
+                    key={item._id}
+                    data-member-row={item.email}
+                    data-member-role={item.role ?? "guest"}
+                    className={styles.card}
+                  >
                     <div className={styles.userInfo}>
                       <Avatar photo={item.profileImage} size={40} />
                       <div className={styles.userTexts}>

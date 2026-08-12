@@ -241,7 +241,13 @@ export default function VideosPage() {
           ) : (
             <div className={styles.list}>
               {items.map((item, index) => (
-                <button key={item._id} type="button" className={styles.videoCard} onClick={() => setPlayerStartIndex(index)}>
+                <button
+                  key={item._id}
+                  type="button"
+                  data-video-card={item._id}
+                  className={styles.videoCard}
+                  onClick={() => setPlayerStartIndex(index)}
+                >
                   <div className={styles.thumbWrapper}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={item.thumbnail} alt={item.title || ""} className={styles.thumb} />

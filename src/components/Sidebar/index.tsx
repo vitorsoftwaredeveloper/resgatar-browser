@@ -129,6 +129,8 @@ export function Sidebar() {
 
   return (
     <aside
+      data-sidebar
+      data-collapsed={collapsed ? "true" : "false"}
       className={[styles.container, collapsed && styles.collapsed]
         .filter(Boolean)
         .join(" ")}
@@ -171,6 +173,8 @@ export function Sidebar() {
                 <Link
                   key={item.name}
                   href={item.path}
+                  data-nav-item={item.name}
+                  data-nav-label={item.label}
                   title={collapsed ? item.label : undefined}
                   className={[styles.navItem, focused && styles.navItemActive]
                     .filter(Boolean)
@@ -218,8 +222,12 @@ export function Sidebar() {
           </div>
           {!collapsed && (
             <span className={styles.userText}>
-              <span className={styles.userName}>{fullName}</span>
-              <span className={styles.userRole}>{roleLabel(role)}</span>
+              <span className={styles.userName} data-user-name>
+                {fullName}
+              </span>
+              <span className={styles.userRole} data-user-role={role}>
+                {roleLabel(role)}
+              </span>
             </span>
           )}
         </div>

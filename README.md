@@ -38,10 +38,15 @@ ficam disponíveis no browser.
 ## Scripts
 
 ```bash
-npm run dev     # desenvolvimento
-npm run build   # build de produção
-npm run start   # servir build
-npm run lint    # eslint
+npm run dev         # desenvolvimento
+npm run build       # build de produção
+npm run start       # servir build
+npm run lint        # eslint
+npm run test        # unitários (Vitest)
+npm run test:watch  # unitários em watch
+npm run e2e         # build + servidor + Cypress headless
+npm run cy:open     # build + servidor + interface do Cypress
+npm run coverage    # tudo + cobertura consolidada em coverage/merged
 ```
 
 ## Próximos passos

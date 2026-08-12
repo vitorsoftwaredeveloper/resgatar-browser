@@ -1,0 +1,21 @@
+{
+  "testInclude": [
+    "tests/unit/**/*.test.ts",
+    "tests/unit/**/*.test.tsx"
+  ],
+  "coverageInclude": [
+    "src/utils/**",
+    "src/services/**",
+    "src/storage/**",
+    "src/hooks/**",
+    "src/lib/**",
+    "src/components/**",
+    "src/context/**"
+  ],
+  "coverageExclude": [
+    "src/**/constants.ts",
+    "src/lib/firebaseMessaging.ts",
+    "src/components/Svg/**",
+    "src/components/Skeleton/**"
+  ]
+}

@@ -46,19 +46,26 @@ export function DateNavigator({ selectedDate, onPrev, onNext, onOpenCalendar, on
   });
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} data-date-navigator>
       <div className={styles.navRow}>
-        <button type="button" className={styles.arrowBtn} onClick={onPrev}>
+        <button type="button" className={styles.arrowBtn} onClick={onPrev} aria-label="Dia anterior">
           <ChevronLeft size={20} color={colors.text} />
         </button>
 
         <div className={styles.centerTarget}>
-          <button type="button" className={styles.centerBtn} onClick={onOpenCalendar}>
-            <span className={styles.centerText}>{formatCenterLabel(selectedDate)}</span>
+          <button
+            type="button"
+            className={styles.centerBtn}
+            onClick={onOpenCalendar}
+            aria-label="Abrir calendário"
+          >
+            <span className={styles.centerText} data-selected-date>
+              {formatCenterLabel(selectedDate)}
+            </span>
           </button>
         </div>
 
-        <button type="button" className={styles.arrowBtn} onClick={onNext}>
+        <button type="button" className={styles.arrowBtn} onClick={onNext} aria-label="Próximo dia">
           <ChevronRight size={20} color={colors.text} />
         </button>
       </div>

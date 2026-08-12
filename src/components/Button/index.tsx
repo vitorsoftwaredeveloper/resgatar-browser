@@ -52,6 +52,7 @@ export function Button({
       type="button"
       disabled={disabled || loading}
       onClick={handlePress}
+      data-button={title}
       className={[
         styles.button,
         styles[variant],

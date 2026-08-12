@@ -1,0 +1,9 @@
+{
+  "all": false,
+  "include": ["src/**"],
+  "exclude": ["src/app/layout.tsx", "src/theme/**", "src/types/**"],
+  "reporter": ["text-summary", "text", "html", "json-summary"],
+  "report-dir": "coverage/e2e",
+  "temp-dir": "coverage/.tmp",
+  "skip-full": false
+}

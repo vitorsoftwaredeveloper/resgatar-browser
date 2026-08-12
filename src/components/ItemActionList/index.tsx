@@ -19,6 +19,7 @@ export function ItemActionList({ title, description, onPress, isLast, icon, vari
     <button
       type="button"
       onClick={onPress}
+      data-action-item={title}
       className={[styles.container, variant === "card" && styles.cardVariant].filter(Boolean).join(" ")}
     >
       <div className={styles.row}>

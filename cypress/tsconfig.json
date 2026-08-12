@@ -1,0 +1,25 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "cypress",
+      "node"
+    ],
+    "noEmit": true,
+    "isolatedModules": false,
+    "lib": [
+      "ES2021",
+      "DOM"
+    ],
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "../cypress.config.ts",
+    "../next-env.d.ts"
+  ],
+  "exclude": [
+    "../node_modules"
+  ]
+}

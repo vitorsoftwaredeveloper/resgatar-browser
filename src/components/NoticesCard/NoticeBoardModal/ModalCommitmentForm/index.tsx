@@ -11,7 +11,7 @@ import { ToastMessage } from "@/components/Toast";
 import { CommitmentService } from "@/services/CommitmentService";
 import { CommitmentOrdinal, CommitmentRepeat, ICommitment, ICommitmentInput } from "@/types/Commitment";
 import { getApiErrorMessage } from "@/utils/apiError";
-import { ORDINAL_OPTIONS, WEEKDAY_OPTIONS } from "@/utils/commitment";
+import { ORDINAL_OPTIONS, WEEKDAY_OPTIONS, commitmentCalendarDay } from "@/utils/commitment";
 import { maskDateBR } from "@/utils/mask";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -50,10 +50,10 @@ function toISODate(text: string): string | null {
 // Pré-preenche o "Data" (once) na edição a partir do ISO retornado pela API.
 function initialDateText(commitment?: ICommitment | null): string {
   if (!commitment?.date || commitment.repeat !== "once") return "";
-  const d = new Date(commitment.date);
-  const dd = String(d.getDate()).padStart(2, "0");
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  return `${dd}/${mm}/${d.getFullYear()}`;
+  const { year, month, day } = commitmentCalendarDay(commitment.date);
+  const dd = String(day).padStart(2, "0");
+  const mm = String(month + 1).padStart(2, "0");
+  return `${dd}/${mm}/${year}`;
 }
 
 export function ModalCommitmentForm({ visible, onClose, onSuccess, commitment }: Props) {

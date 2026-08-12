@@ -31,11 +31,12 @@ export function ToastHost() {
   }
 
   return (
-    <div className={styles.host}>
+    <div className={styles.host} data-toast-host>
       {items.map((item) =>
         item.type === "notification" ? (
           <div
             key={item.id}
+            data-toast={item.type}
             role={item.url ? "link" : undefined}
             tabIndex={item.url ? 0 : undefined}
             onClick={item.url ? () => openToast(item) : undefined}
@@ -76,6 +77,7 @@ export function ToastHost() {
         ) : (
           <div
             key={item.id}
+            data-toast={item.type}
             className={[styles.toast, styles[item.type]].join(" ")}
           >
             <p className={styles.title}>{item.title}</p>

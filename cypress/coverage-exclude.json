@@ -1,0 +1,11 @@
+{
+  "exclude": [
+    "**/src/types/**",
+    "**/src/theme/**",
+    "**/src/styles/**",
+    "**/src/config/**",
+    "**/src/components/Svg/**",
+    "**/src/components/Skeleton/**",
+    "**/src/**/constants.ts"
+  ]
+}

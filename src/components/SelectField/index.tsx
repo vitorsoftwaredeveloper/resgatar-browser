@@ -86,6 +86,8 @@ export function SelectField({
       <button
         ref={anchorRef}
         type="button"
+        data-select={label ?? placeholder}
+        data-select-value={value ?? ""}
         className={[styles.field, open && styles.fieldOpen, error && styles.fieldError]
           .filter(Boolean)
           .join(" ")}
@@ -113,6 +115,7 @@ export function SelectField({
                   <button
                     key={String(opt.value)}
                     type="button"
+                    data-select-option={opt.value}
                     className={[styles.option, active && styles.optionActive].filter(Boolean).join(" ")}
                     onClick={() => {
                       onSelect(opt.value);

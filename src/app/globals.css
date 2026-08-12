@@ -710,8 +710,6 @@ svg {
   }
 }
 
-/* Utilitário de skeleton (blocos placeholder pulsantes) — mesma cadência do
-   LiturgySkeleton mobile, reaproveitado pelos skeletons desktop. */
 .skeleton-pulse {
   animation: app-skeleton-pulse 0.8s ease-in-out infinite alternate;
 }

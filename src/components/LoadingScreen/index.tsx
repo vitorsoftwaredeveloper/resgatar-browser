@@ -7,7 +7,7 @@ import styles from "./LoadingScreen.module.css";
 
 export function LoadingScreen() {
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-loading-screen>
       <div className={styles.logoContainer}>
         <LogoResgatar color={THEME.COLORS.primary} size={200} />
       </div>

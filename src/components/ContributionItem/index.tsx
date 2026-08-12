@@ -53,7 +53,11 @@ export function ContributionItem({ data, onPay, onShare }: Props) {
   );
 
   return (
-    <div className={styles.card}>
+    <div
+      className={styles.card}
+      data-contribution-month={data.month}
+      data-contribution-status={data.status}
+    >
       <div className={styles.row}>
         <div className={styles.info}>
           <p className={styles.month}>{data.month}</p>

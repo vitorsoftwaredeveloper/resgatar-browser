@@ -31,8 +31,8 @@ function parseBirthDate(dateOfBirth: string | number): Date | null {
 
 function getBirthdaysThisMonth(members: IMember[]): BirthdayMember[] {
   const now = new Date();
-  const currentMonth = now.getUTCMonth();
-  const currentDay = now.getUTCDate();
+  const currentMonth = now.getMonth();
+  const currentDay = now.getDate();
   return members
     .map((m): BirthdayMember | null => {
       const date = parseBirthDate(m.dateOfBirth);

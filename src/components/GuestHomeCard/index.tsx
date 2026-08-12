@@ -40,7 +40,7 @@ export function GuestHomeCard() {
 
   return (
     <>
-      <div className={styles.container}>
+      <div className={styles.container} data-guest-card>
         <div className={styles.header} style={{ flex: "none" }}>
           <span className={styles.label}>VOCÊ ESTÁ COMO CONVIDADO</span>
         </div>

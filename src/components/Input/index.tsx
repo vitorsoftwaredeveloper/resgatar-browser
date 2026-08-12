@@ -32,7 +32,10 @@ export const Input = ({
   const hasError = Boolean(error);
 
   return (
-    <div className={[styles.wrapper, className].filter(Boolean).join(" ")}>
+    <div
+      className={[styles.wrapper, className].filter(Boolean).join(" ")}
+      data-field={label ?? props.placeholder}
+    >
       {label && <label className={styles.label}>{label}</label>}
 
       <div

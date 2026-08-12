@@ -35,7 +35,7 @@ export function Dialog({ visible, title, description, onClose, actions = [], chi
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className={styles.container} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.container} data-dialog={title} onClick={(e) => e.stopPropagation()}>
         {title && <p className={styles.title}>{title}</p>}
         {description && <p className={styles.description}>{description}</p>}
 

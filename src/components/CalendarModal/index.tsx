@@ -89,7 +89,7 @@ export function CalendarModal({ visible, selectedDate, onSelectDate, onClose }: 
   return (
     <>
       <div className={styles.backdrop} onClick={onClose} />
-      <div className={styles.sheet}>
+      <div className={styles.sheet} data-calendar-modal>
         <div className={styles.handle} />
 
         <div className={styles.monthHeader}>
